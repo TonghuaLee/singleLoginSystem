@@ -10,7 +10,7 @@ objc_prefix="SC"
 java_package="com.broadli.singleloginapp"
 ### Script
 # get base directory
-base_dir=$(cd "`dirname "0"`" && pwd)
+base_dir=$(cd "$(dirname "0")" && pwd)
 # get java directory from package name
 java_dir=$(echo $java_package | tr . /)
 # output directories for generated src
@@ -25,15 +25,15 @@ rm -rf $objc_out
 rm -rf $java_out
 # execute the djinni command
 ../../../deps/djinni/src/run \
-   --java-out $java_out \
-   --java-package $java_package \
-   --ident-java-field mFooBar \
-   --cpp-out $cpp_out \
-   --cpp-namespace $namespace \
-   --jni-out $jni_out \
-   --ident-jni-class NativeFooBar \
-   --ident-jni-file NativeFooBar \
-   --objc-out $objc_out \
-   --objc-type-prefix $objc_prefix \
-   --objcpp-out $objc_out \
-   --idl $djinni_file
+  --java-out $java_out \
+  --java-package $java_package \
+  --ident-java-field mFooBar \
+  --cpp-out $cpp_out \
+  --cpp-namespace $namespace \
+  --jni-out $jni_out \
+  --ident-jni-class NativeFooBar \
+  --ident-jni-file NativeFooBar \
+  --objc-out $objc_out \
+  --objc-type-prefix $objc_prefix \
+  --objcpp-out $objc_out \
+  --idl $djinni_file
