@@ -89,7 +89,7 @@ Lake1 Oeschinen lies at the foot of the Blüemlisalp in the Bernese Alps. Situat
         color: Colors.green,
         child: new Text('Sign out', style: new TextStyle(color: Colors.white)));
     return Scaffold(
-      appBar: AppBar(title: Text('欢迎光临' + AuthSo.add(10, 20).toString()),
+      appBar: AppBar(title: Text('欢迎光临' + AuthSo.add(10, 2).toString()),
           actions: <Widget>[]),
       body: ListView(
         children: [

@@ -3,7 +3,7 @@ import 'dart:io';
 
 class AuthSo {
   static int add(int a, int b) {
-    return a + b; //nativeAdd(a, b);
+    return nativeAdd(a, b);
   }
 }
 
