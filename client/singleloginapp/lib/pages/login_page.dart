@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:singleloginapp/pages/register_page.dart';
 
 import 'home_page.dart';
 
@@ -30,22 +31,12 @@ class _LoginPageState extends State<LoginPage> {
                 buildEmailTextField(),
                 SizedBox(height: 30.0),
                 buildPasswordTextField(context),
-                buildForgetPasswordText(context),
+                buildRegisterText(context),
                 SizedBox(height: 60.0),
                 buildLoginButton(context),
                 SizedBox(height: 30.0),
-                buildOtherLoginText(),
               ],
             )));
-  }
-
-  Align buildOtherLoginText() {
-    return Align(
-        alignment: Alignment.center,
-        child: Text(
-          '其他账号登录',
-          style: TextStyle(color: Colors.grey, fontSize: 14.0),
-        ));
   }
 
   Align buildLoginButton(BuildContext context) {
@@ -77,18 +68,22 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Padding buildForgetPasswordText(BuildContext context) {
+  Padding buildRegisterText(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 8.0),
       child: Align(
         alignment: Alignment.centerRight,
         child: FlatButton(
           child: Text(
-            '忘记密码？',
+            'Sign up',
             style: TextStyle(fontSize: 14.0, color: Colors.grey),
           ),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.pushAndRemoveUntil(context, new MaterialPageRoute(
+              builder: (BuildContext context) {
+                return new RegisterPage();
+              },
+            ), (route) => route == null);
           },
         ),
       ),

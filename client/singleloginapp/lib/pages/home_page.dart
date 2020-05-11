@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:singleloginapp/pages/login_page.dart';
-
+import 'package:singleloginapp/authso.dart';
 class HomePage extends StatelessWidget {
   final String tag;
 
@@ -89,7 +89,8 @@ Lake1 Oeschinen lies at the foot of the Blüemlisalp in the Bernese Alps. Situat
         color: Colors.green,
         child: new Text('Sign out', style: new TextStyle(color: Colors.white)));
     return Scaffold(
-      appBar: AppBar(title: Text('欢迎光临'), actions: <Widget>[]),
+      appBar: AppBar(title: Text('欢迎光临' + AuthSo.add(10, 20).toString()),
+          actions: <Widget>[]),
       body: ListView(
         children: [
           Hero(
