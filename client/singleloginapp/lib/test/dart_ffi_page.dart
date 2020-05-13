@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:singleloginapp/msg/event_listener.dart';
 import 'package:singleloginapp/msg/message.dart';
-import 'package:singleloginapp/pages/login_page.dart';
 import 'package:singleloginapp/authso.dart';
 
 class DartFFIPage extends StatelessWidget with EventListener {

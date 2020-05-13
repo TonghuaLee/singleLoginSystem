@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:singleloginapp/msg/message.dart';
+import 'package:singleloginapp/msg/msg_channel.dart';
 import 'package:singleloginapp/pages/register_page.dart';
+import 'package:singleloginapp/utils/log_util.dart';
 
 import 'home_page.dart';
 
@@ -48,12 +51,20 @@ class _LoginPageState extends State<LoginPage> {
           child: Text('Login',
               style: TextStyle(color: Colors.white, fontSize: 18.0)),
           color: Colors.black,
-          onPressed: () {
+          onPressed: () async {
             if (_formKey.currentState.validate()) {
               ///只有输入的内容符合要求通过才会到达此处
               _formKey.currentState.save();
               //TODO 执行登录方法
               print('email:$_email , assword:$_password');
+              //MsgChannelUtil.getInstance().addListener(listener)
+              Message msg = new Message(1, 'req login from flutter', null,
+                  MsgChannelUtil.MAIN_CMD_LOGIN,
+                  MsgChannelUtil.MAIN_CMD_DEFALUT);
+//              LogUtils.d('login_page', 'req from flutter: '+ msg.toJson());
+              Message result = await MsgChannelUtil.getInstance().sendMessage(
+                  msg);
+              LogUtils.d('login_page', 'result: ' + result.toJson().toString());
               Navigator.pushAndRemoveUntil(context, new MaterialPageRoute(
                 builder: (BuildContext context) {
                   return new HomePage();
