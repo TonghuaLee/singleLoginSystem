@@ -7,7 +7,7 @@ namespace="Auth"
 # Objective-C class name prefix for generated src
 objc_prefix="SC"
 # Java package name for generated src
-java_package="com.broadli.singleloginapp"
+java_package="com.broadli.clibs"
 ### Script
 # get base directory
 base_dir=$(cd "$(dirname "0")" && pwd)

@@ -1,8 +1,6 @@
 #pragma once
  
 #include "login_core.hpp"
-#include "login_listener.hpp"
-#include "./model/network_result.h"
 
 using namespace std;
 
@@ -12,7 +10,7 @@ namespace Auth {
         
     public:
 
-     //   LoginCoreImpl(const shared_ptr<LoginListener> & listener);
+        LoginCoreImpl();
 
         //是否登录
         static bool isLogin;

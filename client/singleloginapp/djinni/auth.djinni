@@ -5,9 +5,8 @@ action_result = record {
 	data: string;
 }
 login_core = interface +c {
-	# static create(listener : login_listener): login_core;
+    static create(): login_core;
     native_add(x: i32, y: i32): i32;
-    add(x: i32, y: i32): i32;
 }
 
 login_listener = interface +o +j {

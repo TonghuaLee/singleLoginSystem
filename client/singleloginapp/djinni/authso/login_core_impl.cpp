@@ -12,20 +12,20 @@
 
 #include "login_core_impl.hpp"
 
-extern "C" {
-// __attribute__((visibility("default"))) __attribute__((used))
-    int32_t native_add(int32_t x, int32_t y) { return x + y+100; }
-}
+// extern "C" {
+// // __attribute__((visibility("default"))) __attribute__((used))
+//     int32_t native_add(int32_t x, int32_t y) { return x + y+100; }
+// }
+using namespace Auth;
 
 namespace Auth {
 
-//    std::shared_ptr<LoginCore> LoginCore::create(const std::shared_ptr<LoginListener> & listener) {
-//        return std::make_shared<LoginCoreImpl>(listener);
-//    }
+   std::shared_ptr<LoginCore> LoginCore::create() {
+       return std::make_shared<LoginCoreImpl>();
+   }
 
-//    LoginCoreImpl::LoginCoreImpl(const std::shared_ptr<LoginListener> & listener) {
-//        this->m_listener = listener;
-//    }
+   LoginCoreImpl::LoginCoreImpl() {
+   }
 
     bool LoginCoreImpl::isLogin = false;
 

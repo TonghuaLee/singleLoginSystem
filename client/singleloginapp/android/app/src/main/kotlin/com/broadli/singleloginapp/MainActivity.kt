@@ -11,9 +11,10 @@ import com.broadli.singleloginapp.model.Msg
 import com.google.gson.Gson
 import io.flutter.app.FlutterActivity
 import io.flutter.plugin.common.*
-import io.flutter.plugin.common.BasicMessageChannel.*
 import io.flutter.plugins.GeneratedPluginRegistrant
+import java.lang.System.loadLibrary
 import java.util.*
+
 
 class MainActivity : FlutterActivity() {
     private val CHANNEL = "samples.flutter.io/battery"
@@ -21,6 +22,7 @@ class MainActivity : FlutterActivity() {
     private var mContext: Context? = null
     private var mMessageChannel: BasicMessageChannel<Any>? = null
     val TAG = "MainActivity"
+    var mLoginControler: LoginControler? = null
 
     companion object {
         const val FLUTTER_LOG_CHANNEL = "android_log"
@@ -31,10 +33,13 @@ class MainActivity : FlutterActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         GeneratedPluginRegistrant.registerWith(this)
+        loadLibrary("authso")
         flutterView = getFlutterView()
         mContext = this
+        mLoginControler = LoginControler()
         listenMsgChannel()
         listenLogChannel()
+        testNativeAdd()
     }
 
     private fun listenMsgChannel() { //消息接收监听
@@ -43,7 +48,6 @@ class MainActivity : FlutterActivity() {
         // 接收消息监听
         mMessageChannel!!.setMessageHandler { message, reply ->
             Log.d("Android", "Received message = $message")
-            reply.reply("Reply from Android")
             println("onMessage: $message")
             var reqMsg = Gson().fromJson(message.toString(), Msg::class.java)
             if (reqMsg != null) {
@@ -96,5 +100,7 @@ class MainActivity : FlutterActivity() {
         }
     }
 
-
+    private fun testNativeAdd() {
+        mLoginControler?.addTest()
+    }
 }

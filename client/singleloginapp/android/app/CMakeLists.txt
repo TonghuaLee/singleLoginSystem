@@ -12,7 +12,7 @@ include_directories(
         ../../djinni/deps/support-lib/
         ../../djinni/deps/support-lib/jni/
         ../../djinni/generated-src/cpp/
-//        ../../djinni/generated-src/jni/
+        ../../djinni/generated-src/jni/
         ../../djinni/authso/
 
 #        ../../djinni/
@@ -24,7 +24,7 @@ include_directories(
 )
 
 
-file(GLOB authoso_sources
+file(GLOB authso_sources
 
         ../../djinni/deps/support-lib/jni/*.hpp
         ../../djinni/deps/support-lib/jni/*.cpp
@@ -53,7 +53,7 @@ add_library( # Sets the name of the library.
         SHARED
 
         # Provides a relative path to your source file(s).
-        ${authoso_sources}
+        ${authso_sources}
         )
 
 
