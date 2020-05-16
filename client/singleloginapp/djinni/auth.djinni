@@ -5,9 +5,19 @@ action_result = record {
 	data: string;
 }
 login_core = interface +c {
-    static create(): login_core;
+    static create(listener : login_listener): login_core;
     native_add(x: i32, y: i32): i32;
+    user_login(account: string, password: string);
+    user_sign(account: string, password: string);
+    user_logout();
+    check_login_status();
+    check_connection();
 }
 
 login_listener = interface +o +j {
+    on_login_finish(result: action_result);
+    on_sign_finish(result: action_result);
+    on_logout_finish(result: action_result);
+    on_check_status_finish(result: action_result);
+    on_disconnect(result: action_result);
 }

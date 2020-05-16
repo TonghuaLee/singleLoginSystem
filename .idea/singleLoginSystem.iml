@@ -7,6 +7,8 @@
       <excludeFolder url="file://$MODULE_DIR$/client/singleloginapp/build" />
       <excludeFolder url="file://$MODULE_DIR$/deps/grpc/third_party/protobuf/examples/.pub" />
       <excludeFolder url="file://$MODULE_DIR$/deps/grpc/third_party/protobuf/examples/BUILD" />
+      <excludeFolder url="file://$MODULE_DIR$/server/third_party/protobuf/examples/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/server/third_party/protobuf/examples/BUILD" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

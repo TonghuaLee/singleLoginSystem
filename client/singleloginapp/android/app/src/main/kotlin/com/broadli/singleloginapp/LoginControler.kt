@@ -10,7 +10,7 @@ class LoginControler {
     var mLoginCore: LoginCore? = null
 
     constructor() {
-        mLoginCore = LoginCore.create()
+        // mLoginCore = LoginCore.create()
     }
 
     public fun addTest() {
