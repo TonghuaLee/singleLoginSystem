@@ -1,7 +1,7 @@
 workspace(name = "com_github_grpc_grpc")
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
-load("../deps/grpc/bazel:grpc_deps.bzl", "grpc_deps", "grpc_test_only_deps")
+load("//../deps/grpc/bazel:grpc_deps.bzl", "grpc_deps", "grpc_test_only_deps")
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 
 grpc_deps()
@@ -9,12 +9,12 @@ grpc_deps()
 grpc_test_only_deps()
 
 #register_execution_platforms(
-#    "../deps/grpc/third_party/toolchains:rbe_ubuntu1604",
-#    "../deps/grpc//third_party/toolchains:rbe_ubuntu1604_large",
+#    "//../deps/grpc/third_party/toolchains:rbe_ubuntu1604",
+#    "//../deps/grpc//third_party/toolchains:rbe_ubuntu1604_large",
 #)
 
 #register_toolchains(
-#    "../deps/grpc/third_party/toolchains:cc-toolchain-clang-x86_64-default",
+#    "//../deps/grpc/third_party/toolchains:cc-toolchain-clang-x86_64-default",
 #)
 
 #http_archive(
@@ -27,7 +27,7 @@ grpc_test_only_deps()
 #    ],
 #)
 
-#load("../deps/grpc/third_party/py:python_configure.bzl", "python_configure")
+#load("//../deps/grpc/third_party/py:python_configure.bzl", "python_configure")
 
 #python_configure(name = "local_config_python")
 
