@@ -18,4 +18,18 @@ class LoginControler {
         val result = mLoginCore?.nativeAdd(10, 20)
         Log.d(TAG, "add Test: 10+20= " + result)
     }
+
+    /**
+     * 注册
+     */
+    public fun singUp(account: String, password: String) {
+
+    }
+
+    /**
+     * 登录
+     */
+    public fun singIn(account: String, password: String) {
+
+    }
 }

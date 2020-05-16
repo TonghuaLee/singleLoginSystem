@@ -12,10 +12,17 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final String TAG = "LoginPage";
   final _formKey = GlobalKey<FormState>();
-  String _email, _password;
+  String _phone, _password;
   bool _isObscure = true;
   Color _eyeColor;
+
+  //手机号的控制器
+  TextEditingController phoneController = TextEditingController();
+
+  //密码的控制器
+  TextEditingController passController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +38,7 @@ class _LoginPageState extends State<LoginPage> {
                 buildTitle(),
                 buildTitleLine(),
                 SizedBox(height: 70.0),
-                buildEmailTextField(),
+                buildPhoneTextField(),
                 SizedBox(height: 30.0),
                 buildPasswordTextField(context),
                 buildRegisterText(context),
@@ -56,15 +63,23 @@ class _LoginPageState extends State<LoginPage> {
               ///只有输入的内容符合要求通过才会到达此处
               _formKey.currentState.save();
               //TODO 执行登录方法
-              print('email:$_email , assword:$_password');
+              print('phone:$_phone , password:$_password');
               //MsgChannelUtil.getInstance().addListener(listener)
-              Message msg = new Message(1, 'req login from flutter', null,
+
+              Map req = new Map();
+              req['account'] = phoneController.text;
+              req['password'] = passController.text;
+              Message msg = new Message(
+                  1,
+                  'req login from flutter',
+                  req,
                   MsgChannelUtil.MAIN_CMD_LOGIN,
                   MsgChannelUtil.MAIN_CMD_DEFALUT);
-//              LogUtils.d('login_page', 'req from flutter: '+ msg.toJson());
-              Message result = await MsgChannelUtil.getInstance().sendMessage(
-                  msg);
-              LogUtils.d('login_page', 'result: ' + result.toJson().toString());
+              LogUtils.d(TAG, 'req: ' + msg.toString());
+//              LogUtils.d(TAG, 'req from flutter: '+ msg.toJson());
+              Message result =
+                  await MsgChannelUtil.getInstance().sendMessage(msg);
+              LogUtils.d(TAG, 'result: ' + result.toJson().toString());
               Navigator.pushAndRemoveUntil(context, new MaterialPageRoute(
                 builder: (BuildContext context) {
                   return new HomePage();
@@ -76,6 +91,55 @@ class _LoginPageState extends State<LoginPage> {
           shape: StadiumBorder(side: BorderSide()),
         ),
       ),
+    );
+  }
+
+  TextFormField buildPasswordTextField(BuildContext context) {
+    return TextFormField(
+      onSaved: (String value) => _password = value,
+      obscureText: _isObscure,
+      controller: passController,
+      validator: (String value) {
+        RegExp pswReg =
+            new RegExp(r"(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$");
+        if (!pswReg.hasMatch(value)) {
+          return '请输入6~16位数字和字符组合密码';
+        }
+        return null;
+      },
+      decoration: InputDecoration(
+          labelText: 'Password',
+          suffixIcon: IconButton(
+              icon: Icon(
+                Icons.remove_red_eye,
+                color: _eyeColor,
+              ),
+              onPressed: () {
+                setState(() {
+                  _isObscure = !_isObscure;
+                  _eyeColor = Colors.grey;
+                });
+              })),
+    );
+  }
+
+  TextFormField buildPhoneTextField() {
+    return TextFormField(
+      //输入模式，邮件
+      keyboardType: TextInputType.phone,
+      controller: phoneController,
+      decoration: InputDecoration(
+        labelText: 'Phone number',
+      ),
+      validator: (String value) {
+        LogUtils.d(TAG, 'account change : $value');
+        RegExp phoneReg = RegExp(r"1[0-9]\d{9}$");
+        if (!phoneReg.hasMatch(value)) {
+          return '请输入正确的手机号码';
+        }
+        return null;
+      },
+      onSaved: (String value) => _phone = value,
     );
   }
 
@@ -101,50 +165,13 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  TextFormField buildPasswordTextField(BuildContext context) {
-    return TextFormField(
-      onSaved: (String value) => _password = value,
-      obscureText: _isObscure,
-      initialValue: "123456",
-      validator: (String value) {
-        if (value.isEmpty) {
-          return '请输入密码';
-        }
-        return null;
-      },
-      decoration: InputDecoration(
-          labelText: 'Password',
-          suffixIcon: IconButton(
-              icon: Icon(
-                Icons.remove_red_eye,
-                color: _eyeColor,
-              ),
-              onPressed: () {
-                setState(() {
-                  _isObscure = !_isObscure;
-                  _eyeColor = Colors.grey;
-                });
-              })),
-    );
-  }
-
-  TextFormField buildEmailTextField() {
-    return TextFormField(
-      //输入模式，邮件
-      keyboardType: TextInputType.emailAddress,
-      initialValue: '8888888@qq.com',
-      decoration: InputDecoration(
-        labelText: 'Emall Address',
+  Padding buildTitle() {
+    return Padding(
+      padding: EdgeInsets.all(8.0),
+      child: Text(
+        'Login',
+        style: TextStyle(fontSize: 42.0),
       ),
-      validator: (String value) {
-        var emailReg = RegExp(
-            r"[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?");
-        if (!emailReg.hasMatch(value)) {
-          return '请输入正确的邮箱地址';
-        }
-        return null;
-      },
-      onSaved: (String value) => _email = value,
     );
   }
 
@@ -162,13 +189,9 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Padding buildTitle() {
-    return Padding(
-      padding: EdgeInsets.all(8.0),
-      child: Text(
-        'Login',
-        style: TextStyle(fontSize: 42.0),
-      ),
-    );
+  @override
+  void initState() {
+    phoneController.text = '16625205201';
+    passController.text = '123456';
   }
 }
