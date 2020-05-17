@@ -7,6 +7,10 @@
       <excludeFolder url="file://$MODULE_DIR$/client/singleloginapp/build" />
       <excludeFolder url="file://$MODULE_DIR$/deps/grpc/third_party/protobuf/examples/.pub" />
       <excludeFolder url="file://$MODULE_DIR$/deps/grpc/third_party/protobuf/examples/BUILD" />
+      <excludeFolder url="file://$MODULE_DIR$/server/bazel-server/external/com_google_protobuf/examples/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/server/bazel-server/external/com_google_protobuf/examples/BUILD" />
+      <excludeFolder url="file://$MODULE_DIR$/server/bazel-server/third_party/protobuf/examples/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/server/bazel-server/third_party/protobuf/examples/BUILD" />
       <excludeFolder url="file://$MODULE_DIR$/server/third_party/protobuf/examples/.pub" />
       <excludeFolder url="file://$MODULE_DIR$/server/third_party/protobuf/examples/BUILD" />
     </content>
