@@ -1,15 +1,10 @@
-package com.broadli.singleloginapp.network;
+package com.broadli.singleloginapp.network
 
-import com.alibaba.fastjson.JSONObject;
-import com.wechat.mylogin.constant.Constants;
-import com.wechat.mylogin.constant.ResultCode;
-
-import java.io.InputStream;
-
-import io.grpc.ManagedChannel;
-
-import static com.wechat.mylogin.network.NetworkController.SERVER_HOST;
-import static com.wechat.mylogin.network.NetworkController.SERVER_PORT;
+import com.alibaba.fastjson.JSONObject
+import com.broadli.singleloginapp.constant.Constants
+import com.broadli.singleloginapp.constant.ResultCode
+import io.grpc.ManagedChannel
+import java.io.InputStream
 
 //import io.grpc.melon.account.AccountGrpc;
 //import io.grpc.melon.account.CodeReply;
@@ -17,28 +12,18 @@ import static com.wechat.mylogin.network.NetworkController.SERVER_PORT;
 //import io.grpc.melon.account.LoginRequest;
 //import io.grpc.melon.account.LogoutRequest;
 //import io.grpc.melon.account.SignRequest;
-
-public class NetworkMethod {
-
-    private InputStream mIsReqPem;
-    private ManagedChannel channel;
-
-    NetworkMethod(InputStream reqISPem) {
-        mIsReqPem = reqISPem;
+class NetworkMethod internal constructor(private val mIsReqPem: InputStream) {
+    private var channel: ManagedChannel? = null
+    private fun buildManagedChannel() {
+        val AUTHORITY_OVERRIDE = "wechat-login"
+        channel = GrpcChannelBuilder.build(NetworkController.SERVER_HOST, NetworkController.SERVER_PORT, AUTHORITY_OVERRIDE, true, mIsReqPem, null)
     }
 
-    private void buildManagedChannel() {
-        String AUTHORITY_OVERRIDE = "wechat-login";
-        channel = GrpcChannelBuilder.build(SERVER_HOST, SERVER_PORT, AUTHORITY_OVERRIDE, true, mIsReqPem, null);
-    }
-
-    public String handleLogin(final String account, final String password, final String deviceId) {
-
-//        if (mIsReqPem == null){
-        JSONObject object = new JSONObject();
-        object.put(Constants.KEY_CODE, ResultCode.REQ_PEM_IS_NULL.getValue());
-        return object.toJSONString();
-//        }
+    fun handleLogin(account: String?, password: String?, deviceId: String?): String { //        if (mIsReqPem == null){
+        val `object` = JSONObject()
+        `object`[Constants.KEY_CODE] = ResultCode.REQ_PEM_IS_NULL.value
+        return `object`.toJSONString()
+        //        }
 //
 //        if (channel == null){
 //            buildManagedChannel();
@@ -63,13 +48,11 @@ public class NetworkMethod {
 //        }
     }
 
-    public String handleSign(String account, String password, final String deviceId) {
-
-//        if (mIsReqPem == null){
-        JSONObject object = new JSONObject();
-        object.put(Constants.KEY_CODE, ResultCode.REQ_PEM_IS_NULL.getValue());
-        return object.toJSONString();
-//        }
+    fun handleSign(account: String?, password: String?, deviceId: String?): String { //        if (mIsReqPem == null){
+        val `object` = JSONObject()
+        `object`[Constants.KEY_CODE] = ResultCode.REQ_PEM_IS_NULL.value
+        return `object`.toJSONString()
+        //        }
 //
 //        if (channel == null){
 //            buildManagedChannel();
@@ -94,13 +77,11 @@ public class NetworkMethod {
 //        }
     }
 
-    public String checkConnect(final String deviceId) {
-
-//        if (mIsReqPem == null){
-        JSONObject object = new JSONObject();
-        object.put(Constants.KEY_CODE, ResultCode.REQ_PEM_IS_NULL.getValue());
-        return object.toJSONString();
-//        }
+    fun checkConnect(deviceId: String?): String { //        if (mIsReqPem == null){
+        val `object` = JSONObject()
+        `object`[Constants.KEY_CODE] = ResultCode.REQ_PEM_IS_NULL.value
+        return `object`.toJSONString()
+        //        }
 //
 //        if (channel == null){
 //            buildManagedChannel();
@@ -123,13 +104,11 @@ public class NetworkMethod {
 //        }
     }
 
-    public String handleLogout(final String account) {
-
-//        if (mIsReqPem == null){
-        JSONObject object = new JSONObject();
-        object.put(Constants.KEY_CODE, ResultCode.REQ_PEM_IS_NULL.getValue());
-        return object.toJSONString();
-//        }
+    fun handleLogout(account: String?): String { //        if (mIsReqPem == null){
+        val `object` = JSONObject()
+        `object`[Constants.KEY_CODE] = ResultCode.REQ_PEM_IS_NULL.value
+        return `object`.toJSONString()
+        //        }
 //
 //        if (channel == null){
 //            buildManagedChannel();

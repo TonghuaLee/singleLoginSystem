@@ -3,7 +3,7 @@
 # Djinni IDL file location
 djinni_file="auth.djinni"
 # C++ namespace for generated src
-namespace="Auth"
+namespace="auth"
 # Objective-C class name prefix for generated src
 objc_prefix="SC"
 # Java package name for generated src

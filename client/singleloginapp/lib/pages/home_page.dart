@@ -40,16 +40,13 @@ class HomePage extends StatelessWidget with EventListener {
     Widget textSection = new Container(
       padding: const EdgeInsets.symmetric(vertical: 22.0, horizontal: 32.0),
       child: new Text(
-        '''
-Lake1 Oeschinen lies at the foot of the Blüemlisalp in the Bernese Alps. Situated 1,578 meters above sea level, it is one of the larger Alpine Lakes. A gondola ride from Kandersteg, followed by a half-hour walk through pastures and pine forest, leads you to the lake, which warms to 20 degrees Celsius in the summer. 
-        ''',
+        'Welcome Come',
         softWrap: true,
       ),
     );
 
     RaisedButton btn = new RaisedButton(
         onPressed: () {
-          print('tt');
           Navigator.pushAndRemoveUntil(context, new MaterialPageRoute(
             builder: (BuildContext context) {
               return new LoginPage();

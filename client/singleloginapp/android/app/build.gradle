@@ -1,3 +1,5 @@
+apply plugin: 'com.google.protobuf'
+
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {
@@ -57,10 +59,16 @@ android {
         versionName flutterVersionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
+
         externalNativeBuild {
             cmake {
                 // The paths to the protoc and grpc_cpp_plugin binaries on the host system (codegen
                 // is not cross-compiled to Android)
+                def protoc = project.hasProperty('protoc') ?
+                        project.property('protoc') : '/usr/local/bin/protoc'
+                def grpc_cpp_plugin = project.hasProperty('grpc_cpp_plugin') ?
+                        project.property('grpc_cpp_plugin') : '/usr/local/bin/grpc_cpp_plugin'
+
                 cppFlags "-std=c++11 -frtti -fexceptions"
                 arguments '-DANDROID_STL=c++_static'
                 arguments '-DRUN_HAVE_POSIX_REGEX=0'
@@ -68,6 +76,8 @@ android {
                 arguments '-DRUN_HAVE_STEADY_CLOCK=0'
                 arguments '-Dprotobuf_BUILD_PROTOC_BINARIES=off'
                 arguments '-DgRPC_BUILD_CODEGEN=off'
+                arguments '-Dhelloworld_PROTOBUF_PROTOC_EXECUTABLE=' + protoc
+                arguments '-Dhelloworld_GRPC_CPP_PLUGIN_EXECUTABLE=' + grpc_cpp_plugin
             }
 //            ndk {
 //                abiFilters 'armeabi-v7a'
@@ -138,4 +148,14 @@ dependencies {
     implementation 'io.grpc:grpc-okhttp:1.18.0' // CURRENT_GRPC_VERSION
     implementation 'io.grpc:grpc-protobuf-lite:1.18.0' // CURRENT_GRPC_VERSION
     implementation 'io.grpc:grpc-stub:1.18.0' // CURRENT_GRPC_VERSION
+
+    implementation 'javax.annotation:javax.annotation-api:1.2'
+
+    implementation 'com.alibaba:fastjson:1.2.44'
+
+    implementation 'io.reactivex.rxjava2:rxjava:2.0.1'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
+
+    implementation 'com.jakewharton:butterknife:8.4.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
 }

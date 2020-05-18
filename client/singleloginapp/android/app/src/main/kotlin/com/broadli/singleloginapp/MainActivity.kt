@@ -7,7 +7,17 @@ import android.os.Looper
 import android.util.Log
 import android.widget.Toast
 import com.broadli.singleloginapp.config.MsgType
+import com.broadli.singleloginapp.config.MsgType.Companion.CODE_FAIL
+import com.broadli.singleloginapp.config.MsgType.Companion.CODE_SUCC
+import com.broadli.singleloginapp.config.MsgType.Companion.MAIN_CMD_LOGIN
+import com.broadli.singleloginapp.config.MsgType.Companion.MAIN_CMD_LOGINOUT
+import com.broadli.singleloginapp.config.MsgType.Companion.MAIN_CMD_REGISTER
+import com.broadli.singleloginapp.config.MsgType.Companion.SUB_CMD_LOGINOUT_SELF
+import com.broadli.singleloginapp.config.MsgType.Companion.SUB_CMD_LOGINOUT_SERVER
+import com.broadli.singleloginapp.controller.LoginController
+import com.broadli.singleloginapp.controller.LoginUIController
 import com.broadli.singleloginapp.model.Msg
+import com.broadli.singleloginapp.model.UserInfo
 import com.google.gson.Gson
 import io.flutter.app.FlutterActivity
 import io.flutter.plugin.common.*
@@ -16,13 +26,13 @@ import java.lang.System.loadLibrary
 import java.util.*
 
 
-class MainActivity : FlutterActivity() {
+class MainActivity : FlutterActivity(), LoginUIController {
     private val CHANNEL = "samples.flutter.io/battery"
     var flutterView: BinaryMessenger? = null
     private var mContext: Context? = null
     private var mMessageChannel: BasicMessageChannel<Any>? = null
     val TAG = "MainActivity"
-    var mLoginControler: LoginControler? = null
+    var mLoginControler: LoginController? = null
 
     companion object {
         const val FLUTTER_LOG_CHANNEL = "android_log"
@@ -36,7 +46,7 @@ class MainActivity : FlutterActivity() {
         loadLibrary("authso")
         flutterView = getFlutterView()
         mContext = this
-        mLoginControler = LoginControler()
+        mLoginControler = LoginController(this, this)
         listenMsgChannel()
         listenLogChannel()
         testNativeAdd()
@@ -54,6 +64,13 @@ class MainActivity : FlutterActivity() {
             if (reqMsg != null) {
                 if (reqMsg.mainCmd == MsgType.MAIN_CMD_LOGIN) {
                     Log.d(TAG, "login receive from flutter")
+                    var data = reqMsg.data;
+                    val userInfo = UserInfo(data?.get("account") as String, data["password"] as String);
+                    mLoginControler?.run {
+                        actionLoginIn(userInfo.account, userInfo.password)
+                    };
+
+                    // test for
                     var replyMsg = reqMsg;
                     replyMsg.code = 200;
                     replyMsg.message = "reply from Android"
@@ -63,6 +80,11 @@ class MainActivity : FlutterActivity() {
                     reply.reply(replyJsonStr)
                 } else if (reqMsg.mainCmd == MsgType.MAIN_CMD_REGISTER) { //测试 mMessageChannel.send 发消息给Flutter
                     //  channelSendMessage()
+                    var data = reqMsg.data;
+                    val userInfo = UserInfo(data?.get("account") as String, data["password"] as String);
+                    mLoginControler?.run {
+                        actionSignIn(userInfo.account, userInfo.password)
+                    };
                 } else { //测试通过Flutter打开Android Activity
                     Toast.makeText(mContext, "flutter 调用到了 android test3", Toast.LENGTH_SHORT).show()
 //                        val lIntent = Intent(this@MainActivity, TestBasicMessageActivity::class.java)
@@ -78,6 +100,7 @@ class MainActivity : FlutterActivity() {
         val resultMap: MutableMap<String, Any> = HashMap()
         resultMap["message"] = "reply.reply 返回给flutter的数据"
         resultMap["code"] = 200
+
         mMessageChannel?.send(resultMap) { reply ->
             Log.d("Android", "$reply")
         }
@@ -103,5 +126,72 @@ class MainActivity : FlutterActivity() {
 
     private fun testNativeAdd() {
         mLoginControler?.addTest()
+    }
+
+    override fun performLoginSuccess() {
+        var replyMsg = Msg(MAIN_CMD_LOGIN, 0, CODE_SUCC, "登录成功。");
+        var gson = Gson()
+        var replyJsonStr = gson.toJson(replyMsg)
+        mMessageChannel?.send(replyJsonStr) { reply ->
+            Log.d("Android", "$reply")
+        }
+    }
+
+    override fun performSignSuccess() {
+        var replyMsg = Msg(MAIN_CMD_REGISTER, 0, CODE_SUCC, "注册成功。");
+        var gson = Gson()
+        var replyJsonStr = gson.toJson(replyMsg)
+        mMessageChannel?.send(replyJsonStr) { reply ->
+            Log.d("Android", "$reply")
+        }
+    }
+
+    override fun performLoginFail() {
+        var replyMsg = Msg(MAIN_CMD_LOGIN, 0, CODE_FAIL, "登录失败。");
+        var gson = Gson()
+        var replyJsonStr = gson.toJson(replyMsg)
+        mMessageChannel?.send(replyJsonStr) { reply ->
+            Log.d("Android", "$reply")
+        }
+    }
+
+    override fun performSignFail() {
+        var replyMsg = Msg(MAIN_CMD_REGISTER, 0, CODE_FAIL, "注册失败。");
+        var gson = Gson()
+        var replyJsonStr = gson.toJson(replyMsg)
+        mMessageChannel?.send(replyJsonStr) { reply ->
+            Log.d("Android", "$reply")
+        }
+    }
+
+    override fun performLogout() {
+        var replyMsg = Msg(MAIN_CMD_LOGINOUT, SUB_CMD_LOGINOUT_SELF, CODE_SUCC, "下线。");
+        var gson = Gson()
+        var replyJsonStr = gson.toJson(replyMsg)
+        mMessageChannel?.send(replyJsonStr) { reply ->
+            Log.d("Android", "$reply")
+        }
+    }
+
+    override fun performUserOnline(account: String?) {
+        var replyMsg = Msg(MAIN_CMD_LOGIN, SUB_CMD_LOGINOUT_SELF, CODE_SUCC, "已经在线。");
+        var gson = Gson()
+        var replyJsonStr = gson.toJson(replyMsg)
+        mMessageChannel?.send(replyJsonStr) { reply ->
+            Log.d("Android", "$reply")
+        }
+    }
+
+    override fun toastMsg(content: String?) {
+        Toast.makeText(this,content,Toast.LENGTH_LONG).show();
+    }
+
+    override fun disconnect() {
+        var replyMsg = Msg(MAIN_CMD_LOGINOUT, SUB_CMD_LOGINOUT_SERVER, CODE_SUCC, "在其他终端登录，被踢下线。");
+        var gson = Gson()
+        var replyJsonStr = gson.toJson(replyMsg)
+        mMessageChannel?.send(replyJsonStr) { reply ->
+            Log.d("Android", "$reply")
+        }
     }
 }

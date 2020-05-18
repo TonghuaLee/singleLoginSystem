@@ -7,7 +7,7 @@ import org.json.JSONException
 import org.json.JSONObject
 
 data class Msg(var mainCmd: Int, var subCmd: Int, var code: Int, var message: String) : Parcelable {
-    var data: Parcelable? = null
+    var data: Map<String, Any>? = null
 
     public fun fromJson(json: String) {
         var jsonObj: JSONObject? = null
@@ -18,7 +18,7 @@ data class Msg(var mainCmd: Int, var subCmd: Int, var code: Int, var message: St
             subCmd = jsonObj?.optInt(MsgType.PARAM_SUB_CMD)
             code = jsonObj?.optInt(MsgType.PARAM_CODE)
             message = jsonObj?.optString(MsgType.PARAM_MSG)
-            data = jsonObj?.opt(MsgType.PARAM_DATA) as Parcelable?
+            data = jsonObj?.opt(MsgType.PARAM_DATA) as Map<String, Any>?
         } catch (e: JSONException) {
             e.printStackTrace()
         }

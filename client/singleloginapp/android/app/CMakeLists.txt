@@ -7,13 +7,16 @@ cmake_minimum_required(VERSION 3.4.1)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-set(helloworld_PROTOBUF_PROTOC_EXECUTABLE "/usr/local/bin/protoc" CACHE STRING "Protoc binary on host")
-set(helloworld_GRPC_CPP_PLUGIN_EXECUTABLE "/usr/local/bin/grpc_cpp_plugin" CACHE STRING "gRPC CPP plugin binary on host")
 
-set(GRPC_SRC_DIR ../../../../server/)
+set(GRPC_SRC_DIR ../../../../deps/grpc/)
 
 set(GRPC_BUILD_DIR ../grpc/outputs/${ANDROID_ABI})
 file(MAKE_DIRECTORY ${GRPC_BUILD_DIR})
+
+
+set(helloworld_PROTOBUF_PROTOC_EXECUTABLE "/usr/local/bin/protoc" CACHE STRING "Protoc binary on host")
+set(helloworld_GRPC_CPP_PLUGIN_EXECUTABLE "/usr/local/bin/grpc_cpp_plugin" CACHE STRING "gRPC CPP plugin binary on host")
+
 
 add_subdirectory(${GRPC_SRC_DIR} ${GRPC_BUILD_DIR})
 
@@ -62,7 +65,7 @@ function(android_protobuf_grpc_generate_cpp SRC_FILES HDR_FILES INCLUDE_ROOT)
     set(${HDR_FILES} ${${HDR_FILES}} PARENT_SCOPE)
 endfunction()
 
-set(PROTO_BASE_DIR ${GRPC_SRC_DIR}../protos)
+set(PROTO_BASE_DIR ../../djinni/protos/)
 
 android_protobuf_grpc_generate_cpp(
         HELLOWORLD_PROTO_SRCS HELLOWORLD_PROTO_HDRS ${PROTO_BASE_DIR} ${PROTO_BASE_DIR}/account.proto)
@@ -88,12 +91,12 @@ include_directories(
         ../../djinni/generated-src/jni/
         ../../djinni/authso/
 
-        ../../djinni/authso/cpp/
-        ../../djinni/authso/cpp/utils
-        ../../djinni/authso/cpp/model
-        ../../djinni/authso/cpp/struct
-        ../../djinni/authso/cpp/storage
-        ../../djinni/authso/cpp/network
+        ../../djinni/authso/
+        ../../djinni/authso/utils/
+        ../../djinni/authso/model/
+        ../../djinni/authso/struct/
+        ../../djinni/authso/storage/
+        ../../djinni/authso/network/
 #        ../../djinni/grpc/include/grpc++
 )
 
@@ -115,19 +118,19 @@ file(GLOB login_sources
         src/main/cpp/*.h
         src/main/cpp/*.cpp
 
-        ../../djinni/authso/cpp/*.hpp
-        ../../djinni/authso/cpp/*.h
-        ../../djinni/authso/cpp/*.cpp
-        ../../djinni/authso/cpp/utils/*.h
-        ../../djinni/authso/cpp/utils/*.cpp
-        ../../djinni/authso/cpp/model/*.h
-        ../../djinni/authso/cpp/model/*.cpp
-        ../../djinni/authso/cpp/struct/*.h
-        ../../djinni/authso/cpp/struct/*.cpp
-        ../../djinni/authso/cpp/storage/*.h
-        ../../djinni/authso/cpp/storage/*.cpp
-        ../../djinni/authso/cpp/network/*.h
-        ../../djinni/authso/cpp/network/*.cpp
+        ../../djinni/authso/*.hpp
+        ../../djinni/authso/*.h
+        ../../djinni/authso/*.cpp
+        ../../djinni/authso/utils/*.h
+        ../../djinni/authso/utils/*.cpp
+        ../../djinni/authso/model/*.h
+        ../../djinni/authso/model/*.cpp
+        ../../djinni/authso/struct/*.h
+        ../../djinni/authso/struct/*.cpp
+        ../../djinni/authso/storage/*.h
+        ../../djinni/authso/storage/*.cpp
+        ../../djinni/authso/network/*.h
+        ../../djinni/authso/network/*.cpp
         )
 
 add_library( # Sets the name of the library.
@@ -147,5 +150,3 @@ target_link_libraries(authso
         helloworld_proto_lib
         android
         log)
-
-

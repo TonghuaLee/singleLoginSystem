@@ -91,4 +91,4 @@ namespace auth
         void updateUserInfo(string account, string token, string refreshToken, int32_t tokenExpirationTime, string isConnect);
     };
 
-} // namespace demo
+} // namespace auth
