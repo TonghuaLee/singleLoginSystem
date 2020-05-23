@@ -30,6 +30,5 @@ services:
       - "MYSQL_DATABASE=test"
     volumes:
       - "./logs/mysql:/logs"
-      - "./data/mysql:/var/lib/mysql"
     ports:
       - "3306:3306"
