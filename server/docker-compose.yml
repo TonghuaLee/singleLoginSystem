@@ -2,7 +2,7 @@ version: '2'
 
 services:
   grpcserver:
-    image: grpcserver:1.0
+    image: grpcserver
     ports:
       - "50051:50051"
     volumes:

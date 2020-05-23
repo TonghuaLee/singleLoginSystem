@@ -1,11 +1,11 @@
 # IMAGE:    grpcservice
 # VERSION:  1.0.0
-# AUTHOR:   melon
+# AUTHOR:   broad
 
-FROM gcc:1.0.1
+FROM gcc:7.5.0
 
 # This section for common define
-ENV WORK_DIR /
+ENV WORK_DIR /usr/src/app
 ENV LOG_DIR /data/log
 ENV CONFIG_DIR /source/conf
 ENV DB_DIR /source/db
