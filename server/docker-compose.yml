@@ -28,7 +28,7 @@ services:
     network_mode: "bridge"
     environment:
        MYSQL_ROOT_PASSWORD: "broad123"
-       MYSQL_USER: 'test'
+       MYSQL_USER: 'broad'
        MYSQL_PASS: 'broad123'
     restart: always 
     volumes:

@@ -6,7 +6,7 @@
 #include <vector>
 #include <sstream>
 #include <sstream>
-#include <mysql.h>
+#include <mysql/mysql.h>
 
 #include "db_manager.h"
 #include "source/cpp/utils/log_utils.h"
