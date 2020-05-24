@@ -31,10 +31,10 @@ int DBBase::connect(string host, int port, string Db, string user, string passwd
 
        if (mysql_real_connect(&mysql, host.c_str(), user.c_str(), passwd.c_str(), Db.c_str(), port, NULL, 0) == NULL)
        {
-              Msg = "[db_base.connect] Failed to connect to database: Error";
-              return 1;
+         Msg = "[db_base.connect] Failed to connect to database: Error" +
+               host.c_str() + user.c_str() + passwd.c_str() + Db.c_str();
+         return 1;
        }
-
        if (mysql_set_character_set(&mysql, "UTF8") != 0)
        {
               Msg = "[db_base.connect] mysql_set_character_set Error";
