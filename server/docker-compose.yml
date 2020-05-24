@@ -25,10 +25,14 @@ services:
     image: mysql
     expose: 
       - "3306"
+    network_mode: "bridge"
     environment:
-      - "MYSQL_ROOT_PASSWORD=123456"
-      - "MYSQL_DATABASE=test"
+       MYSQL_ROOT_PASSWORD: "broad123"
+       MYSQL_USER: 'test'
+       MYSQL_PASS: 'broad123'
+    restart: always 
     volumes:
       - "./logs/mysql:/logs"
+      - "./conf/mysql.cnf:/etc/my.cnf"
     ports:
       - "3306:3306"
