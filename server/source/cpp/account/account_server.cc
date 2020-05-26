@@ -20,7 +20,6 @@
 #include "source/cpp/manager/conf/server_conf.h"
 #include "source/cpp/manager/db/db_manager.h"
 #include "source/cpp/manager/redis/redis_manager.h"
-#include "source/cpp/manager/redis/login_redis.h"
 
 #include "../utils/common_utils.h"
 #include "../utils/param_utils.h"
@@ -107,6 +106,111 @@ public:
 private:
 };
 
+class LoginRedis
+{
+public:
+  /**
+  主要功能：
+  更新用户token
+
+  入口参数
+  uid： 	          用户UID
+  token： 	        用户Token
+  refreshToken：    用户RefreshToken
+
+  出口参数：
+  bool ：           true表示成功；false表示失败
+  **/
+  bool updateToken(int uid, string token, string refreshToken)
+  {
+    stringstream ssToken;
+    ssToken << uid << "_token";
+    stringstream ssRToken;
+    ssRToken << uid << "_refresh_token";
+    return redis.setString(ssToken.str(), token) && redis.setString(ssRToken.str(), refreshToken);
+  }
+
+  /**
+  主要功能：
+  判断用户Token是否正确
+
+  入口参数
+  uid： 	          用户UID
+  token： 	        用户Token
+
+  出口参数：
+  bool ：           true表示正确；false表示不正确
+  **/
+  bool isTokenRight(int uid, string token)
+  {
+    stringstream ssToken;
+    ssToken << uid << "_token";
+    string redisToken;
+    redis.getString(ssToken.str(), redisToken);
+    return redisToken == token;
+  }
+
+  /**
+  主要功能：
+  判断用户Token是否正确
+
+  入口参数
+  uid： 	          用户UID
+
+  出口参数：
+  bool ：           true表示成功；false表示失败
+  **/
+  bool cleanToken(int uid)
+  {
+    stringstream ssToken;
+    ssToken << uid << "_token";
+    stringstream ssRToken;
+    ssRToken << uid << "_refresh_token";
+    return redis.delByKey(ssToken.str()) && redis.delByKey(ssRToken.str());
+  }
+
+  /**
+  主要功能：
+  获取用户Token
+
+  入口参数
+  uid： 	          用户UID
+
+  出口参数：
+  string ：         用户Token
+  **/
+  string getUserToken(int uid)
+  {
+    stringstream ssToken;
+    ssToken << uid << "_token";
+    string token;
+    redis.getString(ssToken.str(), token);
+    return token;
+  }
+
+  /**
+  主要功能：
+  获取用户RefreshToken
+
+  入口参数
+  uid： 	          用户UID
+
+  出口参数：
+  string ：         用户RefreshToken
+  **/
+  string getUserRefreshToken(int uid)
+  {
+    stringstream ssToken;
+    ssToken << uid << "_refresh_token";
+    string token;
+    redis.getString(ssToken.str(), token);
+    return token;
+  }
+
+private:
+  Redis redis = *Redis::getRedis();
+};
+
 class LoginCore
 {
 public:
@@ -146,7 +250,6 @@ public:
     if (encrypt_password.empty())
     {
       // 更新失败次数
-
       result->set_code(ResultCode::UserLogin_PasswordInitFail);
       result->set_msg(MsgTip::UserLogin_PasswordInitFail);
       return result;
