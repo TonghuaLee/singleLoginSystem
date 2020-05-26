@@ -20,6 +20,7 @@
 #include "source/cpp/manager/conf/server_conf.h"
 #include "source/cpp/manager/db/db_manager.h"
 #include "source/cpp/manager/redis/redis_manager.h"
+#include "source/cpp/manager/redis/login_redis.h"
 
 #include "../utils/common_utils.h"
 #include "../utils/param_utils.h"
@@ -46,8 +47,8 @@ using account::CodeReply;
 using account::ConnectRequest;
 using account::LoginRequest;
 using account::LogoutRequest;
-using account::SignRequest;
 using account::RefreshRequest;
+using account::SignRequest;
 using grpc::Server;
 using grpc::ServerBuilder;
 using grpc::ServerContext;
@@ -57,7 +58,6 @@ using utils::LogMBean;
 class LoginDatabase
 {
 public:
-
   /*
   主要功能：
   判断是否已经注册
@@ -107,115 +107,9 @@ public:
 private:
 };
 
-class LoginRedis
-{
-public:
-
-  /**
-  主要功能：
-  更新用户token
-
-  入口参数
-  uid： 	          用户UID
-  token： 	        用户Token
-  refreshToken：    用户RefreshToken
-
-  出口参数：
-  bool ：           true表示成功；false表示失败
-  **/
-  bool updateToken(int uid, string token, string refreshToken)
-  {
-    stringstream ssToken;
-    ssToken << uid << "_token";
-    stringstream ssRToken;
-    ssRToken << uid << "_refresh_token";
-    return redis.setString(ssToken.str(), token) && redis.setString(ssRToken.str(), refreshToken);
-  }
-
-  /**
-  主要功能：
-  判断用户Token是否正确
-
-  入口参数
-  uid： 	          用户UID
-  token： 	        用户Token
-
-  出口参数：
-  bool ：           true表示正确；false表示不正确
-  **/
-  bool isTokenRight(int uid, string token)
-  {
-    stringstream ssToken;
-    ssToken << uid << "_token";
-    string redisToken;
-    redis.getString(ssToken.str(), redisToken);
-    return redisToken == token;
-  }
-
-  /**
-  主要功能：
-  判断用户Token是否正确
-
-  入口参数
-  uid： 	          用户UID
-
-  出口参数：
-  bool ：           true表示成功；false表示失败
-  **/
-  bool cleanToken(int uid)
-  {
-    stringstream ssToken;
-    ssToken << uid << "_token";
-    stringstream ssRToken;
-    ssRToken << uid << "_refresh_token";
-    return redis.delByKey(ssToken.str()) && redis.delByKey(ssRToken.str());
-  }
-
-  /**
-  主要功能：
-  获取用户Token
-
-  入口参数
-  uid： 	          用户UID
-
-  出口参数：
-  string ：         用户Token
-  **/
-  string getUserToken(int uid)
-  {
-    stringstream ssToken;
-    ssToken << uid << "_token";
-    string token;
-    redis.getString(ssToken.str(), token);
-    return token;
-  }
-
-  /**
-  主要功能：
-  获取用户RefreshToken
-
-  入口参数
-  uid： 	          用户UID
-
-  出口参数：
-  string ：         用户RefreshToken
-  **/
-  string getUserRefreshToken(int uid)
-  {
-    stringstream ssToken;
-    ssToken << uid << "_refresh_token";
-    string token;
-    redis.getString(ssToken.str(), token);
-    return token;
-  }
-private:
-  Redis redis = *Redis::getRedis();
-};
-
 class LoginCore
 {
 public:
-
   /**
   用户模块-手机号登录 
   
@@ -227,9 +121,9 @@ public:
   token：           用户Token（用来接口请求）
   refresh_token：   用户Token（用来刷新Token）
   **/
-  CodeReply * handleUserLogin(string account, string password)
+  CodeReply *handleUserLogin(string account, string password)
   {
-    CodeReply * result = new CodeReply();
+    CodeReply *result = new CodeReply();
 
     LOGD("[account_server.handleUserLogin] user login in:" + account);
 
@@ -251,6 +145,8 @@ public:
     string encrypt_password = CommonUtils::EncryptPwd(account, password, userAccount.getPwdSalt());
     if (encrypt_password.empty())
     {
+      // 更新失败次数
+
       result->set_code(ResultCode::UserLogin_PasswordInitFail);
       result->set_msg(MsgTip::UserLogin_PasswordInitFail);
       return result;
@@ -309,9 +205,9 @@ public:
   token：           用户Token（用来接口请求）
   refresh_token：   用户Token（用来刷新Token）
   **/
-  CodeReply * handleUserSign(string account, string password)
+  CodeReply *handleUserSign(string account, string password)
   {
-    CodeReply * result = new CodeReply();
+    CodeReply *result = new CodeReply();
 
     LOGD("[account_server.handleUserSign] user sign in:" + account);
     LoginDatabase login_db;
@@ -402,9 +298,9 @@ public:
   入口参数
   token： 	        用户Token
   **/
-  CodeReply * handleUserLogout(string token)
+  CodeReply *handleUserLogout(string token)
   {
-    CodeReply * result = new CodeReply();
+    CodeReply *result = new CodeReply();
 
     LOGD("[account_server.handleUserLogout] user logout in:" + token);
 
@@ -462,9 +358,9 @@ public:
   入口参数
   token： 	        用户Token
   **/
-  CodeReply * handleUserCheckConnect(string token)
+  CodeReply *handleUserCheckConnect(string token)
   {
-    CodeReply * result = new CodeReply();
+    CodeReply *result = new CodeReply();
 
     LOGD("[account_server.handleUserCheckConnect] check connect in:" + token);
 
@@ -530,9 +426,9 @@ public:
   token：           用户Token（新）
   refresh_token：   用户Token（新）
   **/
-  CodeReply * handleRefreshToken(string token, string refreshToken)
+  CodeReply *handleRefreshToken(string token, string refreshToken)
   {
-    CodeReply * result = new CodeReply();
+    CodeReply *result = new CodeReply();
 
     LOGD("[account_server.handleRefreshToken] refresh token in:" + token);
 
@@ -575,7 +471,8 @@ public:
     LOGD("[account_server.handleRefreshToken] user refresh token is right");
 
     //对比token与refreshToken中的UID是否一致
-    if(vToken[0] != vRefreshToken[0]){
+    if (vToken[0] != vRefreshToken[0])
+    {
       result->set_code(ResultCode::RefreshToken_TUidARTUidNotEqual);
       result->set_msg(MsgTip::RefreshToken_TUidARTUidNotEqual);
       return result;
@@ -586,7 +483,8 @@ public:
     int uid = CommonUtils::getIntByString(vRefreshToken[0]);
     LoginRedis login_redis;
     string redis_refresh_token = login_redis.getUserRefreshToken(uid);
-    if(refreshToken != redis_refresh_token){
+    if (refreshToken != redis_refresh_token)
+    {
       result->set_code(ResultCode::RefreshToken_RefreshTokenCacheNotEqual);
       result->set_msg(MsgTip::RefreshToken_RefreshTokenCacheNotEqual);
       return result;
@@ -631,11 +529,9 @@ public:
     Json::FastWriter fw;
     result->set_data(fw.write(root));
     return result;
-
   }
+
 private:
-
-
   /**
   * 判断时间是否过期
   **/
@@ -686,7 +582,7 @@ class AccountServiceImpl final : public Account::Service
     if (isParamValid)
     {
       LoginCore loginCore;
-      CodeReply * result = loginCore.handleUserLogin(account, password);
+      CodeReply *result = loginCore.handleUserLogin(account, password);
       reply->set_code(result->code());
       reply->set_msg(result->msg());
       reply->set_data(result->data());
@@ -695,7 +591,8 @@ class AccountServiceImpl final : public Account::Service
 
     //校验返回数据的合法性
     string msg;
-    if(!ParamUtils::CheckBackDataValid(reply->data(),msg)){
+    if (!ParamUtils::CheckBackDataValid(reply->data(), msg))
+    {
       reply->set_code(ResultCode::RetrunDataInvalid);
       reply->set_msg(msg);
       reply->set_data("");
@@ -746,7 +643,7 @@ class AccountServiceImpl final : public Account::Service
     if (isParamValid)
     {
       LoginCore loginCore;
-      CodeReply * result = loginCore.handleUserSign(account, password);
+      CodeReply *result = loginCore.handleUserSign(account, password);
       reply->set_code(result->code());
       reply->set_msg(result->msg());
       reply->set_data(result->data());
@@ -755,7 +652,8 @@ class AccountServiceImpl final : public Account::Service
 
     //校验返回数据的合法性
     string msg;
-    if(!ParamUtils::CheckBackDataValid(reply->data(),msg)){
+    if (!ParamUtils::CheckBackDataValid(reply->data(), msg))
+    {
       reply->set_code(ResultCode::RetrunDataInvalid);
       reply->set_msg(msg);
       reply->set_data("");
@@ -783,7 +681,7 @@ class AccountServiceImpl final : public Account::Service
 
     //执行请求
     LoginCore loginCore;
-    CodeReply * result = loginCore.handleUserLogout(token);
+    CodeReply *result = loginCore.handleUserLogout(token);
     reply->set_code(result->code());
     reply->set_msg(result->msg());
     reply->set_data(result->data());
@@ -791,7 +689,8 @@ class AccountServiceImpl final : public Account::Service
 
     //校验返回数据的合法性
     string msg;
-    if(!ParamUtils::CheckBackDataValid(reply->data(),msg)){
+    if (!ParamUtils::CheckBackDataValid(reply->data(), msg))
+    {
       reply->set_code(ResultCode::RetrunDataInvalid);
       reply->set_msg(msg);
       reply->set_data("");
@@ -832,7 +731,7 @@ class AccountServiceImpl final : public Account::Service
     if (isParamValid)
     {
       LoginCore loginCore;
-      CodeReply * result = loginCore.handleUserCheckConnect(token);
+      CodeReply *result = loginCore.handleUserCheckConnect(token);
       reply->set_code(result->code());
       reply->set_msg(result->msg());
       reply->set_data(result->data());
@@ -841,7 +740,8 @@ class AccountServiceImpl final : public Account::Service
 
     //校验返回数据的合法性
     string msg;
-    if(!ParamUtils::CheckBackDataValid(reply->data(),msg)){
+    if (!ParamUtils::CheckBackDataValid(reply->data(), msg))
+    {
       reply->set_code(ResultCode::RetrunDataInvalid);
       reply->set_msg(msg);
       reply->set_data("");
@@ -891,7 +791,7 @@ class AccountServiceImpl final : public Account::Service
     if (isParamValid)
     {
       LoginCore loginCore;
-      CodeReply * result = loginCore.handleRefreshToken(token,refreshToken);
+      CodeReply *result = loginCore.handleRefreshToken(token, refreshToken);
       reply->set_code(result->code());
       reply->set_msg(result->msg());
       reply->set_data(result->data());
@@ -900,12 +800,13 @@ class AccountServiceImpl final : public Account::Service
 
     //校验返回数据的合法性
     string msg;
-    if(!ParamUtils::CheckBackDataValid(reply->data(),msg)){
+    if (!ParamUtils::CheckBackDataValid(reply->data(), msg))
+    {
       reply->set_code(ResultCode::RetrunDataInvalid);
       reply->set_msg(msg);
       reply->set_data("");
     }
-    
+
     //打印接口日志
     log_bean.addParam("code", reply->code());
     log_bean.addParam("token", token);
@@ -913,7 +814,6 @@ class AccountServiceImpl final : public Account::Service
     LOGM(log_bean);
 
     return Status::OK;
-    
   }
 };
 
@@ -956,7 +856,7 @@ void RunServer(manager::ServerConfig conf)
 
 int main(int argc, char **argv)
 {
-  
+
   manager::ServerConfig conf;
   //设置是否打印DEBUG信息
   LogUtil::setConsoleDebugInfo(conf.isConsoleDebugInfo());

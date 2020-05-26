@@ -57,10 +57,10 @@ public:
 
        存储过程说明：
        create procedure queryaccount(
-              in in_account        varchar(50),         #用户账号
+              in v        varchar(50),         #用户账号
 
               out out_id           int,                 #用户UID
-              out out_account      varchar(50),         #用户账号
+              out v      varchar(50),         #用户账号
               out out_password     varchar(128),        #用户密码
               out out_pwd_salt     varchar(32)          #参与密码初始化的盐值
        )

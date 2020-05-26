@@ -27,7 +27,6 @@ import java.util.*
 
 
 class MainActivity : FlutterActivity(), LoginUIController {
-    private val CHANNEL = "samples.flutter.io/battery"
     var flutterView: BinaryMessenger? = null
     private var mContext: Context? = null
     private var mMessageChannel: BasicMessageChannel<Any>? = null

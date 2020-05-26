@@ -61,7 +61,7 @@ namespace network{
                 if (status.ok()) {
                     return reply;
                 } else {
-                    //todo 网络错误吗转换
+                    //todo 网络错误码转换
                     reply.set_code(-1);
                     reply.set_msg(ToastTip::TOAST_ERROR_NETWORK_UNVALAIBLE);
                     LOGD("[network.requestUserLogin] " + status.error_message());
