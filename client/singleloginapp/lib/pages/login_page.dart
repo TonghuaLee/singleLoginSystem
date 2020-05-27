@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:animatedloginbutton/animatedloginbutton.dart';
 import 'package:flutter/material.dart';
 import 'package:singleloginapp/msg/message.dart';
 import 'package:singleloginapp/msg/msg_channel.dart';
@@ -17,6 +20,9 @@ class _LoginPageState extends State<LoginPage> {
   String _phone, _password;
   bool _isObscure = true;
   Color _eyeColor;
+
+  final LoginErrorMessageController loginErrorMessageController =
+      LoginErrorMessageController();
 
   //手机号的控制器
   TextEditingController phoneController = TextEditingController();
@@ -51,45 +57,48 @@ class _LoginPageState extends State<LoginPage> {
 
   Align buildLoginButton(BuildContext context) {
     return Align(
-      child: SizedBox(
-        height: 45.0,
-        width: 270.0,
-        child: RaisedButton(
-          child: Text('Login',
-              style: TextStyle(color: Colors.white, fontSize: 18.0)),
-          color: Colors.black,
-          onPressed: () async {
-            if (_formKey.currentState.validate()) {
-              ///只有输入的内容符合要求通过才会到达此处
-              _formKey.currentState.save();
-              //TODO 执行登录方法
-              print('phone:$_phone , password:$_password');
-              //MsgChannelUtil.getInstance().addListener(listener)
+      child: new AnimatedLoginButton(
+        loginErrorMessageController: loginErrorMessageController,
+        loginTip: "Login",
+        indicatorWidth: 1,
+        height: 45,
+        width: 270,
+        showErrorTime: const Duration(milliseconds: 1000),
+        buttonColorNormal: Colors.black,
+        onTap: () async {
+          log("login confirm btn onTap");
+          if (_formKey.currentState.validate()) {
+            ///只有输入的内容符合要求通过才会到达此处
+            _formKey.currentState.save();
+            //TODO 执行登录方法
+            print('phone:$_phone , password:$_password');
+            //MsgChannelUtil.getInstance().addListener(listener)
 
-              Map req = new Map();
-              req['account'] = phoneController.text;
-              req['password'] = passController.text;
-              Message msg = new Message(
-                  1,
-                  'req login from flutter',
-                  req,
-                  MsgChannelUtil.MAIN_CMD_LOGIN,
-                  MsgChannelUtil.MAIN_CMD_DEFALUT);
-              LogUtils.d(TAG, 'req: ' + msg.toString());
+            Map req = new Map();
+            req['account'] = phoneController.text;
+            req['password'] = passController.text;
+            Message msg = new Message(
+                1,
+                'req login from flutter',
+                req,
+                MsgChannelUtil.MAIN_CMD_LOGIN,
+                MsgChannelUtil.MAIN_CMD_DEFALUT);
+            LogUtils.d(TAG, 'req: ' + msg.toString());
 //              LogUtils.d(TAG, 'req from flutter: '+ msg.toJson());
-              Message result =
-                  await MsgChannelUtil.getInstance().sendMessage(msg);
-              LogUtils.d(TAG, 'result: ' + result.toJson().toString());
-              Navigator.pushAndRemoveUntil(context, new MaterialPageRoute(
-                builder: (BuildContext context) {
-                  return new HomePage();
-                },
-              ), (route) => route == null);
-              //Navigator.pushNamedAndRemoveUntil(context, 'Home', (route) => route == null);
-            }
-          },
-          shape: StadiumBorder(side: BorderSide()),
-        ),
+            Message result =
+            await MsgChannelUtil.getInstance().sendMessage(msg);
+            LogUtils.d(TAG, 'result: ' + result.toJson().toString());
+            Navigator.pushAndRemoveUntil(context, new MaterialPageRoute(
+              builder: (BuildContext context) {
+                return new HomePage();
+              },
+            ), (route) => route == null);
+            //Navigator.pushNamedAndRemoveUntil(context, 'Home', (route) => route == null);
+          }
+          else {
+            loginErrorMessageController.showErrorMessage("参数错误");
+          }
+        },
       ),
     );
   }
@@ -192,6 +201,6 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     phoneController.text = '16625205201';
-    passController.text = '123456';
+    passController.text = '123456thLee';
   }
 }

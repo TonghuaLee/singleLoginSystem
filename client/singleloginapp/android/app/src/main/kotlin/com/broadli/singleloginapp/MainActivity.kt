@@ -58,7 +58,6 @@ class MainActivity : FlutterActivity(), LoginUIController {
         mMessageChannel!!.setMessageHandler { message, reply ->
             Log.d("Android", "Received message = $message")
             println("onMessage: $message")
-            Toast.makeText(mContext, "flutter 向 android 发送：$message", Toast.LENGTH_SHORT).show()
             var reqMsg = Gson().fromJson(message.toString(), Msg::class.java)
             if (reqMsg != null) {
                 if (reqMsg.mainCmd == MsgType.MAIN_CMD_LOGIN) {
