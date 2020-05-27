@@ -4,6 +4,7 @@ import 'package:animatedloginbutton/animatedloginbutton.dart';
 import 'package:flutter/material.dart';
 import 'package:singleloginapp/msg/message.dart';
 import 'package:singleloginapp/msg/msg_channel.dart';
+import 'package:singleloginapp/pages/main_page.dart';
 import 'package:singleloginapp/pages/register_page.dart';
 import 'package:singleloginapp/utils/log_util.dart';
 
@@ -90,7 +91,7 @@ class _LoginPageState extends State<LoginPage> {
             LogUtils.d(TAG, 'result: ' + result.toJson().toString());
             Navigator.pushAndRemoveUntil(context, new MaterialPageRoute(
               builder: (BuildContext context) {
-                return new HomePage();
+                return new MyHomePage();
               },
             ), (route) => route == null);
             //Navigator.pushNamedAndRemoveUntil(context, 'Home', (route) => route == null);
