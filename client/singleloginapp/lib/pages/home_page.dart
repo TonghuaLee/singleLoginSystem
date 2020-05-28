@@ -87,7 +87,7 @@ class HomePage extends StatelessWidget with EventListener {
   }
 
   @override
-  void onEvent(int event, Message msg) {
+  void onEvent(int mainCMd, int subCmd, Message msg) {
     // TODO: implement onEvent
   }
 

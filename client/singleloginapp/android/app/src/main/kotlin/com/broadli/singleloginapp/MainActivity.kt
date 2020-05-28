@@ -144,8 +144,8 @@ class MainActivity : FlutterActivity(), LoginUIController {
         }
     }
 
-    override fun performLoginFail() {
-        var replyMsg = Msg(MAIN_CMD_LOGIN, 0, CODE_FAIL, "登录失败。");
+    override fun performLoginFail(msg: String?) {
+        var replyMsg = Msg(MAIN_CMD_LOGIN, 0, CODE_FAIL, msg);
         var gson = Gson()
         var replyJsonStr = gson.toJson(replyMsg)
         mMessageChannel?.send(replyJsonStr) { reply ->
@@ -153,8 +153,9 @@ class MainActivity : FlutterActivity(), LoginUIController {
         }
     }
 
-    override fun performSignFail() {
-        var replyMsg = Msg(MAIN_CMD_REGISTER, 0, CODE_FAIL, "注册失败。");
+    override fun performSignFail(msg: String?) {
+        Log.d(TAG, "注册失败")
+        var replyMsg = Msg(MAIN_CMD_REGISTER, 0, CODE_FAIL, msg);
         var gson = Gson()
         var replyJsonStr = gson.toJson(replyMsg)
         mMessageChannel?.send(replyJsonStr) { reply ->

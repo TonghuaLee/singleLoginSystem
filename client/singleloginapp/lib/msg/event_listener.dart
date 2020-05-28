@@ -5,5 +5,5 @@ mixin EventListener {
   int EVENT_ON_LOGIN = 1;
   int EVENT_ON_REGISTER = 2;
 
-  void onEvent(int event, Message msg);
+  void onEvent(int mainCmd, int subCmd, Message msg);
 }

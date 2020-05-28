@@ -105,7 +105,7 @@ namespace auth
         if (!ParamUtils::checkAccountValid(account, accountErrorMsg))
         {
             LOGD("[login_core_impl.user_sign] account is invalid");
-            this->m_listener->on_login_finish(ActionResult(ClientCode::LOGIN_FAIL_ACCOUNT_INVALID, accountErrorMsg, ""));
+            this->m_listener->on_sign_finish(ActionResult(ClientCode::LOGIN_FAIL_ACCOUNT_INVALID, accountErrorMsg, ""));
             return;
         }
 
@@ -114,7 +114,7 @@ namespace auth
         if (!ParamUtils::checkPasswordValid(password, pwdErrorMsg))
         {
             LOGD("[login_core_impl.user_sign] password is invalid");
-            this->m_listener->on_login_finish(ActionResult(ClientCode::LOGIN_FAIL_PASSWORD_INVALID, pwdErrorMsg, ""));
+            this->m_listener->on_sign_finish(ActionResult(ClientCode::LOGIN_FAIL_PASSWORD_INVALID, pwdErrorMsg, ""));
             return;
         }
 
@@ -136,7 +136,7 @@ namespace auth
         }
 
         //回调原生接口
-        this->m_listener->on_login_finish(ActionResult(result.getCode(), result.getMsg(), ""));
+        this->m_listener->on_sign_finish(ActionResult(result.getCode(), result.getMsg(), ""));
     }
 
     /**

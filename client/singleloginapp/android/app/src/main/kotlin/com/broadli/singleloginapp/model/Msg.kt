@@ -6,7 +6,7 @@ import com.broadli.singleloginapp.config.MsgType
 import org.json.JSONException
 import org.json.JSONObject
 
-data class Msg(var mainCmd: Int, var subCmd: Int, var code: Int, var message: String) : Parcelable {
+data class Msg(var mainCmd: Int, var subCmd: Int, var code: Int, var message: String?) : Parcelable {
     var data: Map<String, Any>? = null
 
     public fun fromJson(json: String) {

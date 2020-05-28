@@ -2,8 +2,8 @@ package com.broadli.singleloginapp.config
 
 class MsgType {
     companion object {
-        val CODE_SUCC = 200
-        val CODE_FAIL = 404
+        val CODE_SUCC = 0
+        val CODE_FAIL = -1
         public val PARAM_MAIN_CMD = "mainCmd"
         public val PARAM_SUB_CMD = "subCmd"
         public val PARAM_CODE = "code"

@@ -3,8 +3,8 @@ package com.broadli.singleloginapp.controller
 interface LoginUIController {
     fun performLoginSuccess()
     fun performSignSuccess()
-    fun performLoginFail()
-    fun performSignFail()
+    fun performLoginFail(msg: String?)
+    fun performSignFail(msg: String?)
     fun performLogout()
     fun performUserOnline(account: String?)
     fun toastMsg(content: String?)

@@ -50,7 +50,7 @@ class LoginController constructor(activity: Activity?, controller: LoginUIContro
     }
 
     /**
-     * 发起退出登录操作
+`     * 发起检查连接状态操作
      */
     private fun checkConnect() {
         executorSingle.execute { mLoginCore.checkConnection() }
@@ -67,11 +67,11 @@ class LoginController constructor(activity: Activity?, controller: LoginUIContro
             mUiController.get()!!.performLoginSuccess()
             checkConnect()
         } else {
-            mUiController.get()!!.performLoginFail()
+            mUiController.get()!!.performLoginFail(result.getMsg())
         }
-        if (!TextUtils.isEmpty(result.getMsg())) {
-            handleToast(result.getMsg())
-        }
+//        if (!TextUtils.isEmpty(result.getMsg())) {
+//            handleToast(result.getMsg())
+//        }
     }
 
     /**
@@ -83,10 +83,12 @@ class LoginController constructor(activity: Activity?, controller: LoginUIContro
             return
         }
         if (result.getCode() === ResultCode.SUCCESS.getValue()) {
+            Log.d(TAG, "handleSignResult success")
             mUiController.get()!!.performSignSuccess()
             checkConnect()
         } else {
-            mUiController.get()!!.performSignFail()
+            Log.d(TAG, "handleSignResult fail")
+            mUiController.get()!!.performSignFail(result.getMsg())
         }
         if (!TextUtils.isEmpty(result.getMsg())) {
             handleToast(result.getMsg())

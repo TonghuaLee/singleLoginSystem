@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:singleloginapp/config/config.dart';
 import 'package:singleloginapp/msg/event_listener.dart';
 import 'package:singleloginapp/utils/log_util.dart';
-import 'dart:convert' as convert;
+import 'dart:convert' as JSON;
 import 'message.dart';
 
 class MsgChannelUtil {
@@ -21,6 +21,7 @@ class MsgChannelUtil {
     if (messageChannel == null) {
       messageChannel = const BasicMessageChannel(
           Config.MSG_CHANNEL_NAME, StandardMessageCodec());
+      receiveMessage();
     }
   }
 
@@ -44,15 +45,15 @@ class MsgChannelUtil {
   }
 
   /// 通知所有监听者
-  Future<void> notifyEvent(int event, Message msg) async {
+  Future<void> notifyEvent(int mainCmd, int subCmd, Message msg) async {
     for (final listener in mListeners) {
-      listener.onEvent(event, msg);
+      listener.onEvent(mainCmd, subCmd, msg);
     }
   }
 
   //发送消息
   Future<Message> sendMessage(Message sendMsg) async {
-    String josnNameString = convert.jsonEncode(sendMsg);
+    String josnNameString = JSON.jsonEncode(sendMsg);
     LogUtils.d('msgChannel', 'flutter sendMessage:' + josnNameString);
     String reply = await messageChannel.send(josnNameString);
     //解析 原生发给 Flutter 的参数
@@ -69,9 +70,17 @@ class MsgChannelUtil {
   void receiveMessage() {
     messageChannel.setMessageHandler((result) async {
       //解析 原生发给 Flutter 的参数
-      int code = result['code'];
-      String message = result['message'];
-      LogUtils.d('msgChannel', 'flutter receiveMessage:' + message);
+      LogUtils.d('msgChannel', 'flutter receiveMessage:' +result);
+      if(result == null) {
+        return "result is null";
+      }
+      Message msg = Message.fromJson(JSON.jsonDecode(result));
+      if(result == null) {
+        return "result can not covert to message";
+      }
+      int mainCmd = msg.mainCmd;
+      int subCmd = msg.subCmd;
+      notifyEvent(mainCmd, subCmd, msg);
       return 'Flutter 已收到消息';
     });
   }

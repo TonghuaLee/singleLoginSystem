@@ -1,14 +1,12 @@
 import 'dart:developer';
 
-import 'package:animatedloginbutton/animatedloginbutton.dart';
+import 'package:singleloginapp/widget/animatedloginbutton.dart';
 import 'package:flutter/material.dart';
 import 'package:singleloginapp/msg/message.dart';
 import 'package:singleloginapp/msg/msg_channel.dart';
 import 'package:singleloginapp/pages/main_page.dart';
 import 'package:singleloginapp/pages/register_page.dart';
 import 'package:singleloginapp/utils/log_util.dart';
-
-import 'home_page.dart';
 
 class LoginPage extends StatefulWidget {
   @override

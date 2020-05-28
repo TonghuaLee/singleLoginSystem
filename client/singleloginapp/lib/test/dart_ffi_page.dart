@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:singleloginapp/authso.dart';
 import 'package:singleloginapp/msg/event_listener.dart';
 import 'package:singleloginapp/msg/message.dart';
-import 'package:singleloginapp/authso.dart';
 
 class DartFFIPage extends StatelessWidget with EventListener {
   final String tag;
@@ -58,7 +58,7 @@ class DartFFIPage extends StatelessWidget with EventListener {
   }
 
   @override
-  void onEvent(int event, Message msg) {
+  void onEvent(int mainCmd, int subCmd, Message msg) {
     // TODO: implement onEvent
   }
 }

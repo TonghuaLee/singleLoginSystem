@@ -5,7 +5,7 @@ part 'message.g.dart';
 @JsonSerializable()
 class Message {
   int code;
-  String msg;
+  String message;
   Map data;
   int mainCmd;
   int subCmd;
@@ -15,11 +15,11 @@ class Message {
   Map getData() {
     Map map = new Map();
     map['code'] = code;
-    map['msg'] = msg;
+    map['message'] = message;
     return map;
   }
 
-  Message(this.code, this.msg, this.data, this.mainCmd, this.subCmd);
+  Message(this.code, this.message, this.data, this.mainCmd, this.subCmd);
 
   factory Message.fromJson(Map<String, dynamic> json) =>
       _$MessageFromJson(json);
