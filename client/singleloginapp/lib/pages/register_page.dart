@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:singleloginapp/widget/animatedloginbutton.dart';
 import 'package:flutter/material.dart';
 import 'package:singleloginapp/msg/event_listener.dart';
 import 'package:singleloginapp/msg/message.dart';
@@ -8,6 +7,7 @@ import 'package:singleloginapp/msg/msg_channel.dart';
 import 'package:singleloginapp/msg/result.dart';
 import 'package:singleloginapp/pages/login_page.dart';
 import 'package:singleloginapp/utils/log_util.dart';
+import 'package:singleloginapp/widget/animatedloginbutton.dart';
 
 class RegisterPage extends StatefulWidget {
   @override
@@ -25,7 +25,6 @@ class _RegisterPageState extends State<RegisterPage> with EventListener {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     MsgChannelUtil.getInstance().addListener(this);
   }
@@ -190,7 +189,6 @@ class _RegisterPageState extends State<RegisterPage> with EventListener {
 
   @override
   void onEvent(int mainCmd, int subCmd, Message msg) {
-    // TODO: implement onEvent
     LogUtils.d(TAG, "onEvent:" + msg.toString());
     if (mainCmd == MsgChannelUtil.MAIN_CMD_REGISTER) {
       if (msg != null) {

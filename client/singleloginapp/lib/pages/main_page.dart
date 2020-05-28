@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (_) => DatabaseProvider(),
       child: MaterialApp(
-        title: 'Flutter Demo',
+        title: 'Todos Need To Be Done',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
@@ -103,7 +103,7 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              'My Todos',
+              'Todos Will Be Done',
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 24,

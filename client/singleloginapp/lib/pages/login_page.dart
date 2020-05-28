@@ -1,24 +1,34 @@
 import 'dart:developer';
 
-import 'package:singleloginapp/widget/animatedloginbutton.dart';
 import 'package:flutter/material.dart';
+import 'package:singleloginapp/msg/event_listener.dart';
 import 'package:singleloginapp/msg/message.dart';
 import 'package:singleloginapp/msg/msg_channel.dart';
+import 'package:singleloginapp/msg/result.dart';
 import 'package:singleloginapp/pages/main_page.dart';
 import 'package:singleloginapp/pages/register_page.dart';
 import 'package:singleloginapp/utils/log_util.dart';
+import 'package:singleloginapp/widget/animatedloginbutton.dart';
 
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginPageState extends State<LoginPage> with EventListener {
   final String TAG = "LoginPage";
   final _formKey = GlobalKey<FormState>();
   String _phone, _password;
   bool _isObscure = true;
   Color _eyeColor;
+
+  @override
+  void initState() {
+    super.initState();
+    MsgChannelUtil.getInstance().addListener(this);
+    phoneController.text = '16625205201';
+    passController.text = '123456thLee';
+  }
 
   final LoginErrorMessageController loginErrorMessageController =
       LoginErrorMessageController();
@@ -76,25 +86,15 @@ class _LoginPageState extends State<LoginPage> {
             Map req = new Map();
             req['account'] = phoneController.text;
             req['password'] = passController.text;
-            Message msg = new Message(
-                1,
-                'req login from flutter',
-                req,
-                MsgChannelUtil.MAIN_CMD_LOGIN,
-                MsgChannelUtil.MAIN_CMD_DEFALUT);
+            Message msg = new Message(1, 'req login from flutter', req,
+                MsgChannelUtil.MAIN_CMD_LOGIN, MsgChannelUtil.MAIN_CMD_DEFALUT);
             LogUtils.d(TAG, 'req: ' + msg.toString());
 //              LogUtils.d(TAG, 'req from flutter: '+ msg.toJson());
             Message result =
-            await MsgChannelUtil.getInstance().sendMessage(msg);
+                await MsgChannelUtil.getInstance().sendMessage(msg);
             LogUtils.d(TAG, 'result: ' + result.toJson().toString());
-            Navigator.pushAndRemoveUntil(context, new MaterialPageRoute(
-              builder: (BuildContext context) {
-                return new MyHomePage();
-              },
-            ), (route) => route == null);
             //Navigator.pushNamedAndRemoveUntil(context, 'Home', (route) => route == null);
-          }
-          else {
+          } else {
             loginErrorMessageController.showErrorMessage("参数错误");
           }
         },
@@ -198,8 +198,22 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   @override
-  void initState() {
-    phoneController.text = '16625205201';
-    passController.text = '123456thLee';
+  void onEvent(int mainCmd, int subCmd, Message msg) {
+    LogUtils.d(TAG, "onEvent:" + msg.toString());
+    if (mainCmd == MsgChannelUtil.MAIN_CMD_LOGIN) {
+      if (msg != null) {
+        if (msg.code == ResultCode.SUCCESS) {
+          Navigator.pushAndRemoveUntil(context, new MaterialPageRoute(
+            builder: (BuildContext context) {
+              return new MyHomePage();
+            },
+          ), (route) => route == null);
+        } else {
+          loginErrorMessageController.showErrorMessage(msg.message ??= "登录失败");
+        }
+      } else {
+        loginErrorMessageController.showErrorMessage("登录失败");
+      }
+    }
   }
 }
