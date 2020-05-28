@@ -90,9 +90,6 @@ class LoginController constructor(activity: Activity?, controller: LoginUIContro
             Log.d(TAG, "handleSignResult fail")
             mUiController.get()!!.performSignFail(result.getMsg())
         }
-        if (!TextUtils.isEmpty(result.getMsg())) {
-            handleToast(result.getMsg())
-        }
     }
 
     /**
