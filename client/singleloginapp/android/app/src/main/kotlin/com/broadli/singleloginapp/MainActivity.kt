@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.view.KeyEvent
 import android.widget.Toast
 import com.broadli.singleloginapp.config.MsgType
 import com.broadli.singleloginapp.config.MsgType.Companion.CODE_FAIL
@@ -32,6 +33,7 @@ class MainActivity : FlutterActivity(), LoginUIController {
     private var mMessageChannel: BasicMessageChannel<Any>? = null
     val TAG = "MainActivity"
     var mLoginControler: LoginController? = null
+    private var exitTime: Long = 0
 
     companion object {
         const val FLUTTER_LOG_CHANNEL = "android_log"
@@ -62,15 +64,15 @@ class MainActivity : FlutterActivity(), LoginUIController {
             if (reqMsg != null) {
                 if (reqMsg.mainCmd == MsgType.MAIN_CMD_LOGIN) {
                     Log.d(TAG, "login receive from flutter")
-                    var data = reqMsg.data;
-                    val userInfo = UserInfo(data?.get("account") as String, data["password"] as String);
+                    var data = reqMsg.data
+                    val userInfo = UserInfo(data?.get("account") as String, data["password"] as String)
                     mLoginControler?.run {
                         actionLoginIn(userInfo.account, userInfo.password)
-                    };
+                    }
 
                     // test for
-                    var replyMsg = reqMsg;
-                    replyMsg.code = 200;
+                    var replyMsg = reqMsg
+                    replyMsg.code = 200
                     replyMsg.message = "reply from Android"
                     var gson = Gson()
                     var replyJsonStr = gson.toJson(replyMsg)
@@ -78,11 +80,11 @@ class MainActivity : FlutterActivity(), LoginUIController {
                     reply.reply(replyJsonStr)
                 } else if (reqMsg.mainCmd == MsgType.MAIN_CMD_REGISTER) { //测试 mMessageChannel.send 发消息给Flutter
                     //  channelSendMessage()
-                    var data = reqMsg.data;
-                    val userInfo = UserInfo(data?.get("account") as String, data["password"] as String);
+                    var data = reqMsg.data
+                    val userInfo = UserInfo(data?.get("account") as String, data["password"] as String)
                     mLoginControler?.run {
                         actionSignIn(userInfo.account, userInfo.password)
-                    };
+                    }
                 } else { //测试通过Flutter打开Android Activity
                     Toast.makeText(mContext, "flutter 调用到了 android test3", Toast.LENGTH_SHORT).show()
 //                        val lIntent = Intent(this@MainActivity, TestBasicMessageActivity::class.java)
@@ -127,7 +129,7 @@ class MainActivity : FlutterActivity(), LoginUIController {
     }
 
     override fun performLoginSuccess() {
-        var replyMsg = Msg(MAIN_CMD_LOGIN, 0, CODE_SUCC, "登录成功。");
+        var replyMsg = Msg(MAIN_CMD_LOGIN, 0, CODE_SUCC, "登录成功。")
         var gson = Gson()
         var replyJsonStr = gson.toJson(replyMsg)
         mMessageChannel?.send(replyJsonStr) { reply ->
@@ -136,7 +138,7 @@ class MainActivity : FlutterActivity(), LoginUIController {
     }
 
     override fun performSignSuccess() {
-        var replyMsg = Msg(MAIN_CMD_REGISTER, 0, CODE_SUCC, "注册成功。");
+        var replyMsg = Msg(MAIN_CMD_REGISTER, 0, CODE_SUCC, "注册成功。")
         var gson = Gson()
         var replyJsonStr = gson.toJson(replyMsg)
         mMessageChannel?.send(replyJsonStr) { reply ->
@@ -145,7 +147,7 @@ class MainActivity : FlutterActivity(), LoginUIController {
     }
 
     override fun performLoginFail(msg: String?) {
-        var replyMsg = Msg(MAIN_CMD_LOGIN, 0, CODE_FAIL, msg);
+        var replyMsg = Msg(MAIN_CMD_LOGIN, 0, CODE_FAIL, msg)
         var gson = Gson()
         var replyJsonStr = gson.toJson(replyMsg)
         mMessageChannel?.send(replyJsonStr) { reply ->
@@ -155,7 +157,7 @@ class MainActivity : FlutterActivity(), LoginUIController {
 
     override fun performSignFail(msg: String?) {
         Log.d(TAG, "注册失败")
-        var replyMsg = Msg(MAIN_CMD_REGISTER, 0, CODE_FAIL, msg);
+        var replyMsg = Msg(MAIN_CMD_REGISTER, 0, CODE_FAIL, msg)
         var gson = Gson()
         var replyJsonStr = gson.toJson(replyMsg)
         mMessageChannel?.send(replyJsonStr) { reply ->
@@ -164,7 +166,7 @@ class MainActivity : FlutterActivity(), LoginUIController {
     }
 
     override fun performLogout() {
-        var replyMsg = Msg(MAIN_CMD_LOGINOUT, SUB_CMD_LOGINOUT_SELF, CODE_SUCC, "下线。");
+        var replyMsg = Msg(MAIN_CMD_LOGINOUT, SUB_CMD_LOGINOUT_SELF, CODE_SUCC, "下线。")
         var gson = Gson()
         var replyJsonStr = gson.toJson(replyMsg)
         mMessageChannel?.send(replyJsonStr) { reply ->
@@ -173,7 +175,7 @@ class MainActivity : FlutterActivity(), LoginUIController {
     }
 
     override fun performUserOnline(account: String?) {
-        var replyMsg = Msg(MAIN_CMD_LOGIN, SUB_CMD_LOGINOUT_SELF, CODE_SUCC, "已经在线。");
+        var replyMsg = Msg(MAIN_CMD_LOGIN, SUB_CMD_LOGINOUT_SELF, CODE_SUCC, "已经在线。")
         var gson = Gson()
         var replyJsonStr = gson.toJson(replyMsg)
         mMessageChannel?.send(replyJsonStr) { reply ->
@@ -182,15 +184,35 @@ class MainActivity : FlutterActivity(), LoginUIController {
     }
 
     override fun toastMsg(content: String?) {
-        Toast.makeText(this, content, Toast.LENGTH_LONG).show();
+        Toast.makeText(this, content, Toast.LENGTH_LONG).show()
     }
 
     override fun disconnect() {
-        var replyMsg = Msg(MAIN_CMD_LOGINOUT, SUB_CMD_LOGINOUT_SERVER, CODE_SUCC, "在其他终端登录，被踢下线。");
+        var replyMsg = Msg(MAIN_CMD_LOGINOUT, SUB_CMD_LOGINOUT_SERVER, CODE_SUCC, "在其他终端登录，被踢下线。")
         var gson = Gson()
         var replyJsonStr = gson.toJson(replyMsg)
         mMessageChannel?.send(replyJsonStr) { reply ->
             Log.d("Android", "$reply")
+        }
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            exit()
+            return false
+        }
+        return super.onKeyDown(keyCode, event)
+    }
+
+    fun exit() {
+        if ((System.currentTimeMillis() - exitTime) > 2000) {
+            Toast.makeText(applicationContext,
+                    "再按一次退出程序", Toast.LENGTH_SHORT).show()
+            exitTime = System.currentTimeMillis()
+
+        } else {
+            finish()
+            System.exit(0)
         }
     }
 }
