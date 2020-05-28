@@ -12,6 +12,7 @@ class MsgChannelUtil {
   static const MAIN_CMD_DEFALUT = 0;
   static const MAIN_CMD_LOGIN = 100;
   static const MAIN_CMD_REGISTER = 101;
+  static const MAIN_CMD_LOGINOUT= 102;
 
   static MsgChannelUtil _instance;
   BasicMessageChannel messageChannel;

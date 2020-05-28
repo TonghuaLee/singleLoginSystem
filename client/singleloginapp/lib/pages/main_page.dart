@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:singleloginapp/controller/dabase_provider.dart';
 import 'package:singleloginapp/data/categories_dao.dart';
 import 'package:singleloginapp/data/todo_database.dart';
 import 'package:singleloginapp/data/todo_with_category.dart';
 import 'package:singleloginapp/data/todos_dao.dart';
+import 'package:singleloginapp/msg/event_listener.dart';
+import 'package:singleloginapp/msg/message.dart';
+import 'package:singleloginapp/msg/msg_channel.dart';
 import 'package:singleloginapp/widget/new_category_input_widget.dart';
 import 'package:singleloginapp/widget/new_todo_input_widget.dart';
 import 'package:singleloginapp/widget/todo_item_widget.dart';
-import 'package:provider/provider.dart';
+
+import 'login_page.dart';
 
 void main() => runApp(MyApp());
 
@@ -32,7 +37,7 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage> with EventListener {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,6 +72,12 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    MsgChannelUtil.getInstance().addListener(this);
   }
 
   Drawer _buildDrawer(BuildContext context) {
@@ -204,5 +215,16 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget _buildItem(
       BuildContext context, TodoWithCategory item, TodosDao todosDao) {
     return TodoItemWidget(item, todosDao);
+  }
+
+  @override
+  void onEvent(int mainCmd, int subCmd, Message msg) {
+    if (mainCmd == MsgChannelUtil.MAIN_CMD_LOGINOUT) {
+      Navigator.pushAndRemoveUntil(context, new MaterialPageRoute(
+        builder: (BuildContext context) {
+          return new LoginPage();
+        },
+      ), (route) => route == null);
+    }
   }
 }

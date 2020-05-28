@@ -182,7 +182,7 @@ class MainActivity : FlutterActivity(), LoginUIController {
     }
 
     override fun toastMsg(content: String?) {
-        Toast.makeText(this,content,Toast.LENGTH_LONG).show();
+        Toast.makeText(this, content, Toast.LENGTH_LONG).show();
     }
 
     override fun disconnect() {
