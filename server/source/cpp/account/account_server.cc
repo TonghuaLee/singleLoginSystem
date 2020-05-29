@@ -258,7 +258,7 @@ public:
     UserAccount userAccount = login_db.getUserAccount(account);
 
     //查询账号是否存在
-    if (CommonUtils::getIntByString(userAccount.getUid()) <= 0)
+    if (userAccount.getUid() <= 0)
     {
       result->set_code(ResultCode::UserLogin_AccountNotExist);
       result->set_msg(MsgTip::UserLogin_AccountNotExist);
@@ -455,7 +455,7 @@ public:
 
     //获得用户信息
     Category category = login_db.getCategory(title, uid);
-    if (CommonUtils::getIntByString(category.getCid()) <= 0)
+    if (category.getCid() <= 0)
     {
       result->set_code(ResultCode::AddCategory_InsertDBFail);
       result->set_msg(MsgTip::AddCategory_InsertDBFail);
@@ -466,9 +466,9 @@ public:
     //返回Token
     result->set_code(ResultCode::SUCCESS);
     Json::Value root;
-    root["cid"] = CommonUtils::getIntByString(category.getCid());
+    root["cid"] = category.getCid();
     root["title"] = category.getTitle();
-    root["uid"] = CommonUtils::getIntByString(category.getUid());
+    root["uid"] = category.getUid();
     Json::FastWriter fw;
     result->set_data(fw.write(root));
     return result;
