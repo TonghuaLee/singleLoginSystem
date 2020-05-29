@@ -211,7 +211,7 @@ bool Database::addCategory(string title, int uid)
 
     //执行插入数据操作
     string msg;
-    Json::Value data = db_base->insertCategory(account, password, pwdSalt, msg);
+    Json::Value data = db_base->insertCategory(title, uid, msg);
     int cid = CommonUtils::getIntByString(data["ID"].asString());
     if (data["is_empty"].asBool() || cid <= 0)
     {
