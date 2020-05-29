@@ -724,7 +724,7 @@ private:
   }
 };
 
-class AccountServiceImpl final : public Account::Service
+class AccountServiceImpl final : public Account::Service, public Todo::Service
 {
 
   /**
