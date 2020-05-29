@@ -16,18 +16,21 @@ licenses(["notice"])  # 3-clause BSD
 
 package(default_visibility = ["//visibility:public"])
 
-load("//bazel:grpc_build_system.bzl", "grpc_proto_library")
+load("//bazel:grpc_build_system.bzl", "grpc_proto_todo_library")
 
 grpc_proto_library(
     name = "account",
     srcs = ["protos/account.proto","protos/todo.proto"],
 )
-
+grpc_proto_todo_library(
+    name = "todo",
+    srcs = ["protos/todo.proto"],
+)
 
 cc_binary(
     name = "account_server",
     srcs = ["cpp/account/account_server.cc"],
-    deps = [":account", "//:grpc++",":my_model",":my_constant",":common_utils",":log_utils",":param_utils",":db_manager",":redis_manager",":conf"],
+    deps = [":account", ":todo", "//:grpc++",":my_model",":my_constant",":common_utils",":log_utils",":param_utils",":db_manager",":redis_manager",":conf"],
     data = ["//source/pem:ca.crt","//source/pem:server.crt","//source/pem:server.key"],
     linkopts = ["-lmysqlclient"],
 )
