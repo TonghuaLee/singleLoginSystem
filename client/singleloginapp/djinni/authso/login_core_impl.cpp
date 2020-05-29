@@ -419,4 +419,41 @@ namespace auth
         storage::SharePreferences::execute();
     }
 
+    void LoginCoreImpl::add_category(const string &title)
+    {
+        std::string token = storage::SharePreferences::get(Constants::TOKEN);
+        if (token == "")
+        {
+            LOGD("[login_core_impl.add_category] token is empty");
+            //清除本地用户状态
+            cleanUserInfo();
+
+            this->m_listener->on_disconnect(ActionResult(ClientCode::USER_ACCOUNT_FO_EMPTY, ToastTip::TOAST_ACCOUNT_INFO_EMPTY, ""));
+            return;
+        }
+
+        network::NetworkCore mNW;
+        ReqResult result = mNW.addCategory(title, token);
+
+        if (result.getCode() == ClientCode::SUCCESS)
+        {
+            LOGD("[login_core_impl.addCategory] success");
+            this->m_listener->on_add_category(ActionResult(ClientCode::SUCCESS, "", result.getData()));
+        }
+        else
+        {
+            LOGD("[login_core_impl.addCategory] fail");
+            this->m_listener->on_add_category(ActionResult(ClientCode::TODO_ADD_CATEGORY_FAIL, ToastTip::TOAST_TODO_ADD_CATEGORY_FAIL, ""));
+        }
+    }
+
+    void LoginCoreImpl::add_todo(const string &content, int32_t cid)
+    {
+
+    }
+
+    void LoginCoreImpl::update_todo(int32_t tid, int32_t status)
+    {
+
+    }
 }

@@ -12,6 +12,9 @@ login_core = interface +c {
     user_logout();
     check_login_status();
     check_connection();
+    add_category(title: string);
+    add_todo(content: string, cid: i32);
+    update_todo(tid: i32, status: i32);
 }
 
 login_listener = interface +o +j {
@@ -20,4 +23,7 @@ login_listener = interface +o +j {
     on_logout_finish(result: action_result);
     on_check_status_finish(result: action_result);
     on_disconnect(result: action_result);
+    on_add_category(result: action_result);
+    on_add_todo(result: action_result);
+    on_update_todo(result: action_result);
 }

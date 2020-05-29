@@ -35,11 +35,55 @@ class RefreshRequestDefaultTypeInternal {
  public:
   ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<RefreshRequest> _instance;
 } _RefreshRequest_default_instance_;
+class AddCategoryRequestDefaultTypeInternal {
+ public:
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<AddCategoryRequest> _instance;
+} _AddCategoryRequest_default_instance_;
+class FetchCategoryRequestDefaultTypeInternal {
+ public:
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<FetchCategoryRequest> _instance;
+} _FetchCategoryRequest_default_instance_;
+class AddTodoRequestDefaultTypeInternal {
+ public:
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<AddTodoRequest> _instance;
+} _AddTodoRequest_default_instance_;
+class UpdateTodoRequestDefaultTypeInternal {
+ public:
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<UpdateTodoRequest> _instance;
+} _UpdateTodoRequest_default_instance_;
 class CodeReplyDefaultTypeInternal {
  public:
   ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<CodeReply> _instance;
 } _CodeReply_default_instance_;
 }  // namespace account
+static void InitDefaultsscc_info_AddCategoryRequest_account_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::account::_AddCategoryRequest_default_instance_;
+    new (ptr) ::account::AddCategoryRequest();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::account::AddCategoryRequest::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_AddCategoryRequest_account_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_AddCategoryRequest_account_2eproto}, {}};
+
+static void InitDefaultsscc_info_AddTodoRequest_account_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::account::_AddTodoRequest_default_instance_;
+    new (ptr) ::account::AddTodoRequest();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::account::AddTodoRequest::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_AddTodoRequest_account_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_AddTodoRequest_account_2eproto}, {}};
+
 static void InitDefaultsscc_info_CodeReply_account_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
@@ -67,6 +111,20 @@ static void InitDefaultsscc_info_ConnectRequest_account_2eproto() {
 
 ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_ConnectRequest_account_2eproto =
     {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_ConnectRequest_account_2eproto}, {}};
+
+static void InitDefaultsscc_info_FetchCategoryRequest_account_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::account::_FetchCategoryRequest_default_instance_;
+    new (ptr) ::account::FetchCategoryRequest();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::account::FetchCategoryRequest::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_FetchCategoryRequest_account_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_FetchCategoryRequest_account_2eproto}, {}};
 
 static void InitDefaultsscc_info_LoginRequest_account_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
@@ -124,7 +182,21 @@ static void InitDefaultsscc_info_SignRequest_account_2eproto() {
 ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_SignRequest_account_2eproto =
     {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_SignRequest_account_2eproto}, {}};
 
-static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_account_2eproto[6];
+static void InitDefaultsscc_info_UpdateTodoRequest_account_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::account::_UpdateTodoRequest_default_instance_;
+    new (ptr) ::account::UpdateTodoRequest();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::account::UpdateTodoRequest::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_UpdateTodoRequest_account_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_UpdateTodoRequest_account_2eproto}, {}};
+
+static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_account_2eproto[10];
 static constexpr ::PROTOBUF_NAMESPACE_ID::EnumDescriptor const** file_level_enum_descriptors_account_2eproto = nullptr;
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_account_2eproto = nullptr;
 
@@ -163,6 +235,35 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_account_2eproto::offsets[] PRO
   PROTOBUF_FIELD_OFFSET(::account::RefreshRequest, token_),
   PROTOBUF_FIELD_OFFSET(::account::RefreshRequest, refresh_token_),
   ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::account::AddCategoryRequest, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::account::AddCategoryRequest, token_),
+  PROTOBUF_FIELD_OFFSET(::account::AddCategoryRequest, title_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::account::FetchCategoryRequest, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::account::FetchCategoryRequest, token_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::account::AddTodoRequest, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::account::AddTodoRequest, token_),
+  PROTOBUF_FIELD_OFFSET(::account::AddTodoRequest, content_),
+  PROTOBUF_FIELD_OFFSET(::account::AddTodoRequest, cid_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::account::UpdateTodoRequest, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::account::UpdateTodoRequest, token_),
+  PROTOBUF_FIELD_OFFSET(::account::UpdateTodoRequest, tid_),
+  PROTOBUF_FIELD_OFFSET(::account::UpdateTodoRequest, status_),
+  ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::account::CodeReply, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
@@ -177,7 +278,11 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOB
   { 14, -1, sizeof(::account::ConnectRequest)},
   { 20, -1, sizeof(::account::LogoutRequest)},
   { 26, -1, sizeof(::account::RefreshRequest)},
-  { 33, -1, sizeof(::account::CodeReply)},
+  { 33, -1, sizeof(::account::AddCategoryRequest)},
+  { 40, -1, sizeof(::account::FetchCategoryRequest)},
+  { 46, -1, sizeof(::account::AddTodoRequest)},
+  { 54, -1, sizeof(::account::UpdateTodoRequest)},
+  { 62, -1, sizeof(::account::CodeReply)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -186,6 +291,10 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::account::_ConnectRequest_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::account::_LogoutRequest_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::account::_RefreshRequest_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::account::_AddCategoryRequest_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::account::_FetchCategoryRequest_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::account::_AddTodoRequest_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::account::_UpdateTodoRequest_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::account::_CodeReply_default_instance_),
 };
 
@@ -196,36 +305,52 @@ const char descriptor_table_protodef_account_2eproto[] PROTOBUF_SECTION_VARIABLE
   "\002 \001(\t\"\037\n\016ConnectRequest\022\r\n\005token\030\001 \001(\t\"\036"
   "\n\rLogoutRequest\022\r\n\005token\030\001 \001(\t\"6\n\016Refres"
   "hRequest\022\r\n\005token\030\001 \001(\t\022\025\n\rrefresh_token"
-  "\030\002 \001(\t\"4\n\tCodeReply\022\014\n\004code\030\001 \001(\005\022\013\n\003msg"
-  "\030\002 \001(\t\022\014\n\004data\030\003 \001(\t2\306\002\n\007Account\022\?\n\020requ"
-  "estUserLogin\022\025.account.LoginRequest\032\022.ac"
-  "count.CodeReply\"\000\022=\n\017requestUserSign\022\024.a"
-  "ccount.SignRequest\032\022.account.CodeReply\"\000"
-  "\022=\n\014checkConnect\022\027.account.ConnectReques"
-  "t\032\022.account.CodeReply\"\000\022=\n\rrequestLogout"
-  "\022\026.account.LogoutRequest\032\022.account.CodeR"
-  "eply\"\000\022=\n\014refreshToken\022\027.account.Refresh"
-  "Request\032\022.account.CodeReply\"\000B3\n\033io.grpc"
-  ".singlelogin.accountB\014AccountProtoP\001\242\002\003A"
-  "CCb\006proto3"
+  "\030\002 \001(\t\"2\n\022AddCategoryRequest\022\r\n\005token\030\001 "
+  "\001(\t\022\r\n\005title\030\002 \001(\t\"%\n\024FetchCategoryReque"
+  "st\022\r\n\005token\030\001 \001(\t\"=\n\016AddTodoRequest\022\r\n\005t"
+  "oken\030\001 \001(\t\022\017\n\007content\030\002 \001(\t\022\013\n\003cid\030\003 \001(\005"
+  "\"\?\n\021UpdateTodoRequest\022\r\n\005token\030\001 \001(\t\022\013\n\003"
+  "tid\030\002 \001(\005\022\016\n\006status\030\003 \001(\005\"4\n\tCodeReply\022\014"
+  "\n\004code\030\001 \001(\005\022\013\n\003msg\030\002 \001(\t\022\014\n\004data\030\003 \001(\t2"
+  "\344\004\n\007Account\022\?\n\020requestUserLogin\022\025.accoun"
+  "t.LoginRequest\032\022.account.CodeReply\"\000\022=\n\017"
+  "requestUserSign\022\024.account.SignRequest\032\022."
+  "account.CodeReply\"\000\022=\n\014checkConnect\022\027.ac"
+  "count.ConnectRequest\032\022.account.CodeReply"
+  "\"\000\022=\n\rrequestLogout\022\026.account.LogoutRequ"
+  "est\032\022.account.CodeReply\"\000\022=\n\014refreshToke"
+  "n\022\027.account.RefreshRequest\032\022.account.Cod"
+  "eReply\"\000\022G\n\022requestAddCategory\022\033.account"
+  ".AddCategoryRequest\032\022.account.CodeReply\""
+  "\000\022K\n\024requestFetchCategory\022\035.account.Fetc"
+  "hCategoryRequest\032\022.account.CodeReply\"\000\022\?"
+  "\n\016requestAddTodo\022\027.account.AddTodoReques"
+  "t\032\022.account.CodeReply\"\000\022E\n\021requestUpdate"
+  "Todo\022\032.account.UpdateTodoRequest\032\022.accou"
+  "nt.CodeReply\"\000B3\n\033io.grpc.singlelogin.ac"
+  "countB\014AccountProtoP\001\242\002\003ACCb\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_account_2eproto_deps[1] = {
 };
-static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_account_2eproto_sccs[6] = {
+static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_account_2eproto_sccs[10] = {
+  &scc_info_AddCategoryRequest_account_2eproto.base,
+  &scc_info_AddTodoRequest_account_2eproto.base,
   &scc_info_CodeReply_account_2eproto.base,
   &scc_info_ConnectRequest_account_2eproto.base,
+  &scc_info_FetchCategoryRequest_account_2eproto.base,
   &scc_info_LoginRequest_account_2eproto.base,
   &scc_info_LogoutRequest_account_2eproto.base,
   &scc_info_RefreshRequest_account_2eproto.base,
   &scc_info_SignRequest_account_2eproto.base,
+  &scc_info_UpdateTodoRequest_account_2eproto.base,
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_account_2eproto_once;
 static bool descriptor_table_account_2eproto_initialized = false;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_account_2eproto = {
-  &descriptor_table_account_2eproto_initialized, descriptor_table_protodef_account_2eproto, "account.proto", 690,
-  &descriptor_table_account_2eproto_once, descriptor_table_account_2eproto_sccs, descriptor_table_account_2eproto_deps, 6, 0,
+  &descriptor_table_account_2eproto_initialized, descriptor_table_protodef_account_2eproto, "account.proto", 1195,
+  &descriptor_table_account_2eproto_once, descriptor_table_account_2eproto_sccs, descriptor_table_account_2eproto_deps, 10, 0,
   schemas, file_default_instances, TableStruct_account_2eproto::offsets,
-  file_level_metadata_account_2eproto, 6, file_level_enum_descriptors_account_2eproto, file_level_service_descriptors_account_2eproto,
+  file_level_metadata_account_2eproto, 10, file_level_enum_descriptors_account_2eproto, file_level_service_descriptors_account_2eproto,
 };
 
 // Force running AddDescriptors() at dynamic initialization time.
@@ -1346,6 +1471,964 @@ void RefreshRequest::InternalSwap(RefreshRequest* other) {
 
 // ===================================================================
 
+void AddCategoryRequest::InitAsDefaultInstance() {
+}
+class AddCategoryRequest::_Internal {
+ public:
+};
+
+AddCategoryRequest::AddCategoryRequest()
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:account.AddCategoryRequest)
+}
+AddCategoryRequest::AddCategoryRequest(const AddCategoryRequest& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
+      _internal_metadata_(nullptr) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  token_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_token().empty()) {
+    token_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.token_);
+  }
+  title_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_title().empty()) {
+    title_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.title_);
+  }
+  // @@protoc_insertion_point(copy_constructor:account.AddCategoryRequest)
+}
+
+void AddCategoryRequest::SharedCtor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_AddCategoryRequest_account_2eproto.base);
+  token_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  title_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+
+AddCategoryRequest::~AddCategoryRequest() {
+  // @@protoc_insertion_point(destructor:account.AddCategoryRequest)
+  SharedDtor();
+}
+
+void AddCategoryRequest::SharedDtor() {
+  token_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  title_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+
+void AddCategoryRequest::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+const AddCategoryRequest& AddCategoryRequest::default_instance() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_AddCategoryRequest_account_2eproto.base);
+  return *internal_default_instance();
+}
+
+
+void AddCategoryRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:account.AddCategoryRequest)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  token_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  title_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  _internal_metadata_.Clear();
+}
+
+const char* AddCategoryRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
+    switch (tag >> 3) {
+      // string token = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          auto str = _internal_mutable_token();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "account.AddCategoryRequest.token"));
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // string title = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
+          auto str = _internal_mutable_title();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "account.AddCategoryRequest.title"));
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      default: {
+      handle_unusual:
+        if ((tag & 7) == 4 || tag == 0) {
+          ctx->SetLastTag(tag);
+          goto success;
+        }
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
+      }
+    }  // switch
+  }  // while
+success:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
+}
+
+::PROTOBUF_NAMESPACE_ID::uint8* AddCategoryRequest::_InternalSerialize(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:account.AddCategoryRequest)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // string token = 1;
+  if (this->token().size() > 0) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_token().data(), static_cast<int>(this->_internal_token().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "account.AddCategoryRequest.token");
+    target = stream->WriteStringMaybeAliased(
+        1, this->_internal_token(), target);
+  }
+
+  // string title = 2;
+  if (this->title().size() > 0) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_title().data(), static_cast<int>(this->_internal_title().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "account.AddCategoryRequest.title");
+    target = stream->WriteStringMaybeAliased(
+        2, this->_internal_title(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:account.AddCategoryRequest)
+  return target;
+}
+
+size_t AddCategoryRequest::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:account.AddCategoryRequest)
+  size_t total_size = 0;
+
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // string token = 1;
+  if (this->token().size() > 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_token());
+  }
+
+  // string title = 2;
+  if (this->title().size() > 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_title());
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+void AddCategoryRequest::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:account.AddCategoryRequest)
+  GOOGLE_DCHECK_NE(&from, this);
+  const AddCategoryRequest* source =
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<AddCategoryRequest>(
+          &from);
+  if (source == nullptr) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:account.AddCategoryRequest)
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:account.AddCategoryRequest)
+    MergeFrom(*source);
+  }
+}
+
+void AddCategoryRequest::MergeFrom(const AddCategoryRequest& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:account.AddCategoryRequest)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.token().size() > 0) {
+
+    token_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.token_);
+  }
+  if (from.title().size() > 0) {
+
+    title_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.title_);
+  }
+}
+
+void AddCategoryRequest::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:account.AddCategoryRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void AddCategoryRequest::CopyFrom(const AddCategoryRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:account.AddCategoryRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool AddCategoryRequest::IsInitialized() const {
+  return true;
+}
+
+void AddCategoryRequest::InternalSwap(AddCategoryRequest* other) {
+  using std::swap;
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  token_.Swap(&other->token_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+    GetArenaNoVirtual());
+  title_.Swap(&other->title_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+    GetArenaNoVirtual());
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata AddCategoryRequest::GetMetadata() const {
+  return GetMetadataStatic();
+}
+
+
+// ===================================================================
+
+void FetchCategoryRequest::InitAsDefaultInstance() {
+}
+class FetchCategoryRequest::_Internal {
+ public:
+};
+
+FetchCategoryRequest::FetchCategoryRequest()
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:account.FetchCategoryRequest)
+}
+FetchCategoryRequest::FetchCategoryRequest(const FetchCategoryRequest& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
+      _internal_metadata_(nullptr) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  token_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_token().empty()) {
+    token_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.token_);
+  }
+  // @@protoc_insertion_point(copy_constructor:account.FetchCategoryRequest)
+}
+
+void FetchCategoryRequest::SharedCtor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_FetchCategoryRequest_account_2eproto.base);
+  token_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+
+FetchCategoryRequest::~FetchCategoryRequest() {
+  // @@protoc_insertion_point(destructor:account.FetchCategoryRequest)
+  SharedDtor();
+}
+
+void FetchCategoryRequest::SharedDtor() {
+  token_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+
+void FetchCategoryRequest::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+const FetchCategoryRequest& FetchCategoryRequest::default_instance() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_FetchCategoryRequest_account_2eproto.base);
+  return *internal_default_instance();
+}
+
+
+void FetchCategoryRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:account.FetchCategoryRequest)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  token_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  _internal_metadata_.Clear();
+}
+
+const char* FetchCategoryRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
+    switch (tag >> 3) {
+      // string token = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          auto str = _internal_mutable_token();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "account.FetchCategoryRequest.token"));
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      default: {
+      handle_unusual:
+        if ((tag & 7) == 4 || tag == 0) {
+          ctx->SetLastTag(tag);
+          goto success;
+        }
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
+      }
+    }  // switch
+  }  // while
+success:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
+}
+
+::PROTOBUF_NAMESPACE_ID::uint8* FetchCategoryRequest::_InternalSerialize(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:account.FetchCategoryRequest)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // string token = 1;
+  if (this->token().size() > 0) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_token().data(), static_cast<int>(this->_internal_token().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "account.FetchCategoryRequest.token");
+    target = stream->WriteStringMaybeAliased(
+        1, this->_internal_token(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:account.FetchCategoryRequest)
+  return target;
+}
+
+size_t FetchCategoryRequest::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:account.FetchCategoryRequest)
+  size_t total_size = 0;
+
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // string token = 1;
+  if (this->token().size() > 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_token());
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+void FetchCategoryRequest::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:account.FetchCategoryRequest)
+  GOOGLE_DCHECK_NE(&from, this);
+  const FetchCategoryRequest* source =
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<FetchCategoryRequest>(
+          &from);
+  if (source == nullptr) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:account.FetchCategoryRequest)
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:account.FetchCategoryRequest)
+    MergeFrom(*source);
+  }
+}
+
+void FetchCategoryRequest::MergeFrom(const FetchCategoryRequest& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:account.FetchCategoryRequest)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.token().size() > 0) {
+
+    token_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.token_);
+  }
+}
+
+void FetchCategoryRequest::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:account.FetchCategoryRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void FetchCategoryRequest::CopyFrom(const FetchCategoryRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:account.FetchCategoryRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool FetchCategoryRequest::IsInitialized() const {
+  return true;
+}
+
+void FetchCategoryRequest::InternalSwap(FetchCategoryRequest* other) {
+  using std::swap;
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  token_.Swap(&other->token_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+    GetArenaNoVirtual());
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata FetchCategoryRequest::GetMetadata() const {
+  return GetMetadataStatic();
+}
+
+
+// ===================================================================
+
+void AddTodoRequest::InitAsDefaultInstance() {
+}
+class AddTodoRequest::_Internal {
+ public:
+};
+
+AddTodoRequest::AddTodoRequest()
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:account.AddTodoRequest)
+}
+AddTodoRequest::AddTodoRequest(const AddTodoRequest& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
+      _internal_metadata_(nullptr) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  token_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_token().empty()) {
+    token_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.token_);
+  }
+  content_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_content().empty()) {
+    content_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.content_);
+  }
+  cid_ = from.cid_;
+  // @@protoc_insertion_point(copy_constructor:account.AddTodoRequest)
+}
+
+void AddTodoRequest::SharedCtor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_AddTodoRequest_account_2eproto.base);
+  token_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  content_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  cid_ = 0;
+}
+
+AddTodoRequest::~AddTodoRequest() {
+  // @@protoc_insertion_point(destructor:account.AddTodoRequest)
+  SharedDtor();
+}
+
+void AddTodoRequest::SharedDtor() {
+  token_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  content_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+
+void AddTodoRequest::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+const AddTodoRequest& AddTodoRequest::default_instance() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_AddTodoRequest_account_2eproto.base);
+  return *internal_default_instance();
+}
+
+
+void AddTodoRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:account.AddTodoRequest)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  token_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  content_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  cid_ = 0;
+  _internal_metadata_.Clear();
+}
+
+const char* AddTodoRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
+    switch (tag >> 3) {
+      // string token = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          auto str = _internal_mutable_token();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "account.AddTodoRequest.token"));
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // string content = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
+          auto str = _internal_mutable_content();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "account.AddTodoRequest.content"));
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // int32 cid = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 24)) {
+          cid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      default: {
+      handle_unusual:
+        if ((tag & 7) == 4 || tag == 0) {
+          ctx->SetLastTag(tag);
+          goto success;
+        }
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
+      }
+    }  // switch
+  }  // while
+success:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
+}
+
+::PROTOBUF_NAMESPACE_ID::uint8* AddTodoRequest::_InternalSerialize(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:account.AddTodoRequest)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // string token = 1;
+  if (this->token().size() > 0) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_token().data(), static_cast<int>(this->_internal_token().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "account.AddTodoRequest.token");
+    target = stream->WriteStringMaybeAliased(
+        1, this->_internal_token(), target);
+  }
+
+  // string content = 2;
+  if (this->content().size() > 0) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_content().data(), static_cast<int>(this->_internal_content().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "account.AddTodoRequest.content");
+    target = stream->WriteStringMaybeAliased(
+        2, this->_internal_content(), target);
+  }
+
+  // int32 cid = 3;
+  if (this->cid() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(3, this->_internal_cid(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:account.AddTodoRequest)
+  return target;
+}
+
+size_t AddTodoRequest::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:account.AddTodoRequest)
+  size_t total_size = 0;
+
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // string token = 1;
+  if (this->token().size() > 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_token());
+  }
+
+  // string content = 2;
+  if (this->content().size() > 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_content());
+  }
+
+  // int32 cid = 3;
+  if (this->cid() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
+        this->_internal_cid());
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+void AddTodoRequest::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:account.AddTodoRequest)
+  GOOGLE_DCHECK_NE(&from, this);
+  const AddTodoRequest* source =
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<AddTodoRequest>(
+          &from);
+  if (source == nullptr) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:account.AddTodoRequest)
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:account.AddTodoRequest)
+    MergeFrom(*source);
+  }
+}
+
+void AddTodoRequest::MergeFrom(const AddTodoRequest& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:account.AddTodoRequest)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.token().size() > 0) {
+
+    token_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.token_);
+  }
+  if (from.content().size() > 0) {
+
+    content_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.content_);
+  }
+  if (from.cid() != 0) {
+    _internal_set_cid(from._internal_cid());
+  }
+}
+
+void AddTodoRequest::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:account.AddTodoRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void AddTodoRequest::CopyFrom(const AddTodoRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:account.AddTodoRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool AddTodoRequest::IsInitialized() const {
+  return true;
+}
+
+void AddTodoRequest::InternalSwap(AddTodoRequest* other) {
+  using std::swap;
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  token_.Swap(&other->token_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+    GetArenaNoVirtual());
+  content_.Swap(&other->content_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+    GetArenaNoVirtual());
+  swap(cid_, other->cid_);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata AddTodoRequest::GetMetadata() const {
+  return GetMetadataStatic();
+}
+
+
+// ===================================================================
+
+void UpdateTodoRequest::InitAsDefaultInstance() {
+}
+class UpdateTodoRequest::_Internal {
+ public:
+};
+
+UpdateTodoRequest::UpdateTodoRequest()
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:account.UpdateTodoRequest)
+}
+UpdateTodoRequest::UpdateTodoRequest(const UpdateTodoRequest& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
+      _internal_metadata_(nullptr) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  token_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_token().empty()) {
+    token_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.token_);
+  }
+  ::memcpy(&tid_, &from.tid_,
+    static_cast<size_t>(reinterpret_cast<char*>(&status_) -
+    reinterpret_cast<char*>(&tid_)) + sizeof(status_));
+  // @@protoc_insertion_point(copy_constructor:account.UpdateTodoRequest)
+}
+
+void UpdateTodoRequest::SharedCtor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_UpdateTodoRequest_account_2eproto.base);
+  token_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  ::memset(&tid_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&status_) -
+      reinterpret_cast<char*>(&tid_)) + sizeof(status_));
+}
+
+UpdateTodoRequest::~UpdateTodoRequest() {
+  // @@protoc_insertion_point(destructor:account.UpdateTodoRequest)
+  SharedDtor();
+}
+
+void UpdateTodoRequest::SharedDtor() {
+  token_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+
+void UpdateTodoRequest::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+const UpdateTodoRequest& UpdateTodoRequest::default_instance() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_UpdateTodoRequest_account_2eproto.base);
+  return *internal_default_instance();
+}
+
+
+void UpdateTodoRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:account.UpdateTodoRequest)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  token_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  ::memset(&tid_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&status_) -
+      reinterpret_cast<char*>(&tid_)) + sizeof(status_));
+  _internal_metadata_.Clear();
+}
+
+const char* UpdateTodoRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
+    switch (tag >> 3) {
+      // string token = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          auto str = _internal_mutable_token();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "account.UpdateTodoRequest.token"));
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // int32 tid = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
+          tid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // int32 status = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 24)) {
+          status_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      default: {
+      handle_unusual:
+        if ((tag & 7) == 4 || tag == 0) {
+          ctx->SetLastTag(tag);
+          goto success;
+        }
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
+      }
+    }  // switch
+  }  // while
+success:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
+}
+
+::PROTOBUF_NAMESPACE_ID::uint8* UpdateTodoRequest::_InternalSerialize(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:account.UpdateTodoRequest)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // string token = 1;
+  if (this->token().size() > 0) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_token().data(), static_cast<int>(this->_internal_token().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "account.UpdateTodoRequest.token");
+    target = stream->WriteStringMaybeAliased(
+        1, this->_internal_token(), target);
+  }
+
+  // int32 tid = 2;
+  if (this->tid() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(2, this->_internal_tid(), target);
+  }
+
+  // int32 status = 3;
+  if (this->status() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(3, this->_internal_status(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:account.UpdateTodoRequest)
+  return target;
+}
+
+size_t UpdateTodoRequest::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:account.UpdateTodoRequest)
+  size_t total_size = 0;
+
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // string token = 1;
+  if (this->token().size() > 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_token());
+  }
+
+  // int32 tid = 2;
+  if (this->tid() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
+        this->_internal_tid());
+  }
+
+  // int32 status = 3;
+  if (this->status() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
+        this->_internal_status());
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+void UpdateTodoRequest::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:account.UpdateTodoRequest)
+  GOOGLE_DCHECK_NE(&from, this);
+  const UpdateTodoRequest* source =
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<UpdateTodoRequest>(
+          &from);
+  if (source == nullptr) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:account.UpdateTodoRequest)
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:account.UpdateTodoRequest)
+    MergeFrom(*source);
+  }
+}
+
+void UpdateTodoRequest::MergeFrom(const UpdateTodoRequest& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:account.UpdateTodoRequest)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.token().size() > 0) {
+
+    token_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.token_);
+  }
+  if (from.tid() != 0) {
+    _internal_set_tid(from._internal_tid());
+  }
+  if (from.status() != 0) {
+    _internal_set_status(from._internal_status());
+  }
+}
+
+void UpdateTodoRequest::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:account.UpdateTodoRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void UpdateTodoRequest::CopyFrom(const UpdateTodoRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:account.UpdateTodoRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool UpdateTodoRequest::IsInitialized() const {
+  return true;
+}
+
+void UpdateTodoRequest::InternalSwap(UpdateTodoRequest* other) {
+  using std::swap;
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  token_.Swap(&other->token_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+    GetArenaNoVirtual());
+  swap(tid_, other->tid_);
+  swap(status_, other->status_);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata UpdateTodoRequest::GetMetadata() const {
+  return GetMetadataStatic();
+}
+
+
+// ===================================================================
+
 void CodeReply::InitAsDefaultInstance() {
 }
 class CodeReply::_Internal {
@@ -1626,6 +2709,18 @@ template<> PROTOBUF_NOINLINE ::account::LogoutRequest* Arena::CreateMaybeMessage
 }
 template<> PROTOBUF_NOINLINE ::account::RefreshRequest* Arena::CreateMaybeMessage< ::account::RefreshRequest >(Arena* arena) {
   return Arena::CreateInternal< ::account::RefreshRequest >(arena);
+}
+template<> PROTOBUF_NOINLINE ::account::AddCategoryRequest* Arena::CreateMaybeMessage< ::account::AddCategoryRequest >(Arena* arena) {
+  return Arena::CreateInternal< ::account::AddCategoryRequest >(arena);
+}
+template<> PROTOBUF_NOINLINE ::account::FetchCategoryRequest* Arena::CreateMaybeMessage< ::account::FetchCategoryRequest >(Arena* arena) {
+  return Arena::CreateInternal< ::account::FetchCategoryRequest >(arena);
+}
+template<> PROTOBUF_NOINLINE ::account::AddTodoRequest* Arena::CreateMaybeMessage< ::account::AddTodoRequest >(Arena* arena) {
+  return Arena::CreateInternal< ::account::AddTodoRequest >(arena);
+}
+template<> PROTOBUF_NOINLINE ::account::UpdateTodoRequest* Arena::CreateMaybeMessage< ::account::UpdateTodoRequest >(Arena* arena) {
+  return Arena::CreateInternal< ::account::UpdateTodoRequest >(arena);
 }
 template<> PROTOBUF_NOINLINE ::account::CodeReply* Arena::CreateMaybeMessage< ::account::CodeReply >(Arena* arena) {
   return Arena::CreateInternal< ::account::CodeReply >(arena);

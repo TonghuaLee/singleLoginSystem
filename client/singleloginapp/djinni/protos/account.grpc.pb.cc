@@ -27,6 +27,10 @@ static const char* Account_method_names[] = {
   "/account.Account/checkConnect",
   "/account.Account/requestLogout",
   "/account.Account/refreshToken",
+  "/account.Account/requestAddCategory",
+  "/account.Account/requestFetchCategory",
+  "/account.Account/requestAddTodo",
+  "/account.Account/requestUpdateTodo",
 };
 
 std::unique_ptr< Account::Stub> Account::NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options) {
@@ -41,6 +45,10 @@ Account::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel)
   , rpcmethod_checkConnect_(Account_method_names[2], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_requestLogout_(Account_method_names[3], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_refreshToken_(Account_method_names[4], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_requestAddCategory_(Account_method_names[5], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_requestFetchCategory_(Account_method_names[6], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_requestAddTodo_(Account_method_names[7], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_requestUpdateTodo_(Account_method_names[8], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::Status Account::Stub::requestUserLogin(::grpc::ClientContext* context, const ::account::LoginRequest& request, ::account::CodeReply* response) {
@@ -183,6 +191,118 @@ void Account::Stub::experimental_async::refreshToken(::grpc::ClientContext* cont
   return ::grpc_impl::internal::ClientAsyncResponseReaderFactory< ::account::CodeReply>::Create(channel_.get(), cq, rpcmethod_refreshToken_, context, request, false);
 }
 
+::grpc::Status Account::Stub::requestAddCategory(::grpc::ClientContext* context, const ::account::AddCategoryRequest& request, ::account::CodeReply* response) {
+  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_requestAddCategory_, context, request, response);
+}
+
+void Account::Stub::experimental_async::requestAddCategory(::grpc::ClientContext* context, const ::account::AddCategoryRequest* request, ::account::CodeReply* response, std::function<void(::grpc::Status)> f) {
+  ::grpc_impl::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_requestAddCategory_, context, request, response, std::move(f));
+}
+
+void Account::Stub::experimental_async::requestAddCategory(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::account::CodeReply* response, std::function<void(::grpc::Status)> f) {
+  ::grpc_impl::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_requestAddCategory_, context, request, response, std::move(f));
+}
+
+void Account::Stub::experimental_async::requestAddCategory(::grpc::ClientContext* context, const ::account::AddCategoryRequest* request, ::account::CodeReply* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
+  ::grpc_impl::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_requestAddCategory_, context, request, response, reactor);
+}
+
+void Account::Stub::experimental_async::requestAddCategory(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::account::CodeReply* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
+  ::grpc_impl::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_requestAddCategory_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::account::CodeReply>* Account::Stub::AsyncrequestAddCategoryRaw(::grpc::ClientContext* context, const ::account::AddCategoryRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc_impl::internal::ClientAsyncResponseReaderFactory< ::account::CodeReply>::Create(channel_.get(), cq, rpcmethod_requestAddCategory_, context, request, true);
+}
+
+::grpc::ClientAsyncResponseReader< ::account::CodeReply>* Account::Stub::PrepareAsyncrequestAddCategoryRaw(::grpc::ClientContext* context, const ::account::AddCategoryRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc_impl::internal::ClientAsyncResponseReaderFactory< ::account::CodeReply>::Create(channel_.get(), cq, rpcmethod_requestAddCategory_, context, request, false);
+}
+
+::grpc::Status Account::Stub::requestFetchCategory(::grpc::ClientContext* context, const ::account::FetchCategoryRequest& request, ::account::CodeReply* response) {
+  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_requestFetchCategory_, context, request, response);
+}
+
+void Account::Stub::experimental_async::requestFetchCategory(::grpc::ClientContext* context, const ::account::FetchCategoryRequest* request, ::account::CodeReply* response, std::function<void(::grpc::Status)> f) {
+  ::grpc_impl::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_requestFetchCategory_, context, request, response, std::move(f));
+}
+
+void Account::Stub::experimental_async::requestFetchCategory(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::account::CodeReply* response, std::function<void(::grpc::Status)> f) {
+  ::grpc_impl::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_requestFetchCategory_, context, request, response, std::move(f));
+}
+
+void Account::Stub::experimental_async::requestFetchCategory(::grpc::ClientContext* context, const ::account::FetchCategoryRequest* request, ::account::CodeReply* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
+  ::grpc_impl::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_requestFetchCategory_, context, request, response, reactor);
+}
+
+void Account::Stub::experimental_async::requestFetchCategory(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::account::CodeReply* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
+  ::grpc_impl::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_requestFetchCategory_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::account::CodeReply>* Account::Stub::AsyncrequestFetchCategoryRaw(::grpc::ClientContext* context, const ::account::FetchCategoryRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc_impl::internal::ClientAsyncResponseReaderFactory< ::account::CodeReply>::Create(channel_.get(), cq, rpcmethod_requestFetchCategory_, context, request, true);
+}
+
+::grpc::ClientAsyncResponseReader< ::account::CodeReply>* Account::Stub::PrepareAsyncrequestFetchCategoryRaw(::grpc::ClientContext* context, const ::account::FetchCategoryRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc_impl::internal::ClientAsyncResponseReaderFactory< ::account::CodeReply>::Create(channel_.get(), cq, rpcmethod_requestFetchCategory_, context, request, false);
+}
+
+::grpc::Status Account::Stub::requestAddTodo(::grpc::ClientContext* context, const ::account::AddTodoRequest& request, ::account::CodeReply* response) {
+  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_requestAddTodo_, context, request, response);
+}
+
+void Account::Stub::experimental_async::requestAddTodo(::grpc::ClientContext* context, const ::account::AddTodoRequest* request, ::account::CodeReply* response, std::function<void(::grpc::Status)> f) {
+  ::grpc_impl::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_requestAddTodo_, context, request, response, std::move(f));
+}
+
+void Account::Stub::experimental_async::requestAddTodo(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::account::CodeReply* response, std::function<void(::grpc::Status)> f) {
+  ::grpc_impl::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_requestAddTodo_, context, request, response, std::move(f));
+}
+
+void Account::Stub::experimental_async::requestAddTodo(::grpc::ClientContext* context, const ::account::AddTodoRequest* request, ::account::CodeReply* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
+  ::grpc_impl::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_requestAddTodo_, context, request, response, reactor);
+}
+
+void Account::Stub::experimental_async::requestAddTodo(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::account::CodeReply* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
+  ::grpc_impl::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_requestAddTodo_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::account::CodeReply>* Account::Stub::AsyncrequestAddTodoRaw(::grpc::ClientContext* context, const ::account::AddTodoRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc_impl::internal::ClientAsyncResponseReaderFactory< ::account::CodeReply>::Create(channel_.get(), cq, rpcmethod_requestAddTodo_, context, request, true);
+}
+
+::grpc::ClientAsyncResponseReader< ::account::CodeReply>* Account::Stub::PrepareAsyncrequestAddTodoRaw(::grpc::ClientContext* context, const ::account::AddTodoRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc_impl::internal::ClientAsyncResponseReaderFactory< ::account::CodeReply>::Create(channel_.get(), cq, rpcmethod_requestAddTodo_, context, request, false);
+}
+
+::grpc::Status Account::Stub::requestUpdateTodo(::grpc::ClientContext* context, const ::account::UpdateTodoRequest& request, ::account::CodeReply* response) {
+  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_requestUpdateTodo_, context, request, response);
+}
+
+void Account::Stub::experimental_async::requestUpdateTodo(::grpc::ClientContext* context, const ::account::UpdateTodoRequest* request, ::account::CodeReply* response, std::function<void(::grpc::Status)> f) {
+  ::grpc_impl::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_requestUpdateTodo_, context, request, response, std::move(f));
+}
+
+void Account::Stub::experimental_async::requestUpdateTodo(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::account::CodeReply* response, std::function<void(::grpc::Status)> f) {
+  ::grpc_impl::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_requestUpdateTodo_, context, request, response, std::move(f));
+}
+
+void Account::Stub::experimental_async::requestUpdateTodo(::grpc::ClientContext* context, const ::account::UpdateTodoRequest* request, ::account::CodeReply* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
+  ::grpc_impl::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_requestUpdateTodo_, context, request, response, reactor);
+}
+
+void Account::Stub::experimental_async::requestUpdateTodo(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::account::CodeReply* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
+  ::grpc_impl::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_requestUpdateTodo_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::account::CodeReply>* Account::Stub::AsyncrequestUpdateTodoRaw(::grpc::ClientContext* context, const ::account::UpdateTodoRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc_impl::internal::ClientAsyncResponseReaderFactory< ::account::CodeReply>::Create(channel_.get(), cq, rpcmethod_requestUpdateTodo_, context, request, true);
+}
+
+::grpc::ClientAsyncResponseReader< ::account::CodeReply>* Account::Stub::PrepareAsyncrequestUpdateTodoRaw(::grpc::ClientContext* context, const ::account::UpdateTodoRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc_impl::internal::ClientAsyncResponseReaderFactory< ::account::CodeReply>::Create(channel_.get(), cq, rpcmethod_requestUpdateTodo_, context, request, false);
+}
+
 Account::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       Account_method_names[0],
@@ -234,6 +354,46 @@ Account::Service::Service() {
              ::account::CodeReply* resp) {
                return service->refreshToken(ctx, req, resp);
              }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      Account_method_names[5],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< Account::Service, ::account::AddCategoryRequest, ::account::CodeReply>(
+          [](Account::Service* service,
+             ::grpc_impl::ServerContext* ctx,
+             const ::account::AddCategoryRequest* req,
+             ::account::CodeReply* resp) {
+               return service->requestAddCategory(ctx, req, resp);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      Account_method_names[6],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< Account::Service, ::account::FetchCategoryRequest, ::account::CodeReply>(
+          [](Account::Service* service,
+             ::grpc_impl::ServerContext* ctx,
+             const ::account::FetchCategoryRequest* req,
+             ::account::CodeReply* resp) {
+               return service->requestFetchCategory(ctx, req, resp);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      Account_method_names[7],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< Account::Service, ::account::AddTodoRequest, ::account::CodeReply>(
+          [](Account::Service* service,
+             ::grpc_impl::ServerContext* ctx,
+             const ::account::AddTodoRequest* req,
+             ::account::CodeReply* resp) {
+               return service->requestAddTodo(ctx, req, resp);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      Account_method_names[8],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< Account::Service, ::account::UpdateTodoRequest, ::account::CodeReply>(
+          [](Account::Service* service,
+             ::grpc_impl::ServerContext* ctx,
+             const ::account::UpdateTodoRequest* req,
+             ::account::CodeReply* resp) {
+               return service->requestUpdateTodo(ctx, req, resp);
+             }, this)));
 }
 
 Account::Service::~Service() {
@@ -268,6 +428,34 @@ Account::Service::~Service() {
 }
 
 ::grpc::Status Account::Service::refreshToken(::grpc::ServerContext* context, const ::account::RefreshRequest* request, ::account::CodeReply* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status Account::Service::requestAddCategory(::grpc::ServerContext* context, const ::account::AddCategoryRequest* request, ::account::CodeReply* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status Account::Service::requestFetchCategory(::grpc::ServerContext* context, const ::account::FetchCategoryRequest* request, ::account::CodeReply* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status Account::Service::requestAddTodo(::grpc::ServerContext* context, const ::account::AddTodoRequest* request, ::account::CodeReply* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status Account::Service::requestUpdateTodo(::grpc::ServerContext* context, const ::account::UpdateTodoRequest* request, ::account::CodeReply* response) {
   (void) context;
   (void) request;
   (void) response;

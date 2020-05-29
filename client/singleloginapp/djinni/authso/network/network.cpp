@@ -22,12 +22,16 @@ using grpc::ClientContext;
 using grpc::Status;
 
 using account::Account;
-using account::LoginRequest;
-using account::SignRequest;
-using account::LogoutRequest;
-using account::ConnectRequest;
-using account::RefreshRequest;
+using account::AddCategoryRequest;
+using account::AddTodoRequest;
 using account::CodeReply;
+using account::ConnectRequest;
+using account::FetchCategoryRequest;
+using account::LoginRequest;
+using account::LogoutRequest;
+using account::RefreshRequest;
+using account::SignRequest;
+using account::UpdateTodoRequest;
 
 using namespace auth;
 using namespace project_constants;
@@ -210,7 +214,131 @@ namespace network{
                 LOGE("[network.refreshToken] catch refreshToken network error");
                 return reply;
             }
-            
+        }
+
+        CodeReply addCategory(const std::string &title, const std::string &token)
+        {
+            // Data we are sending to the server.
+            AddCategoryRequest request;
+            request.set_token(token);
+            request.set_title(title);
+
+            // Container for the data we expect from the server.
+            CodeReply reply;
+
+            // Context for the client. It could be used to convey extra information to
+            // the server and/or tweak certain RPC behaviors.
+            ClientContext context;
+
+            try
+            {
+                // The actual RPC.
+                Status status = stub_->requestAddCategory(&context, request, &reply);
+
+                if (status.ok())
+                {
+                    return reply;
+                }
+                else
+                {
+                    //todo 网络错误吗转换
+                    reply.set_code(-1);
+                    reply.set_msg(ToastTip::TOAST_ERROR_NETWORK_UNVALAIBLE);
+                    LOGD("[network.addCategory] " + status.error_message());
+                    return reply;
+                }
+            }
+            catch (...)
+            {
+                reply.set_code(-2);
+                reply.set_msg(ToastTip::TOAST_ERROR_NETWORK_UNVALAIBLE);
+                LOGE("[network.addCategory] catch addCategory network error");
+                return reply;
+            }
+        }
+
+        CodeReply addTodo(const std::string &content, const int32_t cid, const std::string &token)
+        {
+            // Data we are sending to the server.
+            AddTodoRequest request;
+            request.set_token(token);
+            request.set_content(content);
+            request.set_cid(cid);
+
+            // Container for the data we expect from the server.
+            CodeReply reply;
+
+            // Context for the client. It could be used to convey extra information to
+            // the server and/or tweak certain RPC behaviors.
+            ClientContext context;
+
+            try
+            {
+                // The actual RPC.
+                Status status = stub_->requestAddTodo(&context, request, &reply);
+
+                if (status.ok())
+                {
+                    return reply;
+                }
+                else
+                {
+                    //todo 网络错误吗转换
+                    reply.set_code(-1);
+                    reply.set_msg(ToastTip::TOAST_ERROR_NETWORK_UNVALAIBLE);
+                    LOGD("[network.addTodo] " + status.error_message());
+                    return reply;
+                }
+            }
+            catch (...)
+            {
+                reply.set_code(-2);
+                reply.set_msg(ToastTip::TOAST_ERROR_NETWORK_UNVALAIBLE);
+                LOGE("[network.addTodo] catch addTodo network error");
+                return reply;
+            }
+        }
+
+        CodeReply updateTodo(const int32_t cid, const int32_t status, const std::string &token)
+        {
+            // Data we are sending to the server.
+            UpdateTodoRequest request;
+            request.set_token(token);
+            request.set_status(status);
+            request.set_tid(cid);
+
+            // Container for the data we expect from the server.
+            CodeReply reply;
+
+            // Context for the client. It could be used to convey extra information to
+            // the server and/or tweak certain RPC behaviors.
+            ClientContext context;
+
+            try
+            {
+                // The actual RPC.
+                Status status = stub_->requestUpdateTodo(&context, request, &reply);
+
+                if (status.ok())
+                {
+                    return reply;
+                }
+                else
+                {
+                    //todo 网络错误吗转换
+                    reply.set_code(-1);
+                    reply.set_msg(ToastTip::TOAST_ERROR_NETWORK_UNVALAIBLE);
+                    LOGD("[network.addTodo] " + status.error_message());
+                    return reply;
+                }
+            }
+            catch (...)
+            {
+                reply.set_code(-2);
+                reply.set_msg(ToastTip::TOAST_ERROR_NETWORK_UNVALAIBLE);
+                LOGE("[network.addTodo] catch addTodo network error");
+                return reply;
+            }
         }
 
     private:
@@ -304,4 +432,45 @@ namespace network{
         return result;
     }
 
+    ReqResult NetworkCore::addCategory(const std::string title, const std::string token)
+    {
+        AccountClient client(utils::NetworkUtils::getNetworkChannel());
+
+        CodeReply reply = client.addCategory(title, token);
+
+        ReqResult result;
+        result.setCode(reply.code());
+        result.setMsg(reply.msg());
+        result.setData(reply.data());
+
+        return result;
+    }
+
+    ReqResult NetworkCore::addTodo(const std::string content, const int32_t cid, const std::string token)
+    {
+        AccountClient client(utils::NetworkUtils::getNetworkChannel());
+
+        CodeReply reply = client.addTodo(content, cid, token);
+
+        ReqResult result;
+        result.setCode(reply.code());
+        result.setMsg(reply.msg());
+        result.setData(reply.data());
+
+        return result;
+    }
+
+    ReqResult NetworkCore::updateTodo(const int32_t tid, const int32_t status, const std::string token)
+    {
+        AccountClient client(utils::NetworkUtils::getNetworkChannel());
+
+        CodeReply reply = client.updateTodo(tid, status, token);
+
+        ReqResult result;
+        result.setCode(reply.code());
+        result.setMsg(reply.msg());
+        result.setData(reply.data());
+
+        return result;
+    }
 }

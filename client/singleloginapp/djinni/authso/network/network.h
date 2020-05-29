@@ -8,6 +8,7 @@
 #endif //ANDROID_NETWORK_H
 
 using namespace auth;
+using namespace std;
 
 namespace network{
 
@@ -75,7 +76,14 @@ namespace network{
          出口参数
          ReqResult：         接口返回数据
          */
-        ReqResult refreshToken(const std::string token,const std::string refreshToken);
+        ReqResult refreshToken(const std::string token, const std::string refreshToken);
+
+        ReqResult addCategory(const std::string title, const std::string token);
+
+        ReqResult addTodo(const std::string content, const int32_t cid, const std::string token);
+
+        ReqResult updateTodo(const int32_t tid, const int32_t status, const std::string token);
+
     private:
 
     };

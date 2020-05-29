@@ -47,7 +47,7 @@ struct TableStruct_account_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxillaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[6]
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[10]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
@@ -55,12 +55,21 @@ struct TableStruct_account_2eproto {
 };
 extern const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_account_2eproto;
 namespace account {
+class AddCategoryRequest;
+class AddCategoryRequestDefaultTypeInternal;
+extern AddCategoryRequestDefaultTypeInternal _AddCategoryRequest_default_instance_;
+class AddTodoRequest;
+class AddTodoRequestDefaultTypeInternal;
+extern AddTodoRequestDefaultTypeInternal _AddTodoRequest_default_instance_;
 class CodeReply;
 class CodeReplyDefaultTypeInternal;
 extern CodeReplyDefaultTypeInternal _CodeReply_default_instance_;
 class ConnectRequest;
 class ConnectRequestDefaultTypeInternal;
 extern ConnectRequestDefaultTypeInternal _ConnectRequest_default_instance_;
+class FetchCategoryRequest;
+class FetchCategoryRequestDefaultTypeInternal;
+extern FetchCategoryRequestDefaultTypeInternal _FetchCategoryRequest_default_instance_;
 class LoginRequest;
 class LoginRequestDefaultTypeInternal;
 extern LoginRequestDefaultTypeInternal _LoginRequest_default_instance_;
@@ -73,14 +82,21 @@ extern RefreshRequestDefaultTypeInternal _RefreshRequest_default_instance_;
 class SignRequest;
 class SignRequestDefaultTypeInternal;
 extern SignRequestDefaultTypeInternal _SignRequest_default_instance_;
+class UpdateTodoRequest;
+class UpdateTodoRequestDefaultTypeInternal;
+extern UpdateTodoRequestDefaultTypeInternal _UpdateTodoRequest_default_instance_;
 }  // namespace account
 PROTOBUF_NAMESPACE_OPEN
+template<> ::account::AddCategoryRequest* Arena::CreateMaybeMessage<::account::AddCategoryRequest>(Arena*);
+template<> ::account::AddTodoRequest* Arena::CreateMaybeMessage<::account::AddTodoRequest>(Arena*);
 template<> ::account::CodeReply* Arena::CreateMaybeMessage<::account::CodeReply>(Arena*);
 template<> ::account::ConnectRequest* Arena::CreateMaybeMessage<::account::ConnectRequest>(Arena*);
+template<> ::account::FetchCategoryRequest* Arena::CreateMaybeMessage<::account::FetchCategoryRequest>(Arena*);
 template<> ::account::LoginRequest* Arena::CreateMaybeMessage<::account::LoginRequest>(Arena*);
 template<> ::account::LogoutRequest* Arena::CreateMaybeMessage<::account::LogoutRequest>(Arena*);
 template<> ::account::RefreshRequest* Arena::CreateMaybeMessage<::account::RefreshRequest>(Arena*);
 template<> ::account::SignRequest* Arena::CreateMaybeMessage<::account::SignRequest>(Arena*);
+template<> ::account::UpdateTodoRequest* Arena::CreateMaybeMessage<::account::UpdateTodoRequest>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
 namespace account {
 
@@ -815,6 +831,615 @@ class RefreshRequest :
 };
 // -------------------------------------------------------------------
 
+class AddCategoryRequest :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:account.AddCategoryRequest) */ {
+ public:
+  AddCategoryRequest();
+  virtual ~AddCategoryRequest();
+
+  AddCategoryRequest(const AddCategoryRequest& from);
+  AddCategoryRequest(AddCategoryRequest&& from) noexcept
+    : AddCategoryRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline AddCategoryRequest& operator=(const AddCategoryRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline AddCategoryRequest& operator=(AddCategoryRequest&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const AddCategoryRequest& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const AddCategoryRequest* internal_default_instance() {
+    return reinterpret_cast<const AddCategoryRequest*>(
+               &_AddCategoryRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    5;
+
+  friend void swap(AddCategoryRequest& a, AddCategoryRequest& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(AddCategoryRequest* other) {
+    if (other == this) return;
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline AddCategoryRequest* New() const final {
+    return CreateMaybeMessage<AddCategoryRequest>(nullptr);
+  }
+
+  AddCategoryRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<AddCategoryRequest>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const AddCategoryRequest& from);
+  void MergeFrom(const AddCategoryRequest& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(AddCategoryRequest* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "account.AddCategoryRequest";
+  }
+  private:
+  inline ::PROTOBUF_NAMESPACE_ID::Arena* GetArenaNoVirtual() const {
+    return nullptr;
+  }
+  inline void* MaybeArenaPtr() const {
+    return nullptr;
+  }
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_account_2eproto);
+    return ::descriptor_table_account_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kTokenFieldNumber = 1,
+    kTitleFieldNumber = 2,
+  };
+  // string token = 1;
+  void clear_token();
+  const std::string& token() const;
+  void set_token(const std::string& value);
+  void set_token(std::string&& value);
+  void set_token(const char* value);
+  void set_token(const char* value, size_t size);
+  std::string* mutable_token();
+  std::string* release_token();
+  void set_allocated_token(std::string* token);
+  private:
+  const std::string& _internal_token() const;
+  void _internal_set_token(const std::string& value);
+  std::string* _internal_mutable_token();
+  public:
+
+  // string title = 2;
+  void clear_title();
+  const std::string& title() const;
+  void set_title(const std::string& value);
+  void set_title(std::string&& value);
+  void set_title(const char* value);
+  void set_title(const char* value, size_t size);
+  std::string* mutable_title();
+  std::string* release_title();
+  void set_allocated_title(std::string* title);
+  private:
+  const std::string& _internal_title() const;
+  void _internal_set_title(const std::string& value);
+  std::string* _internal_mutable_title();
+  public:
+
+  // @@protoc_insertion_point(class_scope:account.AddCategoryRequest)
+ private:
+  class _Internal;
+
+  ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr token_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr title_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_account_2eproto;
+};
+// -------------------------------------------------------------------
+
+class FetchCategoryRequest :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:account.FetchCategoryRequest) */ {
+ public:
+  FetchCategoryRequest();
+  virtual ~FetchCategoryRequest();
+
+  FetchCategoryRequest(const FetchCategoryRequest& from);
+  FetchCategoryRequest(FetchCategoryRequest&& from) noexcept
+    : FetchCategoryRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline FetchCategoryRequest& operator=(const FetchCategoryRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline FetchCategoryRequest& operator=(FetchCategoryRequest&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const FetchCategoryRequest& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const FetchCategoryRequest* internal_default_instance() {
+    return reinterpret_cast<const FetchCategoryRequest*>(
+               &_FetchCategoryRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    6;
+
+  friend void swap(FetchCategoryRequest& a, FetchCategoryRequest& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(FetchCategoryRequest* other) {
+    if (other == this) return;
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline FetchCategoryRequest* New() const final {
+    return CreateMaybeMessage<FetchCategoryRequest>(nullptr);
+  }
+
+  FetchCategoryRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<FetchCategoryRequest>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const FetchCategoryRequest& from);
+  void MergeFrom(const FetchCategoryRequest& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(FetchCategoryRequest* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "account.FetchCategoryRequest";
+  }
+  private:
+  inline ::PROTOBUF_NAMESPACE_ID::Arena* GetArenaNoVirtual() const {
+    return nullptr;
+  }
+  inline void* MaybeArenaPtr() const {
+    return nullptr;
+  }
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_account_2eproto);
+    return ::descriptor_table_account_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kTokenFieldNumber = 1,
+  };
+  // string token = 1;
+  void clear_token();
+  const std::string& token() const;
+  void set_token(const std::string& value);
+  void set_token(std::string&& value);
+  void set_token(const char* value);
+  void set_token(const char* value, size_t size);
+  std::string* mutable_token();
+  std::string* release_token();
+  void set_allocated_token(std::string* token);
+  private:
+  const std::string& _internal_token() const;
+  void _internal_set_token(const std::string& value);
+  std::string* _internal_mutable_token();
+  public:
+
+  // @@protoc_insertion_point(class_scope:account.FetchCategoryRequest)
+ private:
+  class _Internal;
+
+  ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr token_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_account_2eproto;
+};
+// -------------------------------------------------------------------
+
+class AddTodoRequest :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:account.AddTodoRequest) */ {
+ public:
+  AddTodoRequest();
+  virtual ~AddTodoRequest();
+
+  AddTodoRequest(const AddTodoRequest& from);
+  AddTodoRequest(AddTodoRequest&& from) noexcept
+    : AddTodoRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline AddTodoRequest& operator=(const AddTodoRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline AddTodoRequest& operator=(AddTodoRequest&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const AddTodoRequest& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const AddTodoRequest* internal_default_instance() {
+    return reinterpret_cast<const AddTodoRequest*>(
+               &_AddTodoRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    7;
+
+  friend void swap(AddTodoRequest& a, AddTodoRequest& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(AddTodoRequest* other) {
+    if (other == this) return;
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline AddTodoRequest* New() const final {
+    return CreateMaybeMessage<AddTodoRequest>(nullptr);
+  }
+
+  AddTodoRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<AddTodoRequest>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const AddTodoRequest& from);
+  void MergeFrom(const AddTodoRequest& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(AddTodoRequest* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "account.AddTodoRequest";
+  }
+  private:
+  inline ::PROTOBUF_NAMESPACE_ID::Arena* GetArenaNoVirtual() const {
+    return nullptr;
+  }
+  inline void* MaybeArenaPtr() const {
+    return nullptr;
+  }
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_account_2eproto);
+    return ::descriptor_table_account_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kTokenFieldNumber = 1,
+    kContentFieldNumber = 2,
+    kCidFieldNumber = 3,
+  };
+  // string token = 1;
+  void clear_token();
+  const std::string& token() const;
+  void set_token(const std::string& value);
+  void set_token(std::string&& value);
+  void set_token(const char* value);
+  void set_token(const char* value, size_t size);
+  std::string* mutable_token();
+  std::string* release_token();
+  void set_allocated_token(std::string* token);
+  private:
+  const std::string& _internal_token() const;
+  void _internal_set_token(const std::string& value);
+  std::string* _internal_mutable_token();
+  public:
+
+  // string content = 2;
+  void clear_content();
+  const std::string& content() const;
+  void set_content(const std::string& value);
+  void set_content(std::string&& value);
+  void set_content(const char* value);
+  void set_content(const char* value, size_t size);
+  std::string* mutable_content();
+  std::string* release_content();
+  void set_allocated_content(std::string* content);
+  private:
+  const std::string& _internal_content() const;
+  void _internal_set_content(const std::string& value);
+  std::string* _internal_mutable_content();
+  public:
+
+  // int32 cid = 3;
+  void clear_cid();
+  ::PROTOBUF_NAMESPACE_ID::int32 cid() const;
+  void set_cid(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_cid() const;
+  void _internal_set_cid(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:account.AddTodoRequest)
+ private:
+  class _Internal;
+
+  ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr token_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr content_;
+  ::PROTOBUF_NAMESPACE_ID::int32 cid_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_account_2eproto;
+};
+// -------------------------------------------------------------------
+
+class UpdateTodoRequest :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:account.UpdateTodoRequest) */ {
+ public:
+  UpdateTodoRequest();
+  virtual ~UpdateTodoRequest();
+
+  UpdateTodoRequest(const UpdateTodoRequest& from);
+  UpdateTodoRequest(UpdateTodoRequest&& from) noexcept
+    : UpdateTodoRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline UpdateTodoRequest& operator=(const UpdateTodoRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline UpdateTodoRequest& operator=(UpdateTodoRequest&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const UpdateTodoRequest& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const UpdateTodoRequest* internal_default_instance() {
+    return reinterpret_cast<const UpdateTodoRequest*>(
+               &_UpdateTodoRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    8;
+
+  friend void swap(UpdateTodoRequest& a, UpdateTodoRequest& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(UpdateTodoRequest* other) {
+    if (other == this) return;
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline UpdateTodoRequest* New() const final {
+    return CreateMaybeMessage<UpdateTodoRequest>(nullptr);
+  }
+
+  UpdateTodoRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<UpdateTodoRequest>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const UpdateTodoRequest& from);
+  void MergeFrom(const UpdateTodoRequest& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(UpdateTodoRequest* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "account.UpdateTodoRequest";
+  }
+  private:
+  inline ::PROTOBUF_NAMESPACE_ID::Arena* GetArenaNoVirtual() const {
+    return nullptr;
+  }
+  inline void* MaybeArenaPtr() const {
+    return nullptr;
+  }
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_account_2eproto);
+    return ::descriptor_table_account_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kTokenFieldNumber = 1,
+    kTidFieldNumber = 2,
+    kStatusFieldNumber = 3,
+  };
+  // string token = 1;
+  void clear_token();
+  const std::string& token() const;
+  void set_token(const std::string& value);
+  void set_token(std::string&& value);
+  void set_token(const char* value);
+  void set_token(const char* value, size_t size);
+  std::string* mutable_token();
+  std::string* release_token();
+  void set_allocated_token(std::string* token);
+  private:
+  const std::string& _internal_token() const;
+  void _internal_set_token(const std::string& value);
+  std::string* _internal_mutable_token();
+  public:
+
+  // int32 tid = 2;
+  void clear_tid();
+  ::PROTOBUF_NAMESPACE_ID::int32 tid() const;
+  void set_tid(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_tid() const;
+  void _internal_set_tid(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
+  // int32 status = 3;
+  void clear_status();
+  ::PROTOBUF_NAMESPACE_ID::int32 status() const;
+  void set_status(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_status() const;
+  void _internal_set_status(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:account.UpdateTodoRequest)
+ private:
+  class _Internal;
+
+  ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr token_;
+  ::PROTOBUF_NAMESPACE_ID::int32 tid_;
+  ::PROTOBUF_NAMESPACE_ID::int32 status_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_account_2eproto;
+};
+// -------------------------------------------------------------------
+
 class CodeReply :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:account.CodeReply) */ {
  public:
@@ -857,7 +1482,7 @@ class CodeReply :
                &_CodeReply_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    5;
+    9;
 
   friend void swap(CodeReply& a, CodeReply& b) {
     a.Swap(&b);
@@ -1486,6 +2111,442 @@ inline void RefreshRequest::set_allocated_refresh_token(std::string* refresh_tok
 
 // -------------------------------------------------------------------
 
+// AddCategoryRequest
+
+// string token = 1;
+inline void AddCategoryRequest::clear_token() {
+  token_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+inline const std::string& AddCategoryRequest::token() const {
+  // @@protoc_insertion_point(field_get:account.AddCategoryRequest.token)
+  return _internal_token();
+}
+inline void AddCategoryRequest::set_token(const std::string& value) {
+  _internal_set_token(value);
+  // @@protoc_insertion_point(field_set:account.AddCategoryRequest.token)
+}
+inline std::string* AddCategoryRequest::mutable_token() {
+  // @@protoc_insertion_point(field_mutable:account.AddCategoryRequest.token)
+  return _internal_mutable_token();
+}
+inline const std::string& AddCategoryRequest::_internal_token() const {
+  return token_.GetNoArena();
+}
+inline void AddCategoryRequest::_internal_set_token(const std::string& value) {
+  
+  token_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value);
+}
+inline void AddCategoryRequest::set_token(std::string&& value) {
+  
+  token_.SetNoArena(
+    &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:account.AddCategoryRequest.token)
+}
+inline void AddCategoryRequest::set_token(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  
+  token_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:account.AddCategoryRequest.token)
+}
+inline void AddCategoryRequest::set_token(const char* value, size_t size) {
+  
+  token_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:account.AddCategoryRequest.token)
+}
+inline std::string* AddCategoryRequest::_internal_mutable_token() {
+  
+  return token_.MutableNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+inline std::string* AddCategoryRequest::release_token() {
+  // @@protoc_insertion_point(field_release:account.AddCategoryRequest.token)
+  
+  return token_.ReleaseNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+inline void AddCategoryRequest::set_allocated_token(std::string* token) {
+  if (token != nullptr) {
+    
+  } else {
+    
+  }
+  token_.SetAllocatedNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), token);
+  // @@protoc_insertion_point(field_set_allocated:account.AddCategoryRequest.token)
+}
+
+// string title = 2;
+inline void AddCategoryRequest::clear_title() {
+  title_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+inline const std::string& AddCategoryRequest::title() const {
+  // @@protoc_insertion_point(field_get:account.AddCategoryRequest.title)
+  return _internal_title();
+}
+inline void AddCategoryRequest::set_title(const std::string& value) {
+  _internal_set_title(value);
+  // @@protoc_insertion_point(field_set:account.AddCategoryRequest.title)
+}
+inline std::string* AddCategoryRequest::mutable_title() {
+  // @@protoc_insertion_point(field_mutable:account.AddCategoryRequest.title)
+  return _internal_mutable_title();
+}
+inline const std::string& AddCategoryRequest::_internal_title() const {
+  return title_.GetNoArena();
+}
+inline void AddCategoryRequest::_internal_set_title(const std::string& value) {
+  
+  title_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value);
+}
+inline void AddCategoryRequest::set_title(std::string&& value) {
+  
+  title_.SetNoArena(
+    &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:account.AddCategoryRequest.title)
+}
+inline void AddCategoryRequest::set_title(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  
+  title_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:account.AddCategoryRequest.title)
+}
+inline void AddCategoryRequest::set_title(const char* value, size_t size) {
+  
+  title_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:account.AddCategoryRequest.title)
+}
+inline std::string* AddCategoryRequest::_internal_mutable_title() {
+  
+  return title_.MutableNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+inline std::string* AddCategoryRequest::release_title() {
+  // @@protoc_insertion_point(field_release:account.AddCategoryRequest.title)
+  
+  return title_.ReleaseNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+inline void AddCategoryRequest::set_allocated_title(std::string* title) {
+  if (title != nullptr) {
+    
+  } else {
+    
+  }
+  title_.SetAllocatedNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), title);
+  // @@protoc_insertion_point(field_set_allocated:account.AddCategoryRequest.title)
+}
+
+// -------------------------------------------------------------------
+
+// FetchCategoryRequest
+
+// string token = 1;
+inline void FetchCategoryRequest::clear_token() {
+  token_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+inline const std::string& FetchCategoryRequest::token() const {
+  // @@protoc_insertion_point(field_get:account.FetchCategoryRequest.token)
+  return _internal_token();
+}
+inline void FetchCategoryRequest::set_token(const std::string& value) {
+  _internal_set_token(value);
+  // @@protoc_insertion_point(field_set:account.FetchCategoryRequest.token)
+}
+inline std::string* FetchCategoryRequest::mutable_token() {
+  // @@protoc_insertion_point(field_mutable:account.FetchCategoryRequest.token)
+  return _internal_mutable_token();
+}
+inline const std::string& FetchCategoryRequest::_internal_token() const {
+  return token_.GetNoArena();
+}
+inline void FetchCategoryRequest::_internal_set_token(const std::string& value) {
+  
+  token_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value);
+}
+inline void FetchCategoryRequest::set_token(std::string&& value) {
+  
+  token_.SetNoArena(
+    &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:account.FetchCategoryRequest.token)
+}
+inline void FetchCategoryRequest::set_token(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  
+  token_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:account.FetchCategoryRequest.token)
+}
+inline void FetchCategoryRequest::set_token(const char* value, size_t size) {
+  
+  token_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:account.FetchCategoryRequest.token)
+}
+inline std::string* FetchCategoryRequest::_internal_mutable_token() {
+  
+  return token_.MutableNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+inline std::string* FetchCategoryRequest::release_token() {
+  // @@protoc_insertion_point(field_release:account.FetchCategoryRequest.token)
+  
+  return token_.ReleaseNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+inline void FetchCategoryRequest::set_allocated_token(std::string* token) {
+  if (token != nullptr) {
+    
+  } else {
+    
+  }
+  token_.SetAllocatedNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), token);
+  // @@protoc_insertion_point(field_set_allocated:account.FetchCategoryRequest.token)
+}
+
+// -------------------------------------------------------------------
+
+// AddTodoRequest
+
+// string token = 1;
+inline void AddTodoRequest::clear_token() {
+  token_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+inline const std::string& AddTodoRequest::token() const {
+  // @@protoc_insertion_point(field_get:account.AddTodoRequest.token)
+  return _internal_token();
+}
+inline void AddTodoRequest::set_token(const std::string& value) {
+  _internal_set_token(value);
+  // @@protoc_insertion_point(field_set:account.AddTodoRequest.token)
+}
+inline std::string* AddTodoRequest::mutable_token() {
+  // @@protoc_insertion_point(field_mutable:account.AddTodoRequest.token)
+  return _internal_mutable_token();
+}
+inline const std::string& AddTodoRequest::_internal_token() const {
+  return token_.GetNoArena();
+}
+inline void AddTodoRequest::_internal_set_token(const std::string& value) {
+  
+  token_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value);
+}
+inline void AddTodoRequest::set_token(std::string&& value) {
+  
+  token_.SetNoArena(
+    &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:account.AddTodoRequest.token)
+}
+inline void AddTodoRequest::set_token(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  
+  token_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:account.AddTodoRequest.token)
+}
+inline void AddTodoRequest::set_token(const char* value, size_t size) {
+  
+  token_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:account.AddTodoRequest.token)
+}
+inline std::string* AddTodoRequest::_internal_mutable_token() {
+  
+  return token_.MutableNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+inline std::string* AddTodoRequest::release_token() {
+  // @@protoc_insertion_point(field_release:account.AddTodoRequest.token)
+  
+  return token_.ReleaseNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+inline void AddTodoRequest::set_allocated_token(std::string* token) {
+  if (token != nullptr) {
+    
+  } else {
+    
+  }
+  token_.SetAllocatedNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), token);
+  // @@protoc_insertion_point(field_set_allocated:account.AddTodoRequest.token)
+}
+
+// string content = 2;
+inline void AddTodoRequest::clear_content() {
+  content_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+inline const std::string& AddTodoRequest::content() const {
+  // @@protoc_insertion_point(field_get:account.AddTodoRequest.content)
+  return _internal_content();
+}
+inline void AddTodoRequest::set_content(const std::string& value) {
+  _internal_set_content(value);
+  // @@protoc_insertion_point(field_set:account.AddTodoRequest.content)
+}
+inline std::string* AddTodoRequest::mutable_content() {
+  // @@protoc_insertion_point(field_mutable:account.AddTodoRequest.content)
+  return _internal_mutable_content();
+}
+inline const std::string& AddTodoRequest::_internal_content() const {
+  return content_.GetNoArena();
+}
+inline void AddTodoRequest::_internal_set_content(const std::string& value) {
+  
+  content_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value);
+}
+inline void AddTodoRequest::set_content(std::string&& value) {
+  
+  content_.SetNoArena(
+    &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:account.AddTodoRequest.content)
+}
+inline void AddTodoRequest::set_content(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  
+  content_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:account.AddTodoRequest.content)
+}
+inline void AddTodoRequest::set_content(const char* value, size_t size) {
+  
+  content_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:account.AddTodoRequest.content)
+}
+inline std::string* AddTodoRequest::_internal_mutable_content() {
+  
+  return content_.MutableNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+inline std::string* AddTodoRequest::release_content() {
+  // @@protoc_insertion_point(field_release:account.AddTodoRequest.content)
+  
+  return content_.ReleaseNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+inline void AddTodoRequest::set_allocated_content(std::string* content) {
+  if (content != nullptr) {
+    
+  } else {
+    
+  }
+  content_.SetAllocatedNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), content);
+  // @@protoc_insertion_point(field_set_allocated:account.AddTodoRequest.content)
+}
+
+// int32 cid = 3;
+inline void AddTodoRequest::clear_cid() {
+  cid_ = 0;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 AddTodoRequest::_internal_cid() const {
+  return cid_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 AddTodoRequest::cid() const {
+  // @@protoc_insertion_point(field_get:account.AddTodoRequest.cid)
+  return _internal_cid();
+}
+inline void AddTodoRequest::_internal_set_cid(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  
+  cid_ = value;
+}
+inline void AddTodoRequest::set_cid(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_cid(value);
+  // @@protoc_insertion_point(field_set:account.AddTodoRequest.cid)
+}
+
+// -------------------------------------------------------------------
+
+// UpdateTodoRequest
+
+// string token = 1;
+inline void UpdateTodoRequest::clear_token() {
+  token_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+inline const std::string& UpdateTodoRequest::token() const {
+  // @@protoc_insertion_point(field_get:account.UpdateTodoRequest.token)
+  return _internal_token();
+}
+inline void UpdateTodoRequest::set_token(const std::string& value) {
+  _internal_set_token(value);
+  // @@protoc_insertion_point(field_set:account.UpdateTodoRequest.token)
+}
+inline std::string* UpdateTodoRequest::mutable_token() {
+  // @@protoc_insertion_point(field_mutable:account.UpdateTodoRequest.token)
+  return _internal_mutable_token();
+}
+inline const std::string& UpdateTodoRequest::_internal_token() const {
+  return token_.GetNoArena();
+}
+inline void UpdateTodoRequest::_internal_set_token(const std::string& value) {
+  
+  token_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value);
+}
+inline void UpdateTodoRequest::set_token(std::string&& value) {
+  
+  token_.SetNoArena(
+    &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:account.UpdateTodoRequest.token)
+}
+inline void UpdateTodoRequest::set_token(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  
+  token_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:account.UpdateTodoRequest.token)
+}
+inline void UpdateTodoRequest::set_token(const char* value, size_t size) {
+  
+  token_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:account.UpdateTodoRequest.token)
+}
+inline std::string* UpdateTodoRequest::_internal_mutable_token() {
+  
+  return token_.MutableNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+inline std::string* UpdateTodoRequest::release_token() {
+  // @@protoc_insertion_point(field_release:account.UpdateTodoRequest.token)
+  
+  return token_.ReleaseNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+inline void UpdateTodoRequest::set_allocated_token(std::string* token) {
+  if (token != nullptr) {
+    
+  } else {
+    
+  }
+  token_.SetAllocatedNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), token);
+  // @@protoc_insertion_point(field_set_allocated:account.UpdateTodoRequest.token)
+}
+
+// int32 tid = 2;
+inline void UpdateTodoRequest::clear_tid() {
+  tid_ = 0;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 UpdateTodoRequest::_internal_tid() const {
+  return tid_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 UpdateTodoRequest::tid() const {
+  // @@protoc_insertion_point(field_get:account.UpdateTodoRequest.tid)
+  return _internal_tid();
+}
+inline void UpdateTodoRequest::_internal_set_tid(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  
+  tid_ = value;
+}
+inline void UpdateTodoRequest::set_tid(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_tid(value);
+  // @@protoc_insertion_point(field_set:account.UpdateTodoRequest.tid)
+}
+
+// int32 status = 3;
+inline void UpdateTodoRequest::clear_status() {
+  status_ = 0;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 UpdateTodoRequest::_internal_status() const {
+  return status_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 UpdateTodoRequest::status() const {
+  // @@protoc_insertion_point(field_get:account.UpdateTodoRequest.status)
+  return _internal_status();
+}
+inline void UpdateTodoRequest::_internal_set_status(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  
+  status_ = value;
+}
+inline void UpdateTodoRequest::set_status(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_status(value);
+  // @@protoc_insertion_point(field_set:account.UpdateTodoRequest.status)
+}
+
+// -------------------------------------------------------------------
+
 // CodeReply
 
 // int32 code = 1;
@@ -1631,6 +2692,14 @@ inline void CodeReply::set_allocated_data(std::string* data) {
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

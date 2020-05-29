@@ -59,6 +59,12 @@ namespace auth
         */
         virtual void check_login_status() override;
 
+        virtual void add_category(const string &title) override;
+
+        virtual void add_todo(const string &content, int32_t cid) override;
+
+        virtual void update_todo(int32_t tid, int32_t status) override;
+
         /*
         主要功能：
         执行刷新用户Token
