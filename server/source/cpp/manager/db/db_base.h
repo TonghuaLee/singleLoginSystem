@@ -162,7 +162,7 @@ public:
        出口参数：
        bool ：true表示存在；false表示不存在
        */
-           bool isExist(string SQL, vector<string> columnsV);
+        bool isExist(string SQL, vector<string> columnsV);
 
        /*
        主要功能：
