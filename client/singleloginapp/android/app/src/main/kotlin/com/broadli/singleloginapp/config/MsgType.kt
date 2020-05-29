@@ -13,8 +13,9 @@ class MsgType {
         public val MAIN_CMD_DEFALUT = 0
         public val MAIN_CMD_LOGIN = 100
         public val MAIN_CMD_REGISTER = 101
-        public val MAIN_CMD_LOGINOUT= 102
-        
+        public val MAIN_CMD_LOGINOUT = 102
+        public val MAIN_CMD_CHECK_LOGIN_STATE = 103
+
         // subCmd
         public val SUB_CMD_LOGINOUT_SELF = 1    // 主动下线
         public val SUB_CMD_LOGINOUT_SERVER = 2  // 被踢下线

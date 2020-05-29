@@ -199,7 +199,6 @@ class _LoginPageState extends State<LoginPage> with EventListener {
 
   @override
   void onEvent(int mainCmd, int subCmd, Message msg) {
-    LogUtils.d(TAG, "onEvent:" + msg.toString());
     if (mainCmd == MsgChannelUtil.MAIN_CMD_LOGIN) {
       if (msg != null) {
         if (msg.code == ResultCode.SUCCESS) {

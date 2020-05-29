@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "io.grpc.singlelogin.todo";
+option java_outer_classname = "TodoProto";
+option objc_class_prefix = "ACC";
+
+package todo;
+
+service Todo {
+  rpc requestAddCategory  (AddCategoryRequest)    returns (CodeReply) {}
+  rpc requestFetchCategory   (FetchCategoryRequest)     returns (CodeReply) {}
+  rpc requestAddTodo      (AddTodoRequest)  returns (CodeReply) {}
+  rpc requestUpdateTodo     (UpdateTodoRequest)   returns (CodeReply) {}
+}
+
+message AddCategoryRequest {
+  string token = 1;
+  string title = 2;       // 名字
+  string uid = 3;         // 用户id
+}
+
+message FetchCategoryRequest {
+  string token = 1;
+}
+
+message AddTodoRequest {
+  string token = 1;
+  string content = 2;   // todo 内容
+  string cid = 3;       // 分类id
+}
+
+message UpdateTodoRequest {
+  string token = 1;
+  string tid = 2;       // todo项的id
+  string status = 3;    // 状态
+}
+
+message CodeReply {
+  int32 code = 1;
+  string msg = 2;
+  string data = 3;
+}

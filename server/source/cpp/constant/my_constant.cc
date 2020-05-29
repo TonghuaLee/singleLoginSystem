@@ -79,3 +79,7 @@ const string MsgTip::RefreshToken_RefreshTokenCacheNotEqual = "RefreshToken与�
 const string MsgTip::RefreshToken_RefreshTokenHadExpire = "RefreshToken已经失效";//1005004
 const string MsgTip::RefreshToken_CreateSeesionFail = "账号会话信息创建失败";//1005005
 const string MsgTip::RefreshToken_TUidARTUidNotEqual = "Token与RefreshToken的UID不对应";    //1005006
+
+// 1005007 插入分类
+const int ResultCode::AddCategory_InsertDBFail = 1005007;
+const string MsgTip::AddCategory_InsertDBFail = "添加分类失败";

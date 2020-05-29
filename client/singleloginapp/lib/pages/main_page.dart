@@ -38,6 +38,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> with EventListener {
+  final TAG = "MyHomePageState";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -90,7 +92,7 @@ class _MyHomePageState extends State<MyHomePage> with EventListener {
             (BuildContext context, AsyncSnapshot<List<Category>> snapshot) {
           List<Category> categories = snapshot.data ?? List();
           return ListView.builder(
-            itemCount: categories.length + 2,
+            itemCount: categories.length + 3,
             itemBuilder: (BuildContext context, int index) {
               return _buildDrawerItem(context, categories, index);
             },
@@ -132,6 +134,28 @@ class _MyHomePageState extends State<MyHomePage> with EventListener {
         onTap: () {
           databaseProvider.setSelectedCategory(null);
           Navigator.pop(context);
+        },
+      );
+    } else if (index == categories.length + 2) {
+      return ListTile(
+        leading: Icon(Icons.exit_to_app),
+        title: Text("退出"),
+        onTap: () async {
+          // 通知后台退出
+          Map req = new Map();
+          Message msg = new Message(
+              0,
+              'req loginout from flutter',
+              req,
+              MsgChannelUtil.MAIN_CMD_LOGINOUT,
+              MsgChannelUtil.MAIN_CMD_DEFALUT);
+          Message result = await MsgChannelUtil.getInstance().sendMessage(msg);
+          // 跳转到登录页
+          Navigator.pushAndRemoveUntil(context, new MaterialPageRoute(
+            builder: (BuildContext context) {
+              return new LoginPage();
+            },
+          ), (route) => route == null);
         },
       );
     } else {
@@ -218,8 +242,14 @@ class _MyHomePageState extends State<MyHomePage> with EventListener {
   }
 
   @override
-  void onEvent(int mainCmd, int subCmd, Message msg) {
+  void onEvent(int mainCmd, int subCmd, Message msg) async {
     if (mainCmd == MsgChannelUtil.MAIN_CMD_LOGINOUT) {
+      if (subCmd == MsgChannelUtil.SUB_CMD_LOGINOUT_SERVER) {
+        Map req = new Map();
+        Message msg = new Message(0, 'req loginout from flutter', req,
+            MsgChannelUtil.MAIN_CMD_CHECK_LOGIN_STATE, MsgChannelUtil.MAIN_CMD_DEFALUT);
+        await MsgChannelUtil.getInstance().sendMessage(msg);
+      }
       Navigator.pushAndRemoveUntil(context, new MaterialPageRoute(
         builder: (BuildContext context) {
           return new LoginPage();

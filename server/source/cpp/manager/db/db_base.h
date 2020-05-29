@@ -143,6 +143,12 @@ public:
        end;
        */
        Json::Value insertUserAccount(string account, string password, string pwdSalt, string &Msg);
+       
+       /**
+        * 主要功能：
+        * 插入todo分类
+        **/
+       Json::Value insertCategory(string title, int uid, string &Msg);
 
        /*
        主要功能：

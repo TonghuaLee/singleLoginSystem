@@ -195,6 +195,78 @@ UserAccount Database::queryUserAccountByAccount(string o_account)
 }
 
 /**
+ * 添加todo分类到数据库
+ **/
+bool Database::addCategory(string title, int uid)
+{
+    //参数判空
+    if (title.empty() || uid < 1)
+    {
+        LOGW("[db_manager.addCategory] param is empty");
+        return false;
+    }
+
+    //参数非法字符过滤
+    filterIllegalKeyword(title);
+
+    //执行插入数据操作
+    string msg;
+    Json::Value data = db_base->insertCategory(account, password, pwdSalt, msg);
+    int cid = CommonUtils::getIntByString(data["ID"].asString());
+    if (data["is_empty"].asBool() || cid <= 0)
+    {
+        LOGE("[db_manager.addCategory] " + msg);
+        return fasle;
+    }
+    return true;
+}
+
+/**
+ * 根据用户账号查询用户数据
+ **/
+Category Database::queryCategory(string o_title, int o_uid)
+{
+    //参数判空
+    if (o_title.empty())
+    {
+        LOGW("[db_manager.queryCategory] param is empty");
+        return Category(-1, "",  -1);
+    }
+
+    //参数非法字符过滤
+    filterIllegalKeyword(o_title);
+
+    //执行查询数据操作
+    int cid = -1;
+    int uid = -1;
+    string title;
+    string msg;
+    Json::Value data = db_base->selectCategory(o_title, o_uid, msg);
+
+    Json::FastWriter fw;
+    LOGD("[db_manager.queryCategory] query category info :" + fw.write(data));
+
+    if (data["is_empty"].asBool())
+    {
+        LOGE("[db_manager.queryCategory] data is empty");
+        return Category(-1, "", -1);
+    }
+    else
+    {
+        cid = CommonUtils::getIntByString(data["ID"].asString());
+        uid = CommonUtils::getIntByString(data["UID"].asString());
+        title = data["TITLE"].asString();
+        if (cid < 0)
+        {
+            LOGE("[db_manager.queryCategory] can not find title = " + o_title);
+            return Category(-1, "", -1);
+        }
+    }
+
+    return Category(cid, title, uid);
+}
+
+/**
  * 非法字符过滤
  **/ 
  void Database::filterIllegalKeyword(string & source_word){

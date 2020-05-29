@@ -42,6 +42,8 @@ namespace constants{
         const static int RefreshToken_CreateSeesionFail;
         const static int RefreshToken_TUidARTUidNotEqual;
 
+        const static int AddCategory_InsertDBFail;
+
     };
 
     /**
@@ -87,7 +89,8 @@ namespace constants{
         const static string RefreshToken_RefreshTokenHadExpire;     //1005004
         const static string RefreshToken_CreateSeesionFail;         //1005005
         const static string RefreshToken_TUidARTUidNotEqual;        //1005006
-
+        
+        const static string AddCategory_InsertDBFail;               //1005007
     };
 
 }

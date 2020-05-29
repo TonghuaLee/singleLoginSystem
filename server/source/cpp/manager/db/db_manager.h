@@ -9,9 +9,11 @@
 using namespace std;
 using namespace my_model;
 
-namespace manager{
+namespace manager
+{
 
-	class Database{
+	class Database
+	{
 	public:
 		Database();
 
@@ -61,7 +63,15 @@ namespace manager{
        	UserAccount：	用户账号信息
 		*/
 		UserAccount queryUserAccountByAccount(string account);
-	
+
+/***	todo 功能模块			****/
+		/**
+		 * 添加todo分类
+		 **/
+		bool addCategory(string title, int uid);
+
+		Category queryCategory(string title, int uid);
+
 		/*
 		主要功能：
 		获取数据库操作类
@@ -69,19 +79,18 @@ namespace manager{
        	出口参数：
        	Database ： 	数据库操作类（静态单例）
 		*/
-		static Database* getDatabase();
+		static Database *getDatabase();
 
 	private:
-
 		//数据库操作类（静态单例）
-		static Database* database; 
+		static Database *database;
 
 		//数据库基础操作类
-		DBBase* db_base = new DBBase();
+		DBBase *db_base = new DBBase();
 
 		//用户账号数据库表名
 		string TABLE_USER_ACCOUNT = "user_account";
-	
+
 		//变量，标记是否已经初始化
 		bool isHadInit = false;
 
@@ -93,7 +102,7 @@ namespace manager{
 		入口参数
 		source_word： 	源参数
 		*/
-		void filterIllegalKeyword(string & source_word);
+		void filterIllegalKeyword(string &source_word);
 
 		/*
 		主要功能：
@@ -103,6 +112,5 @@ namespace manager{
        	tabls_name： 	数据库表名
 		*/
 		void checkAndCreateTable(string tabls_name);
-
 	};
-}
+} // namespace manager

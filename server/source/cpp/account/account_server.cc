@@ -28,6 +28,7 @@
 #include "../constant/my_constant.h"
 
 #include "source/protos/account.grpc.pb.h"
+#include "source/protos/todo.grpc.pb.h"
 
 #define LOGD(msg) utils::LogUtil::LOGD(msg);
 #define LOGW(msg) utils::LogUtil::LOGW(msg);
@@ -40,6 +41,12 @@ using namespace utils;
 using namespace manager;
 using namespace my_model;
 using namespace constants;
+
+using todo::AddCategoryRequest;
+using todo::AddTodoRequest;
+using todo::FetchCategoryRequest;
+using todo::Todo;
+using todo::UpdateTodoRequest;
 
 using account::Account;
 using account::CodeReply;
@@ -101,6 +108,20 @@ public:
   UserAccount getUserAccount(string account)
   {
     return Database::getDatabase()->queryUserAccountByAccount(account);
+  }
+
+  /***------------------- Todo 功能模块------------------------ **/
+  /**
+   * 添加分类
+   **/
+  bool addCategory(string title, int uid)
+  {
+    return Database::getDatabase()->addCategory(title, uid);
+  }
+
+  Category getCategory(string title, int uid)
+  {
+    return Database::getDatabase()->queryCategory(title, uid);
   }
 
 private:
@@ -390,6 +411,64 @@ public:
     root["token"] = token;
     root["refresh_token"] = refreshToken;
     root["token_expiration_time"] = tokenEndTime;
+    Json::FastWriter fw;
+    result->set_data(fw.write(root));
+    return result;
+  };
+
+  /**
+  用户模块-手机号注册
+  
+  入口参数
+  account： 	      用户账号（手机号）
+  password：        用户密码（明文）
+  
+  出口参数：
+  token：           用户Token（用来接口请求）
+  refresh_token：   用户Token（用来刷新Token）
+  **/
+  CodeReply *handleAddCategory(string title, int uid, string token)
+  {
+    LOGD("[account_server.handleAddCategory] user addCategory in:" + title);
+    // 1. 首先检查是否连接
+    LoginCore loginCore;
+    CodeReply *connectResult = loginCore.handleUserCheckConnect(token);
+    CodeReply *reply = new CodeReply();
+    if (connectResult->code() != ResultCode::SUCCESS)
+    {
+      LOGD("[account_server.handleAddCategory] user is not connected, addCategory in:" + title);
+      return connectResult;
+    }
+
+    LoginDatabase login_db;
+    LoginRedis login_redis;
+
+    // 添加分类到数据库，内部会校验
+    if (!login_db.addCategory(title, uid))
+    {
+      result->set_code(ResultCode::AddCategory_InsertDBFail);
+      result->set_msg(MsgTip::AddCategory_InsertDBFail);
+      LOGD("[account_server.handleAddCategory] insert category into db fail");
+      return result;
+    }
+    LOGD("[account_server.handleAddCategory] insert category into db success");
+
+    //获得用户信息
+    Category category = login_db.getCategory(title, uid);
+    if (category.getCid() <= 0)
+    {
+      result->set_code(ResultCode::AddCategory_InsertDBFail);
+      result->set_msg(MsgTip::AddCategory_InsertDBFail);
+      return result;
+    }
+    LOGD("[account_server.handleAddCategory] get category info success");
+
+    //返回Token
+    result->set_code(ResultCode::SUCCESS);
+    Json::Value root;
+    root["cid"] = category.getCid();
+    root["title"] = category.getTitle();
+    root["uid"] = category.getUid();
     Json::FastWriter fw;
     result->set_data(fw.write(root));
     return result;
@@ -914,6 +993,64 @@ class AccountServiceImpl final : public Account::Service
     log_bean.addParam("code", reply->code());
     log_bean.addParam("token", token);
     log_bean.addParam("refresh_token", refreshToken);
+    LOGM(log_bean);
+
+    return Status::OK;
+  }
+  Status requestAddCategory(ServerContext *context, const AddCategoryRequest *request,
+                            CodeReply *reply) override
+  {
+    LogMBean log_bean("requestAddCategory");
+
+    string token = request->token();
+    string title = request->title();
+    int uid = request->uid();
+
+    bool isParamValid = true;
+    string error_msg;
+
+    //校验用户token
+    if (!ParamUtils::CheckStringValid(token, error_msg))
+    {
+      reply->set_code(ResultCode::ReqParamError);
+      reply->set_msg(error_msg);
+      isParamValid = false;
+      LOGW("token is empty");
+    };
+
+    //校验title
+    if (!ParamUtils::CheckStringValid(title, error_msg))
+    {
+      reply->set_code(ResultCode::ReqParamError);
+      reply->set_msg(error_msg);
+      isParamValid = false;
+      LOGW("title is empty");
+    };
+
+    //参数正确，执行请求
+    if (isParamValid)
+    {
+      LoginCore loginCore;
+      CodeReply *result = loginCore.handleAddCategory(uid, title, token);
+      reply->set_code(result->code());
+      reply->set_msg(result->msg());
+      reply->set_data(result->data());
+      delete result;
+    }
+
+    //校验返回数据的合法性
+    string msg;
+    if (!ParamUtils::CheckBackDataValid(reply->data(), msg))
+    {
+      reply->set_code(ResultCode::RetrunDataInvalid);
+      reply->set_msg(msg);
+      reply->set_data("");
+    }
+
+    //打印接口日志
+    log_bean.addParam("code", reply->code());
+    log_bean.addParam("title", title);
+    log_bean.addParam("uid", uid);
     LOGM(log_bean);
 
     return Status::OK;

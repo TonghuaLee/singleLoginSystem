@@ -31,9 +31,9 @@ int DBBase::connect(string host, int port, string Db, string user, string passwd
 
        if (mysql_real_connect(&mysql, host.c_str(), user.c_str(), passwd.c_str(), Db.c_str(), port, NULL, 0) == NULL)
        {
-         Msg = "[db_base.connect] Failed to connect to database: Error" +
-               host+ user + passwd + Db;
-         return 1;
+              Msg = "[db_base.connect] Failed to connect to database: Error" +
+                    host + user + passwd + Db;
+              return 1;
        }
        if (mysql_set_character_set(&mysql, "UTF8") != 0)
        {
@@ -331,16 +331,17 @@ Json::Value DBBase::selectUserAccountByAccount(string account, string &Msg)
        //这里只会返回一条数据
        while (m_row = mysql_fetch_row(m_res))
        {
-	       //小于0则表示查询无结果或失败
-	    stringstream ss;
-   	 	ss << m_row[0];
-    		int i_id;
-    		ss >> i_id;
-	     if(i_id <= 0){
-                LOGD("[db_base.selectUserAccountByAccount] handle account db mysql_query empty , id = " + (string)m_row[0]);
-	    	break;
-	    }
-	       root["ID"] = m_row[0];
+              //小于0则表示查询无结果或失败
+              stringstream ss;
+              ss << m_row[0];
+              int i_id;
+              ss >> i_id;
+              if (i_id <= 0)
+              {
+                     LOGD("[db_base.selectUserAccountByAccount] handle account db mysql_query empty , id = " + (string)m_row[0]);
+                     break;
+              }
+              root["ID"] = m_row[0];
               root["ACCOUNT"] = m_row[1];
               root["PASSWORD"] = m_row[2];
               root["PWD_SALT"] = m_row[3];
@@ -376,7 +377,7 @@ Json::Value DBBase::insertUserAccount(string account, string password, string pw
 
        //构建存储过程执行语句
        string query = "call insertaccount ('" + account + "','" + password + "','" + pwdSalt + "',@out_id)";
-       
+
        LOGD("[db_base.insertUserAccount] " + query);
 
        //加写锁
@@ -420,6 +421,156 @@ Json::Value DBBase::insertUserAccount(string account, string password, string pw
 
        Json::FastWriter fw;
        LOGD("[db_base.insertUserAccount] " + fw.write(root));
+
+       //释放写锁
+       rwlock->writeUnlock();
+
+       return root;
+}
+
+Json::Value DBBase::selectCategory(string title, int uid, string &Msg)
+{
+       LOGD("[db_base.selectCategory] handle category db query:" + title + " uid:" + uid);
+
+       //返参初始化
+       Json::Value root;
+       root["is_empty"] = true;
+
+       //参数判空
+       if (title == "")
+       {
+              Msg = "[db_base.selectCategory] title is empty";
+              return root;
+       }
+
+       //构建存储过程执行语句
+       string query = "call querycategory ('" + title + "','" + uid + "',@out_id,@out_title,@out_uid)";
+
+       LOGD("[db_base.selectCategory] db mysql_query : " + query);
+
+       //加读锁
+       rwlock->readLock();
+
+       //执行存储过程执行语句
+       int ret = mysql_real_query(&mysql, query.c_str(), (unsigned int)strlen(query.c_str()));
+       mysql_query(&mysql, "SELECT @out_id,@out_title,@out_uid");
+
+       LOGD("[db_base.querycategory] handle category db mysql_query finish");
+
+       //判断查询是否成功
+       if (ret)
+       {
+              Msg = "[db_base.querycategory] error exec query";
+              //释放读锁
+              rwlock->readUnlock();
+              return root;
+       }
+
+       MYSQL_ROW m_row;
+       MYSQL_RES *m_res;
+
+       //获取查询结果
+       m_res = mysql_store_result(&mysql);
+       if (m_res == NULL)
+       {
+              Msg = "[db_base.querycategory] select m_res null";
+              //释放读锁
+              rwlock->readUnlock();
+              return root;
+       }
+
+       //这里只会返回一条数据
+       while (m_row = mysql_fetch_row(m_res))
+       {
+              //小于0则表示查询无结果或失败
+              stringstream ss;
+              ss << m_row[0];
+              int i_id;
+              ss >> i_id;
+              if (i_id <= 0)
+              {
+                     LOGD("[db_base.querycategory] handle category db mysql_query empty , id = " + (string)m_row[0]);
+                     break;
+              }
+              root["ID"] = m_row[0];
+              root["TITLE"] = m_row[1];
+              root["UID"] = m_row[2];
+              root["is_empty"] = false;
+       }
+
+       //释放指针
+       mysql_free_result(m_res);
+
+       //释放读锁
+       rwlock->readUnlock();
+       return root;
+}
+
+Json::Value DBBase::insertCategory(string title, int uid, string &Msg)
+{
+
+       //返参初始化
+       Json::Value root;
+       root["is_empty"] = true;
+
+       //参数判空
+       if (title == "")
+       {
+              Msg = "[db_base.insertCategory] title is empty";
+              return root;
+       }
+       if (uid < 1)
+       {
+              Msg = "[db_base.insertCategory] uid is invaial";
+              return root;
+       }
+
+       //构建存储过程执行语句
+       string query = "call insertcategory ('" + title + "','" + uid + "',@out_cid)";
+
+       LOGD("[db_base.insertCategory] " + query);
+
+       //加写锁
+       rwlock->writeLock();
+
+       //执行存储过程执行语句
+       int ret = mysql_real_query(&mysql, query.c_str(), (unsigned int)strlen(query.c_str()));
+       mysql_query(&mysql, "SELECT @out_cid");
+
+       //判断插入是否成功
+       if (ret)
+       {
+              Msg = "[db_base.insertCategory] Error exec insert";
+              //释放写锁
+              rwlock->writeUnlock();
+              return root;
+       }
+
+       MYSQL_ROW m_row;
+       MYSQL_RES *m_res;
+
+       //获取查询结果
+       m_res = mysql_store_result(&mysql);
+       if (m_res == NULL)
+       {
+              Msg = "[db_base.insertCategory] select m_res null";
+              //释放写锁
+              rwlock->writeUnlock();
+              return root;
+       }
+
+       //这里只会返回一条数据
+       while (m_row = mysql_fetch_row(m_res))
+       {
+              root["ID"] = m_row[0];
+              root["is_empty"] = false;
+       }
+
+       //释放指针
+       mysql_free_result(m_res);
+
+       Json::FastWriter fw;
+       LOGD("[db_base.insertCategory] " + fw.write(root));
 
        //释放写锁
        rwlock->writeUnlock();

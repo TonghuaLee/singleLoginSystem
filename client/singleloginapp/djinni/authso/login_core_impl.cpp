@@ -9,7 +9,6 @@
 #define APP_PLATFORM ANDROID
 
 #include "NativeLoginListener.hpp"
-//#include "SCLoginListener.h"
 
 #include "action_result.hpp"
 #include "login_core_impl.hpp"

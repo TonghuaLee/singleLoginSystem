@@ -78,17 +78,23 @@ class MainActivity : FlutterActivity(), LoginUIController {
                     var replyJsonStr = gson.toJson(replyMsg)
                     Log.d(TAG, "reply: " + replyJsonStr)
                     reply.reply(replyJsonStr)
-                } else if (reqMsg.mainCmd == MsgType.MAIN_CMD_REGISTER) { //测试 mMessageChannel.send 发消息给Flutter
+                } else if (reqMsg.mainCmd == MsgType.MAIN_CMD_REGISTER) {
                     //  channelSendMessage()
                     var data = reqMsg.data
                     val userInfo = UserInfo(data?.get("account") as String, data["password"] as String)
                     mLoginControler?.run {
                         actionSignIn(userInfo.account, userInfo.password)
                     }
-                } else { //测试通过Flutter打开Android Activity
+                } else if (reqMsg.mainCmd == MsgType.MAIN_CMD_LOGINOUT) {
+                    mLoginControler?.run {
+                        actionLogout()
+                    }
+                } else if (reqMsg.mainCmd == MsgType.MAIN_CMD_CHECK_LOGIN_STATE) {
+                    mLoginControler?.run {
+                        actionCheckLoginStatus()
+                    }
+                } else {
                     Toast.makeText(mContext, "flutter 调用到了 android test3", Toast.LENGTH_SHORT).show()
-//                        val lIntent = Intent(this@MainActivity, TestBasicMessageActivity::class.java)
-//                        this@MainActivity.startActivity(lIntent)
                 }
             }
         }
@@ -209,8 +215,10 @@ class MainActivity : FlutterActivity(), LoginUIController {
             Toast.makeText(applicationContext,
                     "再按一次退出程序", Toast.LENGTH_SHORT).show()
             exitTime = System.currentTimeMillis()
-
         } else {
+            mLoginControler?.run {
+                actionLogout()
+            }
             finish()
             System.exit(0)
         }

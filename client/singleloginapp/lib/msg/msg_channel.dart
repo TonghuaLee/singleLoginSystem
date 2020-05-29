@@ -1,9 +1,10 @@
-import 'dart:developer';
+import 'dart:convert' as JSON;
+
 import 'package:flutter/services.dart';
 import 'package:singleloginapp/config/config.dart';
 import 'package:singleloginapp/msg/event_listener.dart';
 import 'package:singleloginapp/utils/log_util.dart';
-import 'dart:convert' as JSON;
+
 import 'message.dart';
 
 class MsgChannelUtil {
@@ -12,7 +13,10 @@ class MsgChannelUtil {
   static const MAIN_CMD_DEFALUT = 0;
   static const MAIN_CMD_LOGIN = 100;
   static const MAIN_CMD_REGISTER = 101;
-  static const MAIN_CMD_LOGINOUT= 102;
+  static const MAIN_CMD_LOGINOUT = 102;
+  static const MAIN_CMD_CHECK_LOGIN_STATE = 103;
+
+  static const SUB_CMD_LOGINOUT_SERVER = 2;
 
   static MsgChannelUtil _instance;
   BasicMessageChannel messageChannel;
@@ -71,12 +75,12 @@ class MsgChannelUtil {
   void receiveMessage() {
     messageChannel.setMessageHandler((result) async {
       //解析 原生发给 Flutter 的参数
-      LogUtils.d('msgChannel', 'flutter receiveMessage:' +result);
-      if(result == null) {
+      LogUtils.d('msgChannel', 'flutter receiveMessage:' + result);
+      if (result == null) {
         return "result is null";
       }
       Message msg = Message.fromJson(JSON.jsonDecode(result));
-      if(result == null) {
+      if (result == null) {
         return "result can not covert to message";
       }
       int mainCmd = msg.mainCmd;
