@@ -433,7 +433,7 @@ public:
     // 1. 首先检查是否连接
     LoginCore loginCore;
     CodeReply *connectResult = loginCore.handleUserCheckConnect(token);
-    CodeReply *reply = new CodeReply();
+    CodeReply *result = new CodeReply();
     if (connectResult->code() != ResultCode::SUCCESS)
     {
       LOGD("[account_server.handleAddCategory] user is not connected, addCategory in:" + title);

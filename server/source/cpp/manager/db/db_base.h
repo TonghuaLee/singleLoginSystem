@@ -150,7 +150,7 @@ public:
         **/
        Json::Value insertCategory(string title, int uid, string &Msg);
 
-       Json::Value DBBase::selectCategory(string title, int uid, string &Msg)
+       Json::Value selectCategory(string title, int uid, string &Msg)
        /*
        主要功能：
        判断sql查询内容是否存在
