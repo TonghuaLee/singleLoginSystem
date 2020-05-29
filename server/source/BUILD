@@ -16,13 +16,13 @@ licenses(["notice"])  # 3-clause BSD
 
 package(default_visibility = ["//visibility:public"])
 
-load("//bazel:grpc_build_system.bzl", "grpc_proto_todo_library")
+load("//bazel:grpc_build_system.bzl", "grpc_proto_library")
 
 grpc_proto_library(
     name = "account",
-    srcs = ["protos/account.proto","protos/todo.proto"],
+    srcs = ["protos/account.proto"],
 )
-grpc_proto_todo_library(
+grpc_proto_library(
     name = "todo",
     srcs = ["protos/todo.proto"],
 )
