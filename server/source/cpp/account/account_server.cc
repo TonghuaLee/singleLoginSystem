@@ -258,7 +258,7 @@ public:
     UserAccount userAccount = login_db.getUserAccount(account);
 
     //查询账号是否存在
-    if (userAccount.getUid() <= 0)
+    if (CommonUtils::getIntByString(userAccount.getUid()) <= 0)
     {
       result->set_code(ResultCode::UserLogin_AccountNotExist);
       result->set_msg(MsgTip::UserLogin_AccountNotExist);
@@ -433,7 +433,7 @@ public:
     // 1. 首先检查是否连接
     LoginCore loginCore;
     CodeReply *connectResult = loginCore.handleUserCheckConnect(token);
-    CodeReply *result = new CodeReply();
+    CodeReply *reply = new CodeReply();
     if (connectResult->code() != ResultCode::SUCCESS)
     {
       LOGD("[account_server.handleAddCategory] user is not connected, addCategory in:" + title);
@@ -455,7 +455,7 @@ public:
 
     //获得用户信息
     Category category = login_db.getCategory(title, uid);
-    if (category.getCid() <= 0)
+    if (CommonUtils::getIntByString(category.getCid()) <= 0)
     {
       result->set_code(ResultCode::AddCategory_InsertDBFail);
       result->set_msg(MsgTip::AddCategory_InsertDBFail);
@@ -466,9 +466,9 @@ public:
     //返回Token
     result->set_code(ResultCode::SUCCESS);
     Json::Value root;
-    root["cid"] = category.getCid();
+    root["cid"] = CommonUtils::getIntByString(category.getCid());
     root["title"] = category.getTitle();
-    root["uid"] = category.getUid();
+    root["uid"] = CommonUtils::getIntByString(category.getUid());
     Json::FastWriter fw;
     result->set_data(fw.write(root));
     return result;
@@ -1004,7 +1004,7 @@ class AccountServiceImpl final : public Account::Service
 
     string token = request->token();
     string title = request->title();
-    int uid = request->uid();
+    int uid = CommonUtils::getIntByString(request->uid());
 
     bool isParamValid = true;
     string error_msg;
