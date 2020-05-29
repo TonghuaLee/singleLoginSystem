@@ -42,12 +42,6 @@ using namespace manager;
 using namespace my_model;
 using namespace constants;
 
-using todo::AddCategoryRequest;
-using todo::AddTodoRequest;
-using todo::FetchCategoryRequest;
-using todo::Todo;
-using todo::UpdateTodoRequest;
-
 using account::Account;
 using account::CodeReply;
 using account::ConnectRequest;
@@ -59,6 +53,13 @@ using grpc::Server;
 using grpc::ServerBuilder;
 using grpc::ServerContext;
 using grpc::Status;
+
+using todo::AddCategoryRequest;
+using todo::AddTodoRequest;
+using todo::CodeReply;
+using todo::FetchCategoryRequest;
+using todo::Todo;
+using todo::UpdateTodoRequest;
 using utils::LogMBean;
 
 class LoginDatabase
@@ -433,7 +434,7 @@ public:
     // 1. 首先检查是否连接
     LoginCore loginCore;
     CodeReply *connectResult = loginCore.handleUserCheckConnect(token);
-    CodeReply *reply = new CodeReply();
+    CodeReply *result = new CodeReply();
     if (connectResult->code() != ResultCode::SUCCESS)
     {
       LOGD("[account_server.handleAddCategory] user is not connected, addCategory in:" + title);
@@ -998,7 +999,7 @@ class AccountServiceImpl final : public Account::Service, public Todo::Service
     return Status::OK;
   }
   Status requestAddCategory(ServerContext *context, const AddCategoryRequest *request,
-                            CodeReply *reply) override
+                            todo::CodeReply *reply) override
   {
     LogMBean log_bean("requestAddCategory");
 
