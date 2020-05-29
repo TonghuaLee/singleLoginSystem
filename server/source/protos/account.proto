@@ -13,6 +13,11 @@ service Account {
   rpc checkConnect      (ConnectRequest)  returns (CodeReply) {}
   rpc requestLogout     (LogoutRequest)   returns (CodeReply) {}
   rpc refreshToken      (RefreshRequest)   returns (CodeReply) {}
+
+  rpc requestAddCategory  (AddCategoryRequest)    returns (CodeReply) {}
+  rpc requestFetchCategory   (FetchCategoryRequest)     returns (CodeReply) {}
+  rpc requestAddTodo      (AddTodoRequest)  returns (CodeReply) {}
+  rpc requestUpdateTodo     (UpdateTodoRequest)   returns (CodeReply) {}
 }
 
 message LoginRequest {
@@ -36,6 +41,29 @@ message LogoutRequest {
 message RefreshRequest {
   string token = 1;
   string refresh_token = 2;
+}
+
+
+message AddCategoryRequest {
+  string token = 1;
+  string title = 2;       // 名字
+  string uid = 3;         // 用户id
+}
+
+message FetchCategoryRequest {
+  string token = 1;
+}
+
+message AddTodoRequest {
+  string token = 1;
+  string content = 2;   // todo 内容
+  string cid = 3;       // 分类id
+}
+
+message UpdateTodoRequest {
+  string token = 1;
+  string tid = 2;       // todo项的id
+  string status = 3;    // 状态
 }
 
 message CodeReply {

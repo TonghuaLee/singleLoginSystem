@@ -22,15 +22,11 @@ grpc_proto_library(
     name = "account",
     srcs = ["protos/account.proto"],
 )
-grpc_proto_library(
-    name = "todo",
-    srcs = ["protos/todo.proto"],
-)
 
 cc_binary(
     name = "account_server",
     srcs = ["cpp/account/account_server.cc"],
-    deps = [":account", ":todo", "//:grpc++",":my_model",":my_constant",":common_utils",":log_utils",":param_utils",":db_manager",":redis_manager",":conf"],
+    deps = [":account", "//:grpc++",":my_model",":my_constant",":common_utils",":log_utils",":param_utils",":db_manager",":redis_manager",":conf"],
     data = ["//source/pem:ca.crt","//source/pem:server.crt","//source/pem:server.key"],
     linkopts = ["-lmysqlclient"],
 )

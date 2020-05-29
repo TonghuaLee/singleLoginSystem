@@ -28,7 +28,6 @@
 #include "../constant/my_constant.h"
 
 #include "source/protos/account.grpc.pb.h"
-#include "source/protos/todo.grpc.pb.h"
 
 #define LOGD(msg) utils::LogUtil::LOGD(msg);
 #define LOGW(msg) utils::LogUtil::LOGW(msg);
@@ -43,23 +42,21 @@ using namespace my_model;
 using namespace constants;
 
 using account::Account;
+using account::AddCategoryRequest;
+using account::AddTodoRequest;
 using account::CodeReply;
 using account::ConnectRequest;
+using account::FetchCategoryRequest;
 using account::LoginRequest;
 using account::LogoutRequest;
 using account::RefreshRequest;
 using account::SignRequest;
+using account::UpdateTodoRequest;
 using grpc::Server;
 using grpc::ServerBuilder;
 using grpc::ServerContext;
 using grpc::Status;
 
-using todo::AddCategoryRequest;
-using todo::AddTodoRequest;
-using todo::CodeReply;
-using todo::FetchCategoryRequest;
-using todo::Todo;
-using todo::UpdateTodoRequest;
 using utils::LogMBean;
 
 class LoginDatabase
@@ -725,7 +722,7 @@ private:
   }
 };
 
-class AccountServiceImpl final : public Account::Service, public Todo::Service
+class AccountServiceImpl final : public Account::Service
 {
 
   /**
@@ -999,7 +996,7 @@ class AccountServiceImpl final : public Account::Service, public Todo::Service
     return Status::OK;
   }
   Status requestAddCategory(ServerContext *context, const AddCategoryRequest *request,
-                            todo::CodeReply *reply) override
+                            CodeReply *reply) override
   {
     LogMBean log_bean("requestAddCategory");
 
