@@ -216,7 +216,7 @@ bool Database::addCategory(string title, int uid)
     if (data["is_empty"].asBool() || cid <= 0)
     {
         LOGE("[db_manager.addCategory] " + msg);
-        return fasle;
+        return false;
     }
     return true;
 }
