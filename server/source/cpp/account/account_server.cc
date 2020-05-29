@@ -1032,7 +1032,7 @@ class AccountServiceImpl final : public Account::Service
     {
       reply->set_code(ResultCode::UserLogout_TokenNotValid);
       reply->set_msg(MsgTip::UserLogout_TokenNotValid);
-      return result;
+      return Status::OK;
     }
     LOGD("[account_server.requestAddCategory] user token decrypt success");
 
@@ -1043,7 +1043,7 @@ class AccountServiceImpl final : public Account::Service
     {
       reply->set_code(ResultCode::UserLogout_TokenNotValid);
       reply->set_msg(MsgTip::UserLogout_TokenNotValid);
-      return result;
+      return Status::OK;
     }
     LOGD("[account_server.requestAddCategory] get token info success");
 
@@ -1055,7 +1055,7 @@ class AccountServiceImpl final : public Account::Service
     {
       reply->set_code(ResultCode::UserLogout_TokenNotExist);
       reply->set_msg(MsgTip::UserLogout_TokenNotExist);
-      return result;
+      return Status::OK;
     }
     LOGD("[account_server.requestAddCategory] user token is right");
 
