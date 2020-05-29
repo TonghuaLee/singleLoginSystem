@@ -430,7 +430,7 @@ Json::Value DBBase::insertUserAccount(string account, string password, string pw
 
 Json::Value DBBase::selectCategory(string title, int uid, string &Msg)
 {
-       LOGD("[db_base.selectCategory] handle category db query:" + title + " uid:" + uid.to_string());
+       LOGD("[db_base.selectCategory] handle category db query:" + title);
 
        //返参初始化
        Json::Value root;
@@ -444,8 +444,9 @@ Json::Value DBBase::selectCategory(string title, int uid, string &Msg)
        }
 
        //构建存储过程执行语句
-       string query = "call querycategory ('" + title + "','" + uid.to_string() + "',@out_id,@out_title,@out_uid)";
-
+       std::stringstream ssTemp;
+       ssTemp << "call querycategory ('" << title << "','" << uid << "',@out_id,@out_title,@out_uid)";
+       string query = ssTemp.str();
        LOGD("[db_base.selectCategory] db mysql_query : " + query);
 
        //加读锁
@@ -526,7 +527,9 @@ Json::Value DBBase::insertCategory(string title, int uid, string &Msg)
        }
 
        //构建存储过程执行语句
-       string query = "call insertcategory ('" + title + "','" + uid.to_string() + "',@out_cid)";
+       std::stringstream ssTemp;
+       ssTemp << "call insertcategory ('" << title << "','" << uid << "',@out_cid)";
+       string query = ssTemp.str();
 
        LOGD("[db_base.insertCategory] " + query);
 
