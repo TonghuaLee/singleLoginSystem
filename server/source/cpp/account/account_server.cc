@@ -1030,8 +1030,8 @@ class AccountServiceImpl final : public Account::Service
     string decodeToken = CommonUtils::DecryptToken(token);
     if (decodeToken.empty())
     {
-      result->set_code(ResultCode::UserLogout_TokenNotValid);
-      result->set_msg(MsgTip::UserLogout_TokenNotValid);
+      reply->set_code(ResultCode::UserLogout_TokenNotValid);
+      reply->set_msg(MsgTip::UserLogout_TokenNotValid);
       return result;
     }
     LOGD("[account_server.requestAddCategory] user token decrypt success");
@@ -1041,8 +1041,8 @@ class AccountServiceImpl final : public Account::Service
     CommonUtils::SplitString(decodeToken, vToken, ":");
     if (vToken.size() != 5)
     {
-      result->set_code(ResultCode::UserLogout_TokenNotValid);
-      result->set_msg(MsgTip::UserLogout_TokenNotValid);
+      reply->set_code(ResultCode::UserLogout_TokenNotValid);
+      reply->set_msg(MsgTip::UserLogout_TokenNotValid);
       return result;
     }
     LOGD("[account_server.requestAddCategory] get token info success");
@@ -1053,8 +1053,8 @@ class AccountServiceImpl final : public Account::Service
     //token是否正确
     if (!login_redis.isTokenRight(uid, token))
     {
-      result->set_code(ResultCode::UserLogout_TokenNotExist);
-      result->set_msg(MsgTip::UserLogout_TokenNotExist);
+      reply->set_code(ResultCode::UserLogout_TokenNotExist);
+      reply->set_msg(MsgTip::UserLogout_TokenNotExist);
       return result;
     }
     LOGD("[account_server.requestAddCategory] user token is right");
