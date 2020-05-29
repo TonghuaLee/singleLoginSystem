@@ -150,6 +150,7 @@ public:
         **/
        Json::Value insertCategory(string title, int uid, string &Msg);
 
+       Json::Value DBBase::selectCategory(string title, int uid, string &Msg)
        /*
        主要功能：
        判断sql查询内容是否存在
@@ -161,7 +162,7 @@ public:
        出口参数：
        bool ：true表示存在；false表示不存在
        */
-       bool isExist(string SQL, vector<string> columnsV);
+           bool isExist(string SQL, vector<string> columnsV);
 
        /*
        主要功能：
