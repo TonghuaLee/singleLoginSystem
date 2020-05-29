@@ -47,7 +47,6 @@ message RefreshRequest {
 message AddCategoryRequest {
   string token = 1;
   string title = 2;       // 名字
-  string uid = 3;         // 用户id
 }
 
 message FetchCategoryRequest {

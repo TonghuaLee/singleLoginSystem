@@ -1002,7 +1002,6 @@ class AccountServiceImpl final : public Account::Service
 
     string token = request->token();
     string title = request->title();
-    int uid = CommonUtils::getIntByString(request->uid());
 
     bool isParamValid = true;
     string error_msg;
@@ -1024,6 +1023,41 @@ class AccountServiceImpl final : public Account::Service
       isParamValid = false;
       LOGW("title is empty");
     };
+
+    LoginRedis login_redis;
+
+    //解密Token
+    string decodeToken = CommonUtils::DecryptToken(token);
+    if (decodeToken.empty())
+    {
+      result->set_code(ResultCode::UserLogout_TokenNotValid);
+      result->set_msg(MsgTip::UserLogout_TokenNotValid);
+      return result;
+    }
+    LOGD("[account_server.requestAddCategory] user token decrypt success");
+
+    //解析Token，获取用户信息
+    vector<string> vToken;
+    CommonUtils::SplitString(decodeToken, vToken, ":");
+    if (vToken.size() != 5)
+    {
+      result->set_code(ResultCode::UserLogout_TokenNotValid);
+      result->set_msg(MsgTip::UserLogout_TokenNotValid);
+      return result;
+    }
+    LOGD("[account_server.requestAddCategory] get token info success");
+
+    //获得账号UID
+    int uid = CommonUtils::getIntByString(vToken[0]);
+
+    //token是否正确
+    if (!login_redis.isTokenRight(uid, token))
+    {
+      result->set_code(ResultCode::UserLogout_TokenNotExist);
+      result->set_msg(MsgTip::UserLogout_TokenNotExist);
+      return result;
+    }
+    LOGD("[account_server.requestAddCategory] user token is right");
 
     //参数正确，执行请求
     if (isParamValid)
