@@ -73,6 +73,10 @@ namespace manager
 
 		Category queryCategory(string title, int uid);
 
+		int addTodo(string title, int uid);
+
+		Todo queryTodo(int tid);
+
 		/*
 		主要功能：
 		获取数据库操作类

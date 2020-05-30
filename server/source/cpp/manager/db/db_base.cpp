@@ -580,3 +580,156 @@ Json::Value DBBase::insertCategory(string title, int uid, string &Msg)
 
        return root;
 }
+
+Json::Value DBBase::selectTodo(int tid, string &Msg)
+{
+       LOGD("[db_base.selectTodo] handle todos db query:" );
+
+       //返参初始化
+       Json::Value root;
+       root["is_empty"] = true;
+
+       //参数判空
+       if (tid < 1)
+       {
+              Msg = "[db_base.selectTodo] content is empty";
+              return root;
+       }
+
+       //构建存储过程执行语句
+       std::stringstream ssTemp;
+       ssTemp << "call querytodo ('" tid << "',@out_id,@out_content,@out_cid)";
+       string query = ssTemp.str();
+       LOGD("[db_base.selectTodo] db mysql_query : " + query);
+
+       //加读锁
+       rwlock->readLock();
+
+       //执行存储过程执行语句
+       int ret = mysql_real_query(&mysql, query.c_str(), (unsigned int)strlen(query.c_str()));
+       mysql_query(&mysql, "SELECT @out_id,@out_content,@out_cid");
+
+       LOGD("[db_base.querytodo] handle todos db mysql_query finish");
+
+       //判断查询是否成功
+       if (ret)
+       {
+              Msg = "[db_base.querytodo] error exec query";
+              //释放读锁
+              rwlock->readUnlock();
+              return root;
+       }
+
+       MYSQL_ROW m_row;
+       MYSQL_RES *m_res;
+
+       //获取查询结果
+       m_res = mysql_store_result(&mysql);
+       if (m_res == NULL)
+       {
+              Msg = "[db_base.querytodo] select m_res null";
+              //释放读锁
+              rwlock->readUnlock();
+              return root;
+       }
+
+       //这里只会返回一条数据
+       while (m_row = mysql_fetch_row(m_res))
+       {
+              //小于0则表示查询无结果或失败
+              stringstream ss;
+              ss << m_row[0];
+              int i_id;
+              ss >> i_id;
+              if (i_id <= 0)
+              {
+                     LOGD("[db_base.querytodo] handle todos db mysql_query empty , id = " + (string)m_row[0]);
+                     break;
+              }
+              root["TID"] = m_row[0];
+              root["CONTENT"] = m_row[1];
+              root["CID"] = m_row[2];
+              root["is_empty"] = false;
+       }
+
+       //释放指针
+       mysql_free_result(m_res);
+
+       //释放读锁
+       rwlock->readUnlock();
+       return root;
+}
+
+Json::Value DBBase::insertTodo(string content, int cid, string &Msg)
+{
+
+       //返参初始化
+       Json::Value root;
+       root["is_empty"] = true;
+
+       //参数判空
+       if (content == "")
+       {
+              Msg = "[db_base.insertTodo] content is empty";
+              return root;
+       }
+       if (uid < 1)
+       {
+              Msg = "[db_base.insertTodo] uid is invaial";
+              return root;
+       }
+
+       //构建存储过程执行语句
+       std::stringstream ssTemp;
+       ssTemp << "call inserttodo ('" << content << "','" << cid << "',@out_tid)";
+       string query = ssTemp.str();
+
+       LOGD("[db_base.insertTodo] " + query);
+
+       //加写锁
+       rwlock->writeLock();
+
+       //执行存储过程执行语句
+       int ret = mysql_real_query(&mysql, query.c_str(), (unsigned int)strlen(query.c_str()));
+       mysql_query(&mysql, "SELECT @out_tid");
+
+       //判断插入是否成功
+       if (ret < 1)
+       {
+              Msg = "[db_base.insertTodo] Error exec insert";
+              //释放写锁
+              rwlock->writeUnlock();
+              return root;
+       }
+
+       MYSQL_ROW m_row;
+       MYSQL_RES *m_res;
+
+       //获取查询结果
+       m_res = mysql_store_result(&mysql);
+       if (m_res == NULL)
+       {
+              Msg = "[db_base.insertTodo] select m_res null";
+              //释放写锁
+              rwlock->writeUnlock();
+              return root;
+       }
+
+       //这里只会返回一条数据
+       while (m_row = mysql_fetch_row(m_res))
+       {
+              root["TID"] = m_row[0];
+              root["is_empty"] = false;
+       }
+
+       //释放指针
+       mysql_free_result(m_res);
+
+       Json::FastWriter fw;
+       LOGD("[db_base.insertTodo] " + fw.write(root));
+
+       //释放写锁
+       rwlock->writeUnlock();
+
+       return root;
+}

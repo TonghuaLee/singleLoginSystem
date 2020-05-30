@@ -151,6 +151,11 @@ public:
        Json::Value insertCategory(string title, int uid, string &Msg);
 
        Json::Value selectCategory(string title, int uid, string &Msg);
+
+       Json::Value insertTodo(string content, int cid, string &Msg);
+
+       Json::Value selectTodo(string tid, string &Msg);
+
        /*
        主要功能：
        判断sql查询内容是否存在

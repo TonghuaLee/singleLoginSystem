@@ -222,7 +222,7 @@ bool Database::addCategory(string title, int uid)
 }
 
 /**
- * 根据用户账号查询用户数据
+ * 查询是否有内容相同的分类
  **/
 Category Database::queryCategory(string o_title, int o_uid)
 {
@@ -231,6 +231,78 @@ Category Database::queryCategory(string o_title, int o_uid)
     {
         LOGW("[db_manager.queryCategory] param is empty");
         return Category(-1, "",  -1);
+    }
+
+    //参数非法字符过滤
+    filterIllegalKeyword(o_title);
+
+    //执行查询数据操作
+    int cid = -1;
+    int uid = -1;
+    string title;
+    string msg;
+    Json::Value data = db_base->selectCategory(o_title, o_uid, msg);
+
+    Json::FastWriter fw;
+    LOGD("[db_manager.queryCategory] query category info :" + fw.write(data));
+
+    if (data["is_empty"].asBool())
+    {
+        LOGE("[db_manager.queryCategory] data is empty");
+        return Category(-1, "", -1);
+    }
+    else
+    {
+        cid = CommonUtils::getIntByString(data["ID"].asString());
+        uid = CommonUtils::getIntByString(data["UID"].asString());
+        title = data["TITLE"].asString();
+        if (cid < 0)
+        {
+            LOGE("[db_manager.queryCategory] can not find title = " + o_title);
+            return Category(-1, "", -1);
+        }
+    }
+
+    return Category(cid, title, uid);
+}
+
+/**
+ * 添加todo分类到数据库
+ **/
+int Database::addTodo(string content, int cid)
+{
+    //参数判空
+    if (content.empty() || cid < 1)
+    {
+        LOGW("[db_manager.addTodo] param is empty");
+        return -1;
+    }
+
+    //参数非法字符过滤
+    filterIllegalKeyword(content);
+
+    //执行插入数据操作
+    string msg;
+    Json::Value data = db_base->insertTodo(content, cid, msg);
+    int tid = CommonUtils::getIntByString(data["TID"].asString());
+    if (data["is_empty"].asBool() || tid <= 0)
+    {
+        LOGE("[db_manager.addTodo] " + msg);
+        return -1;
+    }
+    return tid;
+}
+
+/**
+ * 根据用户账号查询用户数据
+ **/
+Category Database::queryCategory(string o_title, int o_uid)
+{
+    //参数判空
+    if (o_title.empty())
+    {
+        LOGW("[db_manager.queryCategory] param is empty");
+        return Category(-1, "", -1);
     }
 
     //参数非法字符过滤
