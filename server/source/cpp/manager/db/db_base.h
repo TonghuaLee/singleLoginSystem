@@ -154,7 +154,7 @@ public:
 
        Json::Value insertTodo(string content, int cid, string &Msg);
 
-       Json::Value selectTodo(string tid, string &Msg);
+       Json::Value selectTodo(int tid, string &Msg);
 
        /*
        主要功能：
