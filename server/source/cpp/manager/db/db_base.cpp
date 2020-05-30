@@ -673,9 +673,9 @@ Json::Value DBBase::insertTodo(string content, int cid, string &Msg)
               Msg = "[db_base.insertTodo] content is empty";
               return root;
        }
-       if (uid < 1)
+       if (cid < 1)
        {
-              Msg = "[db_base.insertTodo] uid is invaial";
+              Msg = "[db_base.insertTodo] cid is invaial";
               return root;
        }
 
