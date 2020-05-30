@@ -20,9 +20,9 @@ class MyApp extends StatelessWidget {
       create: (_) => DatabaseProvider(),
       child: MaterialApp(
         theme: ThemeData(
-            primarySwatch: Colors.blue,
+            primarySwatch: Colors.green,
             backgroundColor: Colors.white,
-            primaryColor: Colors.green,
+            primaryColor: Colors.blue,
             brightness: Brightness.light),
         home: LoginPage(),
         routes: <String, WidgetBuilder>{

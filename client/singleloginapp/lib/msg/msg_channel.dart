@@ -15,6 +15,7 @@ class MsgChannelUtil {
   static const MAIN_CMD_REGISTER = 101;
   static const MAIN_CMD_LOGINOUT = 102;
   static const MAIN_CMD_CHECK_LOGIN_STATE = 103;
+  static const MAIN_CMD_ADD_CATEGORY = 104;
 
   static const SUB_CMD_LOGINOUT_SERVER = 2;
 

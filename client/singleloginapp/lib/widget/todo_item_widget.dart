@@ -18,7 +18,7 @@ class TodoItemWidget extends StatelessWidget {
         child: CheckboxListTile(
           title: Text(_todoItem.todo.title),
           subtitle: Text(
-              'category ${_todoItem.category != null ? _todoItem.category.name : 'Inbox'}'),
+              'category ${_todoItem.category != null ? _todoItem.category.title : 'Inbox'}'),
           value: _todoItem.todo.completed,
           onChanged: (newValue) {
             _todosDao.updateTodo(_todoItem.todo.copyWith(completed: newValue));

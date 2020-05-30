@@ -10,9 +10,11 @@ import android.widget.Toast
 import com.broadli.singleloginapp.config.MsgType
 import com.broadli.singleloginapp.config.MsgType.Companion.CODE_FAIL
 import com.broadli.singleloginapp.config.MsgType.Companion.CODE_SUCC
+import com.broadli.singleloginapp.config.MsgType.Companion.MAIN_CMD_ADD_CATEGORY
 import com.broadli.singleloginapp.config.MsgType.Companion.MAIN_CMD_LOGIN
 import com.broadli.singleloginapp.config.MsgType.Companion.MAIN_CMD_LOGINOUT
 import com.broadli.singleloginapp.config.MsgType.Companion.MAIN_CMD_REGISTER
+import com.broadli.singleloginapp.config.MsgType.Companion.SUB_CMD_DEFAULT
 import com.broadli.singleloginapp.config.MsgType.Companion.SUB_CMD_LOGINOUT_SELF
 import com.broadli.singleloginapp.config.MsgType.Companion.SUB_CMD_LOGINOUT_SERVER
 import com.broadli.singleloginapp.controller.LoginController
@@ -92,6 +94,12 @@ class MainActivity : FlutterActivity(), LoginUIController {
                 } else if (reqMsg.mainCmd == MsgType.MAIN_CMD_CHECK_LOGIN_STATE) {
                     mLoginControler?.run {
                         actionCheckLoginStatus()
+                    }
+                } else if (reqMsg.mainCmd == MsgType.MAIN_CMD_ADD_CATEGORY) {
+                    var data = reqMsg.data
+                    val title = data?.get("title") as String
+                    mLoginControler?.run {
+                        actionAddCategory(title)
                     }
                 } else {
                     Toast.makeText(mContext, "flutter 调用到了 android test3", Toast.LENGTH_SHORT).show()
@@ -187,6 +195,20 @@ class MainActivity : FlutterActivity(), LoginUIController {
         mMessageChannel?.send(replyJsonStr) { reply ->
             Log.d("Android", "$reply")
         }
+    }
+
+    override fun performAddCategorySuccess(data: String) {
+        Log.d(TAG, "performAddCategorySuccess $data")
+        var replyMsg = Msg(MAIN_CMD_ADD_CATEGORY, SUB_CMD_DEFAULT, CODE_SUCC, data);
+        var gson = Gson()
+        var replyJsonStr = gson.toJson(replyMsg)
+        mMessageChannel?.send(replyJsonStr) { reply ->
+            Log.d("Android", "$reply")
+        }
+    }
+
+    override fun performAddCategoryFail(data: String) {
+        toastMsg(data)
     }
 
     override fun toastMsg(content: String?) {

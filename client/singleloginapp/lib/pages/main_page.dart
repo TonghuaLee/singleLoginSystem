@@ -8,6 +8,7 @@ import 'package:singleloginapp/data/todos_dao.dart';
 import 'package:singleloginapp/msg/event_listener.dart';
 import 'package:singleloginapp/msg/message.dart';
 import 'package:singleloginapp/msg/msg_channel.dart';
+import 'package:singleloginapp/utils/log_util.dart';
 import 'package:singleloginapp/widget/new_category_input_widget.dart';
 import 'package:singleloginapp/widget/new_todo_input_widget.dart';
 import 'package:singleloginapp/widget/todo_item_widget.dart';
@@ -24,7 +25,8 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Todos Need To Be Done',
         theme: ThemeData(
-          primarySwatch: Colors.blue,
+          primarySwatch: Colors.green,
+          primaryColor: Colors.green,
         ),
         home: MyHomePage(),
       ),
@@ -109,7 +111,7 @@ class _MyHomePageState extends State<MyHomePage> with EventListener {
     if (index == 0) {
       return DrawerHeader(
         decoration: BoxDecoration(
-          color: Colors.green,
+          color: Colors.blue,
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -160,9 +162,14 @@ class _MyHomePageState extends State<MyHomePage> with EventListener {
       );
     } else {
       Category category = categories[index - 2];
+      var title = category.title;
+      LogUtils.d(TAG, "login confirm btn $title");
+      if(title == null) {
+        title = "分类";
+      }
       return ListTile(
         leading: Icon(Icons.inbox),
-        title: Text(category.name),
+        title: Text(title),
         selected: databaseProvider.selectedCategory == category,
         onTap: () {
           databaseProvider.setSelectedCategory(category);

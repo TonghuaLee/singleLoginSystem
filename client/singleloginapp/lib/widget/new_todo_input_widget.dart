@@ -37,7 +37,7 @@ class _NewTodoInputState extends State<NewTodoInput> {
           IconButton(
             iconSize: 30,
             icon: Icon(Icons.add_circle),
-            color: Colors.blue,
+            color: Colors.black,
             onPressed: () {
               _insertNewTodoItem(controller.text, context);
             },

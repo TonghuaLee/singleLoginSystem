@@ -28,7 +28,7 @@ class AnimatedLoginButton extends StatefulWidget{
   AnimatedLoginButton({
     this.height:40.0,
     this.width:200.0,
-    this.loginTip:"登陆",
+    this.loginTip:"Login",
     this.indicatorStarRadian:0.0,
     this.indicatorWidth:2.0,
     this.buttonColorNormal:Colors.blue,
@@ -38,7 +38,7 @@ class AnimatedLoginButton extends StatefulWidget{
     this.textStyleError:const TextStyle(fontSize: 16.0, color: Colors.red),
     @required this.onTap,
     this.loginErrorMessageController,
-    this.showErrorTime:const Duration(milliseconds: 2000),
+    this.showErrorTime:const Duration(milliseconds: 1000),
   });
 
   @override
@@ -209,6 +209,13 @@ class AnimatedLoginButtonState extends State<AnimatedLoginButton> with TickerPro
     }
   }
 
+  void reset() async {
+    if(mounted) {
+      animationControllerWait.stop();
+      animationControllerWait.reset();
+      controllerEnd.forward();
+    }
+  }
 
   @override
   void dispose() {
@@ -398,6 +405,12 @@ class LoginErrorMessageController{
   void showErrorMessage(String errorMsg){
     if(loginState!=null) {
       loginState.changeErrorMsg(errorMsg);
+    }
+  }
+
+  void reset() {
+    if(loginState!=null) {
+      loginState.reset();
     }
   }
 }

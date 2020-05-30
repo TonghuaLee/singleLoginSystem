@@ -7,6 +7,8 @@ interface LoginUIController {
     fun performSignFail(msg: String?)
     fun performLogout()
     fun performUserOnline(account: String?)
+    fun performAddCategorySuccess(data: String)
+    fun performAddCategoryFail(data: String)
     fun toastMsg(content: String?)
     fun disconnect()
 }

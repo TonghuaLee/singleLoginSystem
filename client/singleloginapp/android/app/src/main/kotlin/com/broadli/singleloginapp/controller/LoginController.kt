@@ -57,6 +57,13 @@ class LoginController constructor(activity: Activity?, controller: LoginUIContro
     }
 
     /**
+     * 添加todo分类
+     */
+    override fun actionAddCategory(title: String) {
+        executorCache.execute { mLoginCore.addCategory(title) }
+    }
+
+    /**
      * 处理登录完成后的UI方法调用
      */
     private fun handleLoginResult(result: ActionResult) {
@@ -69,9 +76,18 @@ class LoginController constructor(activity: Activity?, controller: LoginUIContro
         } else {
             mUiController.get()!!.performLoginFail(result.getMsg())
         }
-//        if (!TextUtils.isEmpty(result.getMsg())) {
-//            handleToast(result.getMsg())
-//        }
+    }
+
+    private fun handOnAddCategory(result: ActionResult) {
+        if (isPageRecycle) {
+            return
+        }
+        if (result.getCode() === ResultCode.SUCCESS.getValue()) {
+            mUiController.get()!!.performAddCategorySuccess(result.data)
+            checkConnect()
+        } else {
+            mUiController.get()!!.performLoginFail(result.msg)
+        }
     }
 
     /**
@@ -161,6 +177,10 @@ class LoginController constructor(activity: Activity?, controller: LoginUIContro
             mMainHandler.post { handleLoginResult(result) }
         }
 
+        override fun onAddCategory(result: ActionResult) {
+            mMainHandler.post { handOnAddCategory(result) }
+        }
+
         override fun onSignFinish(result: ActionResult) {
             mMainHandler.post { handleSignResult(result) }
         }
@@ -173,8 +193,16 @@ class LoginController constructor(activity: Activity?, controller: LoginUIContro
             mMainHandler.post { handleCheckUserStatus(result) }
         }
 
+        override fun onUpdateTodo(result: ActionResult?) {
+            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        }
+
         override fun onDisconnect(result: ActionResult) {
             mMainHandler.post { handleDeviceDisconnect(result) }
+        }
+
+        override fun onAddTodo(result: ActionResult?) {
+            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
         }
     }
 

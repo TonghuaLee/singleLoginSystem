@@ -5,4 +5,5 @@ internal interface ILoginController {
     fun actionSignIn(userAccount: String?, userPassword: String?)
     fun actionLogout()
     fun actionCheckLoginStatus()
+    fun actionAddCategory(title: String)
 }
