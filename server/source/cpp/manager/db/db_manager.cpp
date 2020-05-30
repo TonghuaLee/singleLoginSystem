@@ -296,46 +296,39 @@ int Database::addTodo(string content, int cid)
 /**
  * 根据用户账号查询用户数据
  **/
-Category Database::queryCategory(string o_title, int o_uid)
+Todo Database::queryTodo(int o_tid)
 {
-    //参数判空
-    if (o_title.empty())
-    {
-        LOGW("[db_manager.queryCategory] param is empty");
-        return Category(-1, "", -1);
-    }
-
-    //参数非法字符过滤
-    filterIllegalKeyword(o_title);
 
     //执行查询数据操作
+    int tid = -1;
     int cid = -1;
-    int uid = -1;
-    string title;
+    int status = 0;
+    string content;
     string msg;
-    Json::Value data = db_base->selectCategory(o_title, o_uid, msg);
+    Json::Value data = db_base->selectTodo(o_tid, msg);
 
     Json::FastWriter fw;
-    LOGD("[db_manager.queryCategory] query category info :" + fw.write(data));
+    LOGD("[db_manager.queryTodo] query category info :" + fw.write(data));
 
     if (data["is_empty"].asBool())
     {
-        LOGE("[db_manager.queryCategory] data is empty");
-        return Category(-1, "", -1);
+        LOGE("[db_manager.queryTodo] data is empty");
+        return Todo(-1, "", -1,0);
     }
     else
     {
-        cid = CommonUtils::getIntByString(data["ID"].asString());
-        uid = CommonUtils::getIntByString(data["UID"].asString());
-        title = data["TITLE"].asString();
-        if (cid < 0)
+        tid = CommonUtils::getIntByString(data["TID"].asString());
+        cid = CommonUtils::getIntByString(data["CID"].asString());
+        status = CommonUtils::getIntByString(data["STATUS"].asString());
+        content = data["CONTENT"].asString();
+        if (tid < 0)
         {
-            LOGE("[db_manager.queryCategory] can not find title = " + o_title);
-            return Category(-1, "", -1);
+            LOGE("[db_manager.queryTodo] can not find title = " + o_title);
+            return Category(-1, "", -1,0);
         }
     }
 
-    return Category(cid, title, uid);
+    return Todo(tid, content, cid, status);
 }
 
 /**

@@ -12,7 +12,7 @@ namespace my_model
 	class Todo
 	{
 	public:
-		Todo(int cid, string title, int uid);
+		Todo(int cid, string title, int uid, int status);
 
 		int getCid();
 		void setCid(int uid);

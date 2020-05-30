@@ -127,9 +127,9 @@ public:
     return Database::getDatabase()->addTodo(content, cid);
   }
 
-  Todo getTodo(string content, int cid)
+  Todo getTodo(int tid)
   {
-    return Database::getDatabase()->queryTodo(content, cid);
+    return Database::getDatabase()->queryTodo(tid);
   }
 
 private:
@@ -492,11 +492,11 @@ public:
 
     // 添加分类到数据库，内部会校验
     int tid = -1;
-    tid = login_db.addTodo(content, uid);
+    tid = login_db.addTodo(content, cid);
     if (tid != -1)
     {
-      result->set_code(ResultCode::addTodo_InsertDBFail);
-      result->set_msg(MsgTip::addTodo_InsertDBFail);
+      result->set_code(ResultCode::AddTodo_InsertDBFail);
+      result->set_msg(MsgTip::AddTodo_InsertDBFail);
       LOGD("[account_server.handleAddTodo] insert todos into db fail");
       return result;
     }
@@ -1147,7 +1147,7 @@ class AccountServiceImpl final : public Account::Service
 
     string token = request->token();
     string content = request->content();
-    string cid = request->cid();
+    int cid = request->cid();
 
     bool isParamValid = true;
     string error_msg;
