@@ -598,7 +598,7 @@ Json::Value DBBase::selectTodo(int tid, string &Msg)
 
        //构建存储过程执行语句
        std::stringstream ssTemp;
-       ssTemp << "call querytodo ('" tid << "',@out_id,@out_content,@out_cid)";
+       ssTemp << "call querytodo ('" << tid << "',@out_id,@out_content,@out_cid)";
        string query = ssTemp.str();
        LOGD("[db_base.selectTodo] db mysql_query : " + query);
 
