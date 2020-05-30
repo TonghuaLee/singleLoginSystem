@@ -541,7 +541,7 @@ Json::Value DBBase::insertCategory(string title, int uid, string &Msg)
        mysql_query(&mysql, "SELECT @out_cid");
 
        //判断插入是否成功
-       if (ret)
+       if (ret < 1)
        {
               Msg = "[db_base.insertCategory] Error exec insert";
               //释放写锁
