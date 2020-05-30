@@ -323,8 +323,8 @@ Todo Database::queryTodo(int o_tid)
         content = data["CONTENT"].asString();
         if (tid < 0)
         {
-            LOGE("[db_manager.queryTodo] can not find title = " + o_title);
-            return Category(-1, "", -1,0);
+            LOGE("[db_manager.queryTodo] can not find tid");
+            return Todo(-1, "", -1, 0);
         }
     }
 
