@@ -528,7 +528,7 @@ Json::Value DBBase::insertCategory(string title, int uid, string &Msg)
 
        //构建存储过程执行语句
        std::stringstream ssTemp;
-       ssTemp << "call insertcategory ('" << title << "','" << uid << "',@out_cid)";
+       ssTemp << "call insertcategory ('" << title << "'," << uid << ",@out_cid)";
        string query = ssTemp.str();
 
        LOGD("[db_base.insertCategory] " + query);
