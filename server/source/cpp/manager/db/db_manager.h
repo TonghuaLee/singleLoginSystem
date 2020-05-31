@@ -74,7 +74,7 @@ namespace manager
 
 		Category queryCategory(string title, int uid);
 
-		int addTodo(string title, int uid);
+		int addTodo(string content, int cid, int uid);
 
 		Todo queryTodo(int tid);
 

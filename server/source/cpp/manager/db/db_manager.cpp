@@ -269,10 +269,10 @@ Category Database::queryCategory(string o_title, int o_uid)
 /**
  * 添加todo分类到数据库
  **/
-int Database::addTodo(string content, int cid)
+int Database::addTodo(string content, int cid, int uid)
 {
     //参数判空
-    if (content.empty() || cid < 1)
+    if (content.empty() || uid < 1)
     {
         LOGW("[db_manager.addTodo] param is empty");
         return -1;
@@ -283,7 +283,7 @@ int Database::addTodo(string content, int cid)
 
     //执行插入数据操作
     string msg;
-    Json::Value data = db_base->insertTodo(content, cid, msg);
+    Json::Value data = db_base->insertTodo(content, cid, uid, msg);
     int tid = CommonUtils::getIntByString(data["TID"].asString());
     if (data["is_empty"].asBool() || tid <= 0)
     {

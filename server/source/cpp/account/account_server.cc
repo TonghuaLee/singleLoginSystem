@@ -490,9 +490,38 @@ public:
     LoginDatabase login_db;
     LoginRedis login_redis;
 
+    //解密Token
+    string decodeToken = CommonUtils::DecryptToken(token);
+    if (decodeToken.empty())
+    {
+      result->set_code(ResultCode::CheckConnect_TokenNotValid);
+      result->set_msg(MsgTip::CheckConnect_TokenNotValid);
+      return result;
+    }
+    LOGD("[account_server.handleAddTodo] user token decrypt success");
+
+    std::vector<string> vToken;
+    CommonUtils::SplitString(decodeToken, vToken, ":");
+    if (vToken.size() != 5)
+    {
+      result->set_code(ResultCode::CheckConnect_TokenNotValid);
+      result->set_msg(MsgTip::CheckConnect_TokenNotValid);
+      return result;
+    }
+    LOGD("[account_server.handleAddTodo] get token info success");
+
+    //获取Token过期时间
+    string token_end_time = vToken[4];
+    int end_time = CommonUtils::getIntByString(token_end_time);
+
+    //获得账号UID
+    string str_uid = vToken[0];
+    int uid = CommonUtils::getIntByString(str_uid);
+
+
     // 添加分类到数据库，内部会校验
     int tid = -1;
-    tid = login_db.addTodo(content, cid);
+    tid = login_db.addTodo(content, cid, uid);
     if (tid < 1)
     {
       result->set_code(ResultCode::AddTodo_InsertDBFail);
