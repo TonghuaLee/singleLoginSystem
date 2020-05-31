@@ -562,16 +562,6 @@ Json::Value DBBase::selectCategoryList(int uid, string &Msg)
 
        while (m_row = mysql_fetch_row(m_res))
        {
-              //小于0则表示查询无结果或失败
-              stringstream ss;
-              ss << m_row[0];
-              int i_id;
-              ss >> i_id;
-              if (i_id <= 0)
-              {
-                     LOGD("[db_base.querycategorylist] handle category db mysql_query empty , id = " + (string)m_row[0]);
-                     break;
-              }
               Json::Value categoryItem;
               categoryItem["ID"] = m_row[0];
               categoryItem["TITLE"] = m_row[1];
@@ -585,9 +575,11 @@ Json::Value DBBase::selectCategoryList(int uid, string &Msg)
 
        //释放指针
        mysql_free_result(m_res);
-
+       LOGD("[db_base.selectCategoryList] handle mysql_free_result finish");
        //释放读锁
        rwlock->readUnlock();
+       LOGD("[db_base.selectCategoryList] handle readUnlock finish");
+       LOGD("[db_base.selectCategoryList] root:  " + fw.write(root));
        return root;
 }
 

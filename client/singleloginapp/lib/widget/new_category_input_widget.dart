@@ -29,6 +29,7 @@ class _NewCategoryInputState extends State<NewCategoryInput>
   FocusNode focusNode;
   final _formKey = GlobalKey<FormState>();
   BuildContext _context;
+  CategoriesDao categoriesDao;
   String _category;
 
   @override
@@ -36,6 +37,9 @@ class _NewCategoryInputState extends State<NewCategoryInput>
     super.initState();
     controller = TextEditingController();
     focusNode = new FocusNode();
+    categoriesDao =
+        Provider.of<DatabaseProvider>(context, listen: false)
+            .categoriesDao;
     MsgChannelUtil.getInstance().addListener(this);
   }
   @override
@@ -134,10 +138,6 @@ class _NewCategoryInputState extends State<NewCategoryInput>
           if (category != null) {
             LogUtils.d(TAG, '添加分类成功');
             bSucc = true;
-            CategoriesDao categoriesDao =
-                Provider.of<DatabaseProvider>(_context, listen: false)
-                    .categoriesDao;
-
             categoriesDao
                 .insertCategory(CategoriesCompanion(
                 title: Value(category.title), uid: Value(category.uid)))
