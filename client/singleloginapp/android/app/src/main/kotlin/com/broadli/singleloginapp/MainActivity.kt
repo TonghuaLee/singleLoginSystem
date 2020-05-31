@@ -11,6 +11,7 @@ import com.broadli.singleloginapp.config.MsgType
 import com.broadli.singleloginapp.config.MsgType.Companion.CODE_FAIL
 import com.broadli.singleloginapp.config.MsgType.Companion.CODE_SUCC
 import com.broadli.singleloginapp.config.MsgType.Companion.MAIN_CMD_ADD_CATEGORY
+import com.broadli.singleloginapp.config.MsgType.Companion.MAIN_CMD_ADD_TODO
 import com.broadli.singleloginapp.config.MsgType.Companion.MAIN_CMD_LOGIN
 import com.broadli.singleloginapp.config.MsgType.Companion.MAIN_CMD_LOGINOUT
 import com.broadli.singleloginapp.config.MsgType.Companion.MAIN_CMD_REGISTER
@@ -100,6 +101,13 @@ class MainActivity : FlutterActivity(), LoginUIController {
                     val title = data?.get("title") as String
                     mLoginControler?.run {
                         actionAddCategory(title)
+                    }
+                } else if (reqMsg.mainCmd == MsgType.MAIN_CMD_ADD_TODO) {
+                    var data = reqMsg.data
+                    val content = data?.get("content") as String
+                    val cid = data?.get("cid") as Double
+                    mLoginControler?.run {
+                        actionAddTodo(content, cid.toInt())
                     }
                 } else {
                     Toast.makeText(mContext, "flutter 调用到了 android test3", Toast.LENGTH_SHORT).show()
@@ -209,6 +217,31 @@ class MainActivity : FlutterActivity(), LoginUIController {
 
     override fun performAddCategoryFail(data: String) {
         toastMsg(data)
+        var replyMsg = Msg(MAIN_CMD_ADD_CATEGORY, SUB_CMD_DEFAULT, CODE_FAIL, data);
+        var gson = Gson()
+        var replyJsonStr = gson.toJson(replyMsg)
+        mMessageChannel?.send(replyJsonStr) { reply ->
+            Log.d("Android", "$reply")
+        }
+    }
+
+    override fun performAddTodoSuccess(data: String) {
+        Log.d(TAG, "performAddTodoSuccess $data")
+        var replyMsg = Msg(MAIN_CMD_ADD_TODO, SUB_CMD_DEFAULT, CODE_SUCC, data);
+        var gson = Gson()
+        var replyJsonStr = gson.toJson(replyMsg)
+        mMessageChannel?.send(replyJsonStr) { reply ->
+            Log.d("Android", "$reply")
+        }
+    }
+
+    override fun performAddTodoFail(data: String) {
+        var replyMsg = Msg(MAIN_CMD_ADD_TODO, SUB_CMD_DEFAULT, CODE_FAIL, data);
+        var gson = Gson()
+        var replyJsonStr = gson.toJson(replyMsg)
+        mMessageChannel?.send(replyJsonStr) { reply ->
+            Log.d("Android", "$reply")
+        }
     }
 
     override fun toastMsg(content: String?) {

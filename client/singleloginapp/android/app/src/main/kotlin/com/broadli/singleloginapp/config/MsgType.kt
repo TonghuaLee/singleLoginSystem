@@ -16,6 +16,7 @@ class MsgType {
         val MAIN_CMD_LOGINOUT = 102
         val MAIN_CMD_CHECK_LOGIN_STATE = 103
         val MAIN_CMD_ADD_CATEGORY = 104
+        val MAIN_CMD_ADD_TODO = 105
 
         // subCmd
         val SUB_CMD_DEFAULT = 0    // 默认值

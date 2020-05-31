@@ -27,8 +27,9 @@ namespace project_constants{
     const int ClientCode::USER_IS_OUT_OF_LINE = 10006;
     const int ClientCode::USER_ACCOUNT_FO_EMPTY = 10007;
     const int ClientCode::TODO_ADD_CATEGORY_FAIL = 10008;
+    const int ClientCode::TODO_ADD_TODO_FAIL = 10009;
 
-        //客户端提示
+    //客户端提示
     const string ToastTip::TOAST_ERROR_ACCOUNT_EMPTY = "账号不能为空，请重新输入";
     const string ToastTip::TOAST_ERROR_ACCOUNT_NOT_VALID_PHONE_NUM = "账号格式错误，请输入正确的手机号码";
     const string ToastTip::TOAST_ERROR_PASSWORD_EMPTY = "密码不能为空，请重新输入";
@@ -38,6 +39,7 @@ namespace project_constants{
     const string ToastTip::TOAST_ACCOUNT_OUT_OFF_LINE = "您的账号在另一设备登录，如非本人，请重新登录";
     const string ToastTip::TOAST_ACCOUNT_INFO_EMPTY = "账号信息缺失，请重新登录";
     const string ToastTip::TOAST_TODO_ADD_CATEGORY_FAIL = "添加分类失败，请稍后再试";
+    const string ToastTip::TOAST_TODO_ADD_TODO_FAIL = "添加TODO失败，请稍后再试";
 
     //服务端
     // 公共错误码（0 ~ 99）

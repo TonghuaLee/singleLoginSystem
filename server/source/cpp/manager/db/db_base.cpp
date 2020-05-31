@@ -592,13 +592,13 @@ Json::Value DBBase::selectTodo(int tid, string &Msg)
        //参数判空
        if (tid < 1)
        {
-              Msg = "[db_base.selectTodo] content is empty";
+              Msg = "[db_base.selectTodo] tid is wrong";
               return root;
        }
 
        //构建存储过程执行语句
        std::stringstream ssTemp;
-       ssTemp << "call querytodo ('" << tid << "',@out_id,@out_content,@out_cid)";
+       ssTemp << "call querytodo ('" << tid << "',@out_tid,@out_content,@out_cid,@out_status)";
        string query = ssTemp.str();
        LOGD("[db_base.selectTodo] db mysql_query : " + query);
 
@@ -607,7 +607,7 @@ Json::Value DBBase::selectTodo(int tid, string &Msg)
 
        //执行存储过程执行语句
        int ret = mysql_real_query(&mysql, query.c_str(), (unsigned int)strlen(query.c_str()));
-       mysql_query(&mysql, "SELECT @out_id,@out_content,@out_cid");
+       mysql_query(&mysql, "SELECT @out_tid,@out_content,@out_cid,@out_status");
 
        LOGD("[db_base.querytodo] handle todos db mysql_query finish");
 

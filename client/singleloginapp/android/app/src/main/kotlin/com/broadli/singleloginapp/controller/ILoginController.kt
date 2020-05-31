@@ -6,4 +6,5 @@ internal interface ILoginController {
     fun actionLogout()
     fun actionCheckLoginStatus()
     fun actionAddCategory(title: String)
+    fun actionAddTodo(content: String, cid: Int)
 }

@@ -64,6 +64,13 @@ class LoginController constructor(activity: Activity?, controller: LoginUIContro
     }
 
     /**
+     * 添加todo
+     */
+    override fun actionAddTodo(content: String, cid: Int) {
+        executorCache.execute { mLoginCore.addTodo(content, cid) }
+    }
+
+    /**
      * 处理登录完成后的UI方法调用
      */
     private fun handleLoginResult(result: ActionResult) {
@@ -86,7 +93,19 @@ class LoginController constructor(activity: Activity?, controller: LoginUIContro
             mUiController.get()!!.performAddCategorySuccess(result.data)
             checkConnect()
         } else {
-            mUiController.get()!!.performLoginFail(result.msg)
+            mUiController.get()!!.performAddCategoryFail(result.msg)
+        }
+    }
+
+    private fun handOnAddTodo(result: ActionResult) {
+        if (isPageRecycle) {
+            return
+        }
+        if (result.getCode() === ResultCode.SUCCESS.getValue()) {
+            mUiController.get()!!.performAddTodoSuccess(result.data)
+            checkConnect()
+        } else {
+            mUiController.get()!!.performAddTodoFail(result.msg)
         }
     }
 
@@ -201,8 +220,8 @@ class LoginController constructor(activity: Activity?, controller: LoginUIContro
             mMainHandler.post { handleDeviceDisconnect(result) }
         }
 
-        override fun onAddTodo(result: ActionResult?) {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        override fun onAddTodo(result: ActionResult) {
+            mMainHandler.post { handOnAddTodo(result) }
         }
     }
 

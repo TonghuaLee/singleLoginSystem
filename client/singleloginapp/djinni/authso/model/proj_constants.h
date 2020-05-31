@@ -41,6 +41,7 @@ namespace project_constants{
         const static int USER_IS_OUT_OF_LINE;
         const static int USER_ACCOUNT_FO_EMPTY;
         const static int TODO_ADD_CATEGORY_FAIL;
+        const static int TODO_ADD_TODO_FAIL;
     };
 
     /**
@@ -57,6 +58,7 @@ namespace project_constants{
         const static string TOAST_ACCOUNT_OUT_OFF_LINE;
         const static string TOAST_ACCOUNT_INFO_EMPTY;
         const static string TOAST_TODO_ADD_CATEGORY_FAIL;
+        const static string TOAST_TODO_ADD_TODO_FAIL;
     };
 
     /**

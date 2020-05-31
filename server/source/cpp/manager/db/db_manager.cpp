@@ -308,7 +308,7 @@ Todo Database::queryTodo(int o_tid)
     Json::Value data = db_base->selectTodo(o_tid, msg);
 
     Json::FastWriter fw;
-    LOGD("[db_manager.queryTodo] query category info :" + fw.write(data));
+    LOGD("[db_manager.queryTodo] query todo info :" + fw.write(data));
 
     if (data["is_empty"].asBool())
     {

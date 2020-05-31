@@ -140,9 +140,9 @@ class _NewCategoryInputState extends State<NewCategoryInput>
 
             categoriesDao
                 .insertCategory(CategoriesCompanion(
-                    title: Value(category.title), uid: Value(category.uid)))
+                title: Value(category.title), uid: Value(category.uid)))
                 .then(
-              (_) {
+                  (_) {
                 _resetValuesAfterSubmit();
               },
             ).catchError((e) {
