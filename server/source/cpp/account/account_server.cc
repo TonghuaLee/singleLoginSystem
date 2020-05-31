@@ -517,7 +517,7 @@ public:
       int size = categoryList.size();
       root["count"] = size;
       root["data"] = list;
-      list<Category>::iterator it = categoryList.begin();
+      std::vector<Category>::iterator it = categoryList.begin();
       for (; it != categoryList.end(); it++)
       {
         Json::Value item;
@@ -1201,7 +1201,7 @@ class AccountServiceImpl final : public Account::Service
     if (isParamValid)
     {
       LoginCore loginCore;
-      CodeReply *result = loginCore.handleCategory(title, uid, token);
+      CodeReply *result = loginCore.handleAddCategory(title, uid, token);
       reply->set_code(result->code());
       reply->set_msg(result->msg());
       reply->set_data(result->data());

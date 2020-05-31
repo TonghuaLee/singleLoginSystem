@@ -266,7 +266,7 @@ Category Database::queryCategory(string o_title, int o_uid)
     return Category(cid, title, uid);
 }
 
-list<Category> Database::queryCategoryList(int o_uid)
+std::vector<Category> Database::queryCategoryList(int o_uid)
 {
     //执行查询数据操作
     int cid = -1;
@@ -277,8 +277,8 @@ list<Category> Database::queryCategoryList(int o_uid)
 
     Json::FastWriter fw;
     LOGD("[db_manager.queryCategoryList] query category info :" + fw.write(data));
-    list<Category> resultList;
-     if (data["is_empty"].asBool())
+    std::vector<Category> resultList;
+    if (data["is_empty"].asBool())
     {
         LOGE("[db_manager.queryCategoryList] data is empty");
         return resultList;
