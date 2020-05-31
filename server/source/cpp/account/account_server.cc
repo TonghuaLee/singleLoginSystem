@@ -497,16 +497,6 @@ public:
     LoginRedis login_redis;
 
     // 添加分类到数据库，内部会校验
-    if (!login_db.getCategoryList(uid))
-    {
-      result->set_code(ResultCode::GetCategoryList_Fail);
-      result->set_msg(MsgTip::GetCategoryList_Fail);
-      LOGD("[account_server.handleFetchCategoryList] query categorylist from db fail");
-      return result;
-    }
-    LOGD("[account_server.handleFetchCategoryList] query categorylist from db success");
-
-    //获得用户信息
     std::vector<Category> categoryList = login_db.getCategoryList(uid);
     LOGD("[account_server.handleFetchCategoryList] get category info success");
     result->set_code(ResultCode::SUCCESS);
