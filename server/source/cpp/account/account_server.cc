@@ -493,7 +493,7 @@ public:
     // 添加分类到数据库，内部会校验
     int tid = -1;
     tid = login_db.addTodo(content, cid);
-    if (tid != -1)
+    if (tid < 1)
     {
       result->set_code(ResultCode::AddTodo_InsertDBFail);
       result->set_msg(MsgTip::AddTodo_InsertDBFail);
