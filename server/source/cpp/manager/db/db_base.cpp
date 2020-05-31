@@ -115,6 +115,7 @@ Json::Value DBBase::selectData(const char *SQL, vector<string> columnsV, string 
               Msg = "[db_base.selectData] select username Error";
               //释放读锁
               rwlock->readUnlock();
+              mysql_free_result(m_res);
               return root;
        }
 
@@ -325,6 +326,7 @@ Json::Value DBBase::selectUserAccountByAccount(string account, string &Msg)
               Msg = "[db_base.selectUserAccountByAccount] select m_res null";
               //释放读锁
               rwlock->readUnlock();
+              mysql_free_result(m_res);
               return root;
        }
 
@@ -480,6 +482,7 @@ Json::Value DBBase::selectCategory(string title, int uid, string &Msg)
               Msg = "[db_base.querycategory] select m_res null";
               //释放读锁
               rwlock->readUnlock();
+              mysql_free_result(m_res);
               return root;
        }
 
@@ -552,6 +555,7 @@ Json::Value DBBase::selectCategoryList(int uid, string &Msg)
               Msg = "[db_base.querycategorylist] select m_res null";
               //释放读锁
               rwlock->readUnlock();
+              mysql_free_result(m_res);
               return root;
        }
        Json::Value categorylist;
@@ -642,6 +646,7 @@ Json::Value DBBase::insertCategory(string title, int uid, string &Msg)
               Msg = "[db_base.insertCategory] select m_res null";
               //释放写锁
               rwlock->writeUnlock();
+              mysql_free_result(m_res);
               return root;
        }
 
@@ -713,6 +718,7 @@ Json::Value DBBase::selectTodo(int tid, string &Msg)
               Msg = "[db_base.querytodo] select m_res null";
               //释放读锁
               rwlock->readUnlock();
+              mysql_free_result(m_res);
               return root;
        }
 
