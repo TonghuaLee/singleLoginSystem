@@ -287,14 +287,12 @@ list<Category> Database::queryCategoryList(int o_uid)
     {
         Json::Value categoryList = data["data"];
         int size = 0;
-        if (categoryList != null) {
-            size = categoryList.size();
-        }
+        size = categoryList.size();
         for(int i =0 ;i <size; i++) {
             Json::Value val_category = categoryList[i];
             int cid = CommonUtils::getIntByString(val_category["ID"].asString());
-            String title = val_category["TITLE"].asString();
-            if (cid >___POSIX_C_DEPRECATED_STARTING_199009L 0)
+            string title = val_category["TITLE"].asString();
+            if (cid > 0)
             {
                 resultList.push_back(Category(cid, title, o_uid));
             }
