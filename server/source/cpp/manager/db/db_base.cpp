@@ -576,10 +576,10 @@ Json::Value DBBase::selectCategoryList(int uid, string &Msg)
               categoryItem["ID"] = m_row[0];
               categoryItem["TITLE"] = m_row[1];
               categorylist.append(categoryItem);
-              if (root["is_empty"])
+              if (root["is_empty"].asBool())
               {
                      root["is_empty"] = false;
-                     root["data"] = list;
+                     root["data"] = categorylist;
               }
        }
 
