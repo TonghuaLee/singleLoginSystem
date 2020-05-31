@@ -309,7 +309,7 @@ Json::Value DBBase::selectUserAccountByAccount(string account, string &Msg)
        //判断查询是否成功
        if (ret)
        {
-              Msg = "[db_base.selectUserAccountByAccount] error exec query";
+              Msg = "[db_base.selectUserAccountByAccount] error exec query" + ret;
               //释放读锁
               rwlock->readUnlock();
               return root;

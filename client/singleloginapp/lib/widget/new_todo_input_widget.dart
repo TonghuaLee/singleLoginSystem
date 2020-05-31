@@ -100,7 +100,10 @@ class _NewTodoInputState extends State<NewTodoInput> with EventListener {
     Provider.of<DatabaseProvider>(context, listen: false);
     Map req = new Map();
     req['content'] = input;
-    var cid = databaseProvider.selectedCategory.id;
+    var cid = 0;
+    if(databaseProvider.selectedCategory != null) {
+      cid = databaseProvider.selectedCategory?.id;
+    }
     req['cid'] = cid; // databaseProvider.selectedCategory.id;
     Message msg = new Message(1, 'req add todo from flutter', req,
         MsgChannelUtil.MAIN_CMD_ADD_TODO, MsgChannelUtil.MAIN_CMD_DEFALUT);
