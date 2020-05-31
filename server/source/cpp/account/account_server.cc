@@ -11,6 +11,7 @@
 #include <stdexcept>
 #include <stdlib.h>
 #include <vector>
+#include <list>
 #include <set>
 
 #include <grpcpp/grpcpp.h>
@@ -509,20 +510,21 @@ public:
     list<Category> categoryList = login_db.getCategoryList(uid);
     LOGD("[account_server.handleFetchCategoryList] get category info success");
     result->set_code(ResultCode::SUCCESS);
-    if (categoryList != null)
+
     {
       Json::Value root;
       Json::Value list;
       int size = categoryList.size();
       root["count"] = size;
       root["data"] = list;
-      list<Category>::itertor it = categoryList.begin();
-      for (; it != categoryList.end(); it++) {
-       Json::Value item;
-       item["uid"] = uid;
-       item["title"] = it->getTtile();
-       item["cid"] = it->getCid();
-       list.append(item);
+      list<Category>::iterator it = categoryList.begin();
+      for (; it != categoryList.end(); it++)
+      {
+        Json::Value item;
+        item["uid"] = uid;
+        item["title"] = it->getTtile();
+        item["cid"] = it->getCid();
+        list.append(item);
       }
       Json::FastWriter fw;
       result->set_data(fw.write(root));
@@ -1132,13 +1134,13 @@ class AccountServiceImpl final : public Account::Service
 
     return Status::OK;
   }
-  Status requestAddCategory(ServerContext *context, const FetchCategoryRequest *request,
+  Status requestAddCategory(ServerContext *context, const AddCategoryRequest *request,
                             CodeReply *reply) override
   {
     LogMBean log_bean("requestAddCategory");
 
     string token = request->token();
-
+    string title = request->title();
     bool isParamValid = true;
     string error_msg;
 
@@ -1149,6 +1151,15 @@ class AccountServiceImpl final : public Account::Service
       reply->set_msg(error_msg);
       isParamValid = false;
       LOGW("token is empty");
+    };
+
+    //校验用户token
+    if (!ParamUtils::CheckStringValid(title, error_msg))
+    {
+      reply->set_code(ResultCode::ReqParamError);
+      reply->set_msg(error_msg);
+      isParamValid = false;
+      LOGW("title is empty");
     };
 
     LoginRedis login_redis;
