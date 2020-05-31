@@ -390,7 +390,7 @@ Json::Value DBBase::insertUserAccount(string account, string password, string pw
        //判断插入是否成功
        if (ret)
        {
-              Msg = "[db_base.insertUserAccount] Error exec insert";
+              Msg = "[db_base.insertUserAccount] Error exec insert :"+ret;
               //释放写锁
               rwlock->writeUnlock();
               return root;
