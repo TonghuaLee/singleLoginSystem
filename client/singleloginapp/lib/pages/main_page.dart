@@ -87,7 +87,7 @@ class _MyHomePageState extends State<MyHomePage> with EventListener {
   void initState() {
     super.initState();
     MsgChannelUtil.getInstance().addListener(this);
-   // fetchCategoryList();
+    fetchCategoryList();
   }
 
   @override

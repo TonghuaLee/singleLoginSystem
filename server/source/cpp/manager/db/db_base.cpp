@@ -532,7 +532,7 @@ Json::Value DBBase::selectCategoryList(int uid, string &Msg)
 
        //执行存储过程执行语句
        int ret = mysql_real_query(&mysql, query.c_str(), (unsigned int)strlen(query.c_str()));
-       //mysql_query(&mysql, "SELECT @out_id,@out_title,@out_uid");
+       mysql_query(&mysql, "SELECT");
 
        LOGD("[db_base.selectCategoryList] handle category db mysql_query finish");
 
