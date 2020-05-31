@@ -90,9 +90,7 @@ class _LoginPageState extends State<LoginPage> with EventListener {
                 MsgChannelUtil.MAIN_CMD_LOGIN, MsgChannelUtil.MAIN_CMD_DEFALUT);
             LogUtils.d(TAG, 'req: ' + msg.toString());
 //              LogUtils.d(TAG, 'req from flutter: '+ msg.toJson());
-            Message result =
-                await MsgChannelUtil.getInstance().sendMessage(msg);
-            LogUtils.d(TAG, 'result: ' + result.toJson().toString());
+            await MsgChannelUtil.getInstance().sendMessage(msg);
             //Navigator.pushNamedAndRemoveUntil(context, 'Home', (route) => route == null);
           } else {
             loginErrorMessageController.showErrorMessage("参数错误");

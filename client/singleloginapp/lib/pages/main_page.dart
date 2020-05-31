@@ -328,10 +328,7 @@ class _MyHomePageState extends State<MyHomePage> with EventListener {
         clearLocalDB(categoriesDao);
 
         for(var i=0;i <count;i++) {
-          var item = list[0];
-          var cid = item["cid"] as int;
-          var title = item["title"];
-          var uid = item["uid"] as int;
+          var item = list[i];
           addCategory(categoriesDao, Category.fromJson(item));
         }
       }
