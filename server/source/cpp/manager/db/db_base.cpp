@@ -523,16 +523,15 @@ Json::Value DBBase::selectCategoryList(int uid, string &Msg)
 
        //构建存储过程执行语句
        std::stringstream ssTemp;
-       ssTemp << "call querycategorylist ('" << uid << "'),@out_count";
+       ssTemp << "call querycategorylist ('" << uid << "')";
        string query = ssTemp.str();
-       LOGD("[db_base.selectCategoryList] db mysql_query : " + query);
+       LOGD("[db_base.selectCategoryList] db mysql_query : " + query + "end");
 
        //加读锁
        rwlock->readLock();
 
        //执行存储过程执行语句
        int ret = mysql_real_query(&mysql, query.c_str(), (unsigned int)strlen(query.c_str()));
-       mysql_query(&mysql, "SELECT @out_count");
 
        LOGD("[db_base.selectCategoryList] handle category db mysql_query finish");
 
