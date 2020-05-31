@@ -1216,7 +1216,7 @@ class AccountServiceImpl final : public Account::Service
     return Status::OK;
   }
 
-  Status requestFetchCategory(ServerContext *context, const FetcchCategoryRequest *request,
+  Status requestFetchCategory(ServerContext *context, const FetchCategoryRequest *request,
                               CodeReply *reply) override
   {
     LogMBean log_bean("requestAddCategory");
@@ -1291,7 +1291,6 @@ class AccountServiceImpl final : public Account::Service
 
     //打印接口日志
     log_bean.addParam("code", reply->code());
-    log_bean.addParam("title", title);
     log_bean.addParam("uid", uid);
     LOGM(log_bean);
 
