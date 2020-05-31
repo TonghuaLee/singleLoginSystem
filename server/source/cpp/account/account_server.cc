@@ -122,9 +122,9 @@ public:
     return Database::getDatabase()->queryCategory(title, uid);
   }
 
-  int addTodo(string content, int cid)
+  int addTodo(string content, int cid, int uid)
   {
-    return Database::getDatabase()->addTodo(content, cid);
+    return Database::getDatabase()->addTodo(content, cid, uid);
   }
 
   Todo getTodo(int tid)
