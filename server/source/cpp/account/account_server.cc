@@ -507,7 +507,7 @@ public:
     LOGD("[account_server.handleFetchCategoryList] insert category into db success");
 
     //获得用户信息
-    list<Category> categoryList = login_db.getCategoryList(uid);
+    std::vector<Category> categoryList = login_db.getCategoryList(uid);
     LOGD("[account_server.handleFetchCategoryList] get category info success");
     result->set_code(ResultCode::SUCCESS);
 
@@ -517,13 +517,13 @@ public:
       int size = categoryList.size();
       root["count"] = size;
       root["data"] = list;
-      std::vector<Category>::iterator it = categoryList.begin();
-      for (; it != categoryList.end(); it++)
+     
+      for (int i = 0; i < size; i++)
       {
         Json::Value item;
         item["uid"] = uid;
-        item["title"] = it->getTtile();
-        item["cid"] = it->getCid();
+        item["title"] = categoryList[i].getTitle();
+        item["cid"] = categoryList[i].getCid();
         list.append(item);
       }
       Json::FastWriter fw;
