@@ -621,9 +621,12 @@ Json::Value DBBase::insertCategory(string title, int uid, string &Msg)
        mysql_query(&mysql, "SELECT @out_cid");
 
        //判断插入是否成功
-       if (ret < 1)
+       if (ret)
        {
-              Msg = "[db_base.insertCategory] Error exec insert";
+              std::stringstream ssTemp;
+              ssTemp << "[db_base.insertCategory] Error exec insert :" << ret;
+              string msg = ssTemp.str();
+              Msg = msg;
               //释放写锁
               rwlock->writeUnlock();
               return root;
@@ -775,9 +778,12 @@ Json::Value DBBase::insertTodo(string content, int cid, int uid, string &Msg)
        mysql_query(&mysql, "SELECT @out_tid");
 
        //判断插入是否成功
-       if (ret < 1)
+       if (ret)
        {
-              Msg = "[db_base.insertTodo] Error exec insert";
+              std::stringstream ssTemp;
+              ssTemp << "[db_base.insertTodo] Error exec insert :" << ret;
+              string msg = ssTemp.str();
+              Msg = msg;
               //释放写锁
               rwlock->writeUnlock();
               return root;
