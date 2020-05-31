@@ -579,7 +579,8 @@ Json::Value DBBase::selectCategoryList(int uid, string &Msg)
        //释放读锁
        rwlock->readUnlock();
        LOGD("[db_base.selectCategoryList] handle readUnlock finish");
-       LOGD("[db_base.selectCategoryList] root:  " + fw.write(root));
+       Json::FastWriter fw;
+       LOGD("[db_base.selectCategoryList] root: " + fw.write(root));
        return root;
 }
 
