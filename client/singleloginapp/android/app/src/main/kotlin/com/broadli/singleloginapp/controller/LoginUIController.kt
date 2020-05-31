@@ -11,6 +11,10 @@ interface LoginUIController {
     fun performAddCategoryFail(data: String)
     fun performAddTodoSuccess(data: String)
     fun performAddTodoFail(data: String)
+    fun performGetCategoryListSuccess(data: String)
+    fun performGetCategoryListFail(data: String)
+    fun performGetTodoListSuccess(data: String)
+    fun performGetTodoListFail(data: String)
     fun toastMsg(content: String?)
     fun disconnect()
 }

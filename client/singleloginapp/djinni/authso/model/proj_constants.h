@@ -42,7 +42,9 @@ namespace project_constants{
         const static int USER_ACCOUNT_FO_EMPTY;
         const static int TODO_ADD_CATEGORY_FAIL;
         const static int TODO_ADD_TODO_FAIL;
-    };
+        const static int TODO_GET_CATEGORY_LIST_FAIL;
+        const static int TODO_GET_TODO_LIST_FAIL;
+        };
 
     /**
      * 客户端业务提示
@@ -59,6 +61,8 @@ namespace project_constants{
         const static string TOAST_ACCOUNT_INFO_EMPTY;
         const static string TOAST_TODO_ADD_CATEGORY_FAIL;
         const static string TOAST_TODO_ADD_TODO_FAIL;
+        const static string TOAST_TODO_GET_CATEGORY_LIST_FAIL;
+        const static string TOAST_TODO_GET_TODO_LIST_FAIL;
     };
 
     /**

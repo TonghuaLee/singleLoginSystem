@@ -61,6 +61,9 @@ namespace auth
 
         virtual void add_category(const string &title) override;
 
+        virtual void get_category_list() override;
+        virtual void get_todo_list(const int32_t cid) override;
+
         virtual void add_todo(const string &content, int32_t cid) override;
 
         virtual void update_todo(int32_t tid, int32_t status) override;

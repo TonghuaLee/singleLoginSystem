@@ -80,6 +80,10 @@ namespace network{
 
         ReqResult addCategory(const std::string title, const std::string token);
 
+        ReqResult getCategoryList(const std::string token);
+
+        ReqResult getTodoList(const int32_t cid, const std::string token);
+
         ReqResult addTodo(const std::string content, const int32_t cid, const std::string token);
 
         ReqResult updateTodo(const int32_t tid, const int32_t status, const std::string token);

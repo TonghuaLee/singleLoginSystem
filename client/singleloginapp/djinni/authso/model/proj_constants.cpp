@@ -28,6 +28,8 @@ namespace project_constants{
     const int ClientCode::USER_ACCOUNT_FO_EMPTY = 10007;
     const int ClientCode::TODO_ADD_CATEGORY_FAIL = 10008;
     const int ClientCode::TODO_ADD_TODO_FAIL = 10009;
+    const int ClientCode::TODO_GET_CATEGORY_LIST_FAIL = 10010;
+    const int ClientCode::TODO_GET_TODO_LIST_FAIL = 10011;
 
     //客户端提示
     const string ToastTip::TOAST_ERROR_ACCOUNT_EMPTY = "账号不能为空，请重新输入";
@@ -40,6 +42,8 @@ namespace project_constants{
     const string ToastTip::TOAST_ACCOUNT_INFO_EMPTY = "账号信息缺失，请重新登录";
     const string ToastTip::TOAST_TODO_ADD_CATEGORY_FAIL = "添加分类失败，请稍后再试";
     const string ToastTip::TOAST_TODO_ADD_TODO_FAIL = "添加TODO失败，请稍后再试";
+    const string ToastTip::TOAST_TODO_GET_CATEGORY_LIST_FAIL = "获取分类列表失败，请稍后再试";
+    const string ToastTip::TOAST_TODO_GET_TODO_LIST_FAIL = "获取todo列表失败，请稍后再试";
 
     //服务端
     // 公共错误码（0 ~ 99）

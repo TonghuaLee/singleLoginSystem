@@ -15,6 +15,8 @@ login_core = interface +c {
     add_category(title: string);
     add_todo(content: string, cid: i32);
     update_todo(tid: i32, status: i32);
+    get_category_list();
+    get_todo_list(cid: i32);
 }
 
 login_listener = interface +o +j {
@@ -26,4 +28,6 @@ login_listener = interface +o +j {
     on_add_category(result: action_result);
     on_add_todo(result: action_result);
     on_update_todo(result: action_result);
+    on_get_category_list(result: action_result);
+    on_get_todo_list(result: action_result);
 }

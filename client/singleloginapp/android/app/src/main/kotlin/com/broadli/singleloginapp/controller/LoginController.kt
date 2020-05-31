@@ -70,6 +70,14 @@ class LoginController constructor(activity: Activity?, controller: LoginUIContro
         executorCache.execute { mLoginCore.addTodo(content, cid) }
     }
 
+    override fun actionGetCategoryList() {
+        executorCache.execute { mLoginCore.getCategoryList() }
+    }
+
+    override fun actionGetTodoList(cid: Int) {
+        executorCache.execute { mLoginCore.getTodoList(cid) }
+   }
+
     /**
      * 处理登录完成后的UI方法调用
      */
@@ -124,6 +132,32 @@ class LoginController constructor(activity: Activity?, controller: LoginUIContro
         } else {
             Log.d(TAG, "handleSignResult fail")
             mUiController.get()!!.performSignFail(result.getMsg())
+        }
+    }
+
+    private fun handleGetCategoryResult(result: ActionResult) {
+        if (isPageRecycle) {
+            return
+        }
+        if (result.getCode() === ResultCode.SUCCESS.getValue()) {
+            Log.d(TAG, "handleGetCategoryResult success")
+            mUiController.get()!!.performGetCategoryListSuccess(result.data)
+        } else {
+            Log.d(TAG, "handleGetCategoryResult fail")
+            mUiController.get()!!.performGetCategoryListFail(result.getMsg())
+        }
+    }
+
+    private fun handleGetTodoResult(result: ActionResult) {
+        if (isPageRecycle) {
+            return
+        }
+        if (result.getCode() === ResultCode.SUCCESS.getValue()) {
+            Log.d(TAG, "handleGetCategoryResult success")
+            mUiController.get()!!.performGetTodoListSuccess(result.data)
+        } else {
+            Log.d(TAG, "handleGetCategoryResult fail")
+            mUiController.get()!!.performGetTodoListFail(result.getMsg())
         }
     }
 
@@ -204,6 +238,10 @@ class LoginController constructor(activity: Activity?, controller: LoginUIContro
             mMainHandler.post { handleSignResult(result) }
         }
 
+        override fun onGetCategoryList(result: ActionResult) {
+            mMainHandler.post { handleGetCategoryResult(result) }
+       }
+
         override fun onLogoutFinish(result: ActionResult) {
             mMainHandler.post { handleLogout(result) }
         }
@@ -222,6 +260,10 @@ class LoginController constructor(activity: Activity?, controller: LoginUIContro
 
         override fun onAddTodo(result: ActionResult) {
             mMainHandler.post { handOnAddTodo(result) }
+        }
+
+        override fun onGetTodoList(result: ActionResult?) {
+            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
         }
     }
 

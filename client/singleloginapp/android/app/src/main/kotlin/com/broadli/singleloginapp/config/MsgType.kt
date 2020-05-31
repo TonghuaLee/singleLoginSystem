@@ -17,6 +17,7 @@ class MsgType {
         val MAIN_CMD_CHECK_LOGIN_STATE = 103
         val MAIN_CMD_ADD_CATEGORY = 104
         val MAIN_CMD_ADD_TODO = 105
+        val MAIN_CMD_GET_CATEGORY_LIST = 106
 
         // subCmd
         val SUB_CMD_DEFAULT = 0    // 默认值

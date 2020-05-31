@@ -1216,6 +1216,88 @@ class AccountServiceImpl final : public Account::Service
     return Status::OK;
   }
 
+  Status requestFetchCategory(ServerContext *context, const FetcchCategoryRequest *request,
+                              CodeReply *reply) override
+  {
+    LogMBean log_bean("requestAddCategory");
+
+    string token = request->token();
+    bool isParamValid = true;
+    string error_msg;
+
+    //校验用户token
+    if (!ParamUtils::CheckStringValid(token, error_msg))
+    {
+      reply->set_code(ResultCode::ReqParamError);
+      reply->set_msg(error_msg);
+      isParamValid = false;
+      LOGW("token is empty");
+    };
+
+    LoginRedis login_redis;
+
+    //解密Token
+    string decodeToken = CommonUtils::DecryptToken(token);
+    if (decodeToken.empty())
+    {
+      reply->set_code(ResultCode::UserLogout_TokenNotValid);
+      reply->set_msg(MsgTip::UserLogout_TokenNotValid);
+      return Status::OK;
+    }
+    LOGD("[account_server.requestAddCategory] user token decrypt success");
+
+    //解析Token，获取用户信息
+    vector<string> vToken;
+    CommonUtils::SplitString(decodeToken, vToken, ":");
+    if (vToken.size() != 5)
+    {
+      reply->set_code(ResultCode::UserLogout_TokenNotValid);
+      reply->set_msg(MsgTip::UserLogout_TokenNotValid);
+      return Status::OK;
+    }
+    LOGD("[account_server.requestAddCategory] get token info success");
+
+    //获得账号UID
+    int uid = CommonUtils::getIntByString(vToken[0]);
+
+    //token是否正确
+    if (!login_redis.isTokenRight(uid, token))
+    {
+      reply->set_code(ResultCode::UserLogout_TokenNotExist);
+      reply->set_msg(MsgTip::UserLogout_TokenNotExist);
+      return Status::OK;
+    }
+    LOGD("[account_server.requestAddCategory] user token is right");
+
+    //参数正确，执行请求
+    if (isParamValid)
+    {
+      LoginCore loginCore;
+      CodeReply *result = loginCore.handleFetchCategoryList(uid, token);
+      reply->set_code(result->code());
+      reply->set_msg(result->msg());
+      reply->set_data(result->data());
+      delete result;
+    }
+
+    //校验返回数据的合法性
+    string msg;
+    if (!ParamUtils::CheckBackDataValid(reply->data(), msg))
+    {
+      reply->set_code(ResultCode::RetrunDataInvalid);
+      reply->set_msg(msg);
+      reply->set_data("");
+    }
+
+    //打印接口日志
+    log_bean.addParam("code", reply->code());
+    log_bean.addParam("title", title);
+    log_bean.addParam("uid", uid);
+    LOGM(log_bean);
+
+    return Status::OK;
+  }
+
   Status requestAddTodo(ServerContext *context, const AddTodoRequest *request,
                         CodeReply *reply) override
   {

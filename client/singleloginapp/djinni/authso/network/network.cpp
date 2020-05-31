@@ -257,6 +257,86 @@ namespace network{
             }
         }
 
+        CodeReply getCategoryList(const std::string &token)
+        {
+            // Data we are sending to the server.
+            FetchCategoryRequest request;
+            request.set_token(token);
+
+            // Container for the data we expect from the server.
+            CodeReply reply;
+
+            // Context for the client. It could be used to convey extra information to
+            // the server and/or tweak certain RPC behaviors.
+            ClientContext context;
+
+            try
+            {
+                // The actual RPC.
+                Status status = stub_->requestFetchCategory(&context, request, &reply);
+
+                if (status.ok())
+                {
+                    return reply;
+                }
+                else
+                {
+                    //todo 网络错误吗转换
+                    reply.set_code(-1);
+                    reply.set_msg(ToastTip::TOAST_ERROR_NETWORK_UNVALAIBLE);
+                    LOGD("[network.getCategoryList] " + status.error_message());
+                    return reply;
+                }
+            }
+            catch (...)
+            {
+                reply.set_code(-2);
+                reply.set_msg(ToastTip::TOAST_ERROR_NETWORK_UNVALAIBLE);
+                LOGE("[network.getCategoryList] catch getCategoryList network error");
+                return reply;
+            }
+        }
+
+        CodeReply getTodoList(const int32_t cid, const std::string &token)
+        {
+            // Data we are sending to the server.
+            FetchCategoryRequest request;
+            request.set_token(token);
+
+            // Container for the data we expect from the server.
+            CodeReply reply;
+
+            // Context for the client. It could be used to convey extra information to
+            // the server and/or tweak certain RPC behaviors.
+            ClientContext context;
+
+            try
+            {
+                // The actual RPC.
+                Status status = stub_->requestFetchCategory(&context, request, &reply);
+
+                if (status.ok())
+                {
+                    return reply;
+                }
+                else
+                {
+                    //todo 网络错误吗转换
+                    reply.set_code(-1);
+                    reply.set_msg(ToastTip::TOAST_ERROR_NETWORK_UNVALAIBLE);
+                    LOGD("[network.getTodoList] " + status.error_message());
+                    return reply;
+                }
+            }
+            catch (...)
+            {
+                reply.set_code(-2);
+                reply.set_msg(ToastTip::TOAST_ERROR_NETWORK_UNVALAIBLE);
+                LOGE("[network.getTodoList] catch getTodoList network error");
+                return reply;
+            }
+        }
+
         CodeReply addTodo(const std::string &content, const int32_t cid, const std::string &token)
         {
             // Data we are sending to the server.
@@ -437,6 +517,34 @@ namespace network{
         AccountClient client(utils::NetworkUtils::getNetworkChannel());
 
         CodeReply reply = client.addCategory(title, token);
+
+        ReqResult result;
+        result.setCode(reply.code());
+        result.setMsg(reply.msg());
+        result.setData(reply.data());
+
+        return result;
+    }
+
+    ReqResult NetworkCore::getCategoryList(const std::string token)
+    {
+        AccountClient client(utils::NetworkUtils::getNetworkChannel());
+
+        CodeReply reply = client.getCategoryList(token);
+
+        ReqResult result;
+        result.setCode(reply.code());
+        result.setMsg(reply.msg());
+        result.setData(reply.data());
+
+        return result;
+    }
+
+    ReqResult NetworkCore::getTodoList(const int32_t cid, const std::string token)
+    {
+        AccountClient client(utils::NetworkUtils::getNetworkChannel());
+
+        CodeReply reply = client.getTodoList(cid, token);
 
         ReqResult result;
         result.setCode(reply.code());

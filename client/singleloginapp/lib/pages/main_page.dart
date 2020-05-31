@@ -82,6 +82,7 @@ class _MyHomePageState extends State<MyHomePage> with EventListener {
   void initState() {
     super.initState();
     MsgChannelUtil.getInstance().addListener(this);
+    fetchCategoryList();
   }
 
   Drawer _buildDrawer(BuildContext context) {
@@ -182,6 +183,20 @@ class _MyHomePageState extends State<MyHomePage> with EventListener {
     }
   }
 
+  /**
+   * 向后台拉取
+   */
+  void fetchCategoryList() async {
+    Map req = new Map();
+    Message msg = new Message(
+        0,
+        'req fetchCategoryList from flutter',
+        req,
+        MsgChannelUtil.MAIN_CMD_FETCH_CATEGORY_LIST,
+        MsgChannelUtil.MAIN_CMD_DEFALUT);
+    Message result = await MsgChannelUtil.getInstance().sendMessage(msg);
+  }
+
   void _showDeleteCategoryDialog(BuildContext context,
       DatabaseProvider databaseProvider, Category category) {
     showDialog(
@@ -262,6 +277,9 @@ class _MyHomePageState extends State<MyHomePage> with EventListener {
           return new LoginPage();
         },
       ), (route) => route == null);
+    }
+    else if(mainCmd == MsgChannelUtil.MAIN_CMD_FETCH_CATEGORY_LIST) {
+
     }
   }
 }

@@ -447,6 +447,62 @@ namespace auth
         }
     }
 
+    void LoginCoreImpl::get_category_list()
+    {
+        std::string token = storage::SharePreferences::get(Constants::TOKEN);
+        if (token == "")
+        {
+            LOGD("[login_core_impl.get_category_list] token is empty");
+            //清除本地用户状态
+            cleanUserInfo();
+
+            this->m_listener->on_disconnect(ActionResult(ClientCode::USER_ACCOUNT_FO_EMPTY, ToastTip::TOAST_ACCOUNT_INFO_EMPTY, ""));
+            return;
+        }
+
+        network::NetworkCore mNW;
+        ReqResult result = mNW.getCategoryList(token);
+
+        if (result.getCode() == ClientCode::SUCCESS)
+        {
+            LOGD("[login_core_impl.get_category_list] success");
+            this->m_listener->on_get_category_list(ActionResult(ClientCode::SUCCESS, "", result.getData()));
+        }
+        else
+        {
+            LOGD("[login_core_impl.get_category_list] fail");
+            this->m_listener->on_get_category_list(ActionResult(ClientCode::TODO_GET_CATEGORY_LIST_FAIL, ToastTip::TOAST_TODO_GET_CATEGORY_LIST_FAIL, ""));
+        }
+    }
+
+    void LoginCoreImpl::get_todo_list(const int32_t cid)
+    {
+        std::string token = storage::SharePreferences::get(Constants::TOKEN);
+        if (token == "")
+        {
+            LOGD("[login_core_impl.get_todo_list] token is empty");
+            //清除本地用户状态
+            cleanUserInfo();
+
+            this->m_listener->on_disconnect(ActionResult(ClientCode::USER_ACCOUNT_FO_EMPTY, ToastTip::TOAST_ACCOUNT_INFO_EMPTY, ""));
+            return;
+        }
+
+        network::NetworkCore mNW;
+        ReqResult result = mNW.getTodoList(cid, token);
+
+        if (result.getCode() == ClientCode::SUCCESS)
+        {
+            LOGD("[login_core_impl.get_todo_list] success");
+            this->m_listener->on_get_todo_list(ActionResult(ClientCode::SUCCESS, "", result.getData()));
+        }
+        else
+        {
+            LOGD("[login_core_impl.get_todo_list] fail");
+            this->m_listener->on_get_todo_list(ActionResult(ClientCode::TODO_GET_TODO_LIST_FAIL, ToastTip::TOAST_TODO_GET_TODO_LIST_FAIL, ""));
+        }
+    }
+
     void LoginCoreImpl::add_todo(const string &content, int32_t cid)
     {
         std::string token = storage::SharePreferences::get(Constants::TOKEN);
@@ -477,6 +533,5 @@ namespace auth
 
     void LoginCoreImpl::update_todo(int32_t tid, int32_t status)
     {
-
     }
-}
+} // namespace auth

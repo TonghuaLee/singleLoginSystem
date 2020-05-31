@@ -12,6 +12,7 @@ import com.broadli.singleloginapp.config.MsgType.Companion.CODE_FAIL
 import com.broadli.singleloginapp.config.MsgType.Companion.CODE_SUCC
 import com.broadli.singleloginapp.config.MsgType.Companion.MAIN_CMD_ADD_CATEGORY
 import com.broadli.singleloginapp.config.MsgType.Companion.MAIN_CMD_ADD_TODO
+import com.broadli.singleloginapp.config.MsgType.Companion.MAIN_CMD_GET_CATEGORY_LIST
 import com.broadli.singleloginapp.config.MsgType.Companion.MAIN_CMD_LOGIN
 import com.broadli.singleloginapp.config.MsgType.Companion.MAIN_CMD_LOGINOUT
 import com.broadli.singleloginapp.config.MsgType.Companion.MAIN_CMD_REGISTER
@@ -108,6 +109,10 @@ class MainActivity : FlutterActivity(), LoginUIController {
                     val cid = data?.get("cid") as Double
                     mLoginControler?.run {
                         actionAddTodo(content, cid.toInt())
+                    }
+                } else if (reqMsg.mainCmd == MsgType.MAIN_CMD_GET_CATEGORY_LIST) {
+                    mLoginControler?.run {
+                        actionGetCategoryList()
                     }
                 } else {
                     Toast.makeText(mContext, "flutter 调用到了 android test3", Toast.LENGTH_SHORT).show()
@@ -242,6 +247,32 @@ class MainActivity : FlutterActivity(), LoginUIController {
         mMessageChannel?.send(replyJsonStr) { reply ->
             Log.d("Android", "$reply")
         }
+    }
+
+    override fun performGetCategoryListSuccess(data: String) {
+        var replyMsg = Msg(MAIN_CMD_GET_CATEGORY_LIST, SUB_CMD_DEFAULT, CODE_SUCC, data);
+        var gson = Gson()
+        var replyJsonStr = gson.toJson(replyMsg)
+        mMessageChannel?.send(replyJsonStr) { reply ->
+            Log.d("Android", "$reply")
+        }
+    }
+
+    override fun performGetCategoryListFail(data: String) {
+        var replyMsg = Msg(MAIN_CMD_GET_CATEGORY_LIST, SUB_CMD_DEFAULT, CODE_FAIL, data);
+        var gson = Gson()
+        var replyJsonStr = gson.toJson(replyMsg)
+        mMessageChannel?.send(replyJsonStr) { reply ->
+            Log.d("Android", "$reply")
+        }
+    }
+
+    override fun performGetTodoListSuccess(data: String) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun performGetTodoListFail(data: String) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun toastMsg(content: String?) {
