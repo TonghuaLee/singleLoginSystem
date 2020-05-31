@@ -390,7 +390,10 @@ Json::Value DBBase::insertUserAccount(string account, string password, string pw
        //判断插入是否成功
        if (ret)
        {
-              Msg = "[db_base.insertUserAccount] Error exec insert :"+ret;
+              std::stringstream ssTemp;
+              ssTemp << "[db_base.insertUserAccount] Error exec insert :" << ret;
+              string msg = ssTemp.str();
+              Msg = msg;
               //释放写锁
               rwlock->writeUnlock();
               return root;
