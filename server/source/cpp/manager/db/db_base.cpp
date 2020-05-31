@@ -583,7 +583,7 @@ Json::Value DBBase::insertCategory(string title, int uid, string &Msg)
 
 Json::Value DBBase::selectTodo(int tid, string &Msg)
 {
-       LOGD("[db_base.selectTodo] handle todos db query:" );
+       LOGD("[db_base.selectTodo] handle todos db query:");
 
        //返参初始化
        Json::Value root;
@@ -660,7 +660,7 @@ Json::Value DBBase::selectTodo(int tid, string &Msg)
        return root;
 }
 
-Json::Value DBBase::insertTodo(string content, int cid, string &Msg)
+Json::Value DBBase::insertTodo(string content, int cid, int uid, string &Msg)
 {
 
        //返参初始化
@@ -673,15 +673,16 @@ Json::Value DBBase::insertTodo(string content, int cid, string &Msg)
               Msg = "[db_base.insertTodo] content is empty";
               return root;
        }
-       if (cid < 1)
+       if (uid < 1)
        {
-              Msg = "[db_base.insertTodo] cid is invaial";
+              Msg = "[db_base.insertTodo] uid is invaial";
               return root;
        }
 
        //构建存储过程执行语句
        std::stringstream ssTemp;
-       ssTemp << "call inserttodo ('" << content << "','" << cid << "',@out_tid)";
+       ssTemp << "call inserttodo ('" << content << "','" << cid << "','"
+              << uid << "',@out_tid)";
        string query = ssTemp.str();
 
        LOGD("[db_base.insertTodo] " + query);

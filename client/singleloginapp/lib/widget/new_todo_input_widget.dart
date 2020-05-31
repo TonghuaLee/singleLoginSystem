@@ -24,7 +24,7 @@ class _NewTodoInputState extends State<NewTodoInput> with EventListener {
   final String TAG = "_NewTodoInputState";
   TextEditingController controller;
   final LoginErrorMessageController loginErrorMessageController =
-      LoginErrorMessageController();
+  LoginErrorMessageController();
   FocusNode focusNode;
   BuildContext _context;
   final _formKey = GlobalKey<FormState>();
@@ -95,13 +95,13 @@ class _NewTodoInputState extends State<NewTodoInput> with EventListener {
   }
 
   void _requsetAddTodo(String input, BuildContext context) async {
-    print('submitted! $input');
+    print('_requsetAddTodo! $input');
     var databaseProvider =
     Provider.of<DatabaseProvider>(context, listen: false);
     Map req = new Map();
     req['content'] = input;
-    var cid = 3;
-    req['cid'] = cid;// databaseProvider.selectedCategory.id;
+    var cid = databaseProvider.selectedCategory.id;
+    req['cid'] = cid; // databaseProvider.selectedCategory.id;
     Message msg = new Message(1, 'req add todo from flutter', req,
         MsgChannelUtil.MAIN_CMD_ADD_TODO, MsgChannelUtil.MAIN_CMD_DEFALUT);
     LogUtils.d(TAG, 'req: ' + msg.toString());
@@ -112,11 +112,11 @@ class _NewTodoInputState extends State<NewTodoInput> with EventListener {
   void _insertNewTodoItem(String input, int cid, BuildContext context) {
     print('submitted! $input');
     var databaseProvider =
-        Provider.of<DatabaseProvider>(context, listen: false);
+    Provider.of<DatabaseProvider>(context, listen: false);
     databaseProvider.insertNewTodoItemWithCid(input, cid).then((_) {
       _resetValuesAfterSubmit();
     }).catchError(
-      (e) {
+          (e) {
         Scaffold.of(context).showSnackBar(
           SnackBar(
             content: Text(
@@ -156,26 +156,34 @@ class _NewTodoInputState extends State<NewTodoInput> with EventListener {
         if (msg.code == ResultCode.SUCCESS) {
           var data = msg.message;
           LogUtils.d(TAG, '添加TODO$data');
-          var todo = Todo.fromJson(JSON.jsonDecode(data));
+          var todoJson = JSON.jsonDecode(data);
+          var tid = todoJson['tid'];
+          var content = todoJson['content'];
+          var cid = todoJson['cid'];
+          var status = todoJson['status'];
+          var todo = Todo(
+              id: tid, title: content, category: cid, completed: status == 0 ? false : true);
           if (todo != null) {
             LogUtils.d(TAG, '添加todo成功');
             bSucc = true;
-            _insertNewTodoItem(todo.content, todo.category, _context);
+            _insertNewTodoItem(todo.title, todo.category, _context);
           }
         }
 
         if (!bSucc) {
           showDialog(
             context: _context,
-            builder: (_) => AlertDialog(
-              title: Text(
-                'Sorry,add todo fail.',
-                style: TextStyle(
-                  color: Colors.red,
+            builder: (_) =>
+                AlertDialog(
+                  title: Text(
+                    'Sorry,add todo fail.',
+                    style: TextStyle(
+                      color: Colors.red,
+                    ),
+                  ),
                 ),
-              ),
-            ),
           );
+          loginErrorMessageController.showErrorMessage("fail");
         }
       }
     }
