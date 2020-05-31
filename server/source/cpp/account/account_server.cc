@@ -506,7 +506,6 @@ public:
       Json::Value list;
       int size = categoryList.size();
       root["count"] = size;
-      root["data"] = list;
      
       for (int i = 0; i < size; i++)
       {
@@ -516,6 +515,7 @@ public:
         item["cid"] = categoryList[i].getCid();
         list.append(item);
       }
+      root["data"] = list;
       Json::FastWriter fw;
       result->set_data(fw.write(root));
     }

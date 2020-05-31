@@ -288,6 +288,8 @@ std::vector<Category> Database::queryCategoryList(int o_uid)
         Json::Value categoryList = data["data"];
         int size = 0;
         size = categoryList.size();
+        LOGD("[db_manager.queryCategoryList] data size:"+size );
+
         for(int i =0 ;i <size; i++) {
             Json::Value val_category = categoryList[i];
             int cid = CommonUtils::getIntByString(val_category["ID"].asString());
