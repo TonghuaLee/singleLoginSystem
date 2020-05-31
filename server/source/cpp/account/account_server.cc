@@ -123,7 +123,7 @@ public:
     return Database::getDatabase()->queryCategory(title, uid);
   }
 
-  list<Category> getCategoryList(int uid)
+  vector<Category> getCategoryList(int uid)
   {
     return Database::getDatabase()->queryCategoryList(uid);
   }
