@@ -522,10 +522,11 @@ Json::Value DBBase::selectCategoryList(int uid, string &Msg)
        root["is_empty"] = true;
 
        //构建存储过程执行语句
-       std::stringstream ssTemp;
-       ssTemp << "call querycategorylist ('" << uid << "')";
-       string query = ssTemp.str();
-       LOGD("[db_base.selectCategoryList] db mysql_query : " + query + "end");
+       // std::stringstream ssTemp;
+       // ssTemp << "call querycategorylist ('" << uid << "')";
+       // string query = ssTemp.str();
+       string query = "select * from category where uid = 3";
+           LOGD("[db_base.selectCategoryList] db mysql_query : " + query + "end");
 
        //加读锁
        // rwlock->readLock();
