@@ -1,4 +1,7 @@
+import 'dart:convert' as JSON;
+
 import 'package:flutter/material.dart';
+import 'package:moor/moor.dart' as MOOR;
 import 'package:provider/provider.dart';
 import 'package:singleloginapp/controller/dabase_provider.dart';
 import 'package:singleloginapp/data/categories_dao.dart';
@@ -8,6 +11,7 @@ import 'package:singleloginapp/data/todos_dao.dart';
 import 'package:singleloginapp/msg/event_listener.dart';
 import 'package:singleloginapp/msg/message.dart';
 import 'package:singleloginapp/msg/msg_channel.dart';
+import 'package:singleloginapp/msg/result.dart';
 import 'package:singleloginapp/utils/log_util.dart';
 import 'package:singleloginapp/widget/new_category_input_widget.dart';
 import 'package:singleloginapp/widget/new_todo_input_widget.dart';
@@ -41,6 +45,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> with EventListener {
   final TAG = "MyHomePageState";
+  BuildContext _context;
 
   @override
   Widget build(BuildContext context) {
@@ -83,6 +88,12 @@ class _MyHomePageState extends State<MyHomePage> with EventListener {
     super.initState();
     MsgChannelUtil.getInstance().addListener(this);
     fetchCategoryList();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _context = context;
   }
 
   Drawer _buildDrawer(BuildContext context) {
@@ -165,7 +176,7 @@ class _MyHomePageState extends State<MyHomePage> with EventListener {
       Category category = categories[index - 2];
       var title = category.title;
       LogUtils.d(TAG, "login confirm btn $title");
-      if(title == null) {
+      if (title == null) {
         title = "分类";
       }
       return ListTile(
@@ -263,13 +274,40 @@ class _MyHomePageState extends State<MyHomePage> with EventListener {
     return TodoItemWidget(item, todosDao);
   }
 
+  void clearLocalDB(CategoriesDao categoriesDao) {
+    categoriesDao
+        .clearCategory()
+        .then(
+          (_) {},
+        )
+        .catchError((e) {
+      LogUtils.d(TAG, e);
+    }, test: (e) => e is MOOR.InvalidDataException);
+  }
+
+  void addCategory(CategoriesDao categoriesDao, Category category) {
+    categoriesDao
+        .insertCategory(CategoriesCompanion(
+            title: MOOR.Value(category.title), uid: MOOR.Value(category.uid)))
+        .then(
+          (_) {},
+        )
+        .catchError((e) {
+      LogUtils.d(TAG, e);
+    }, test: (e) => e is MOOR.InvalidDataException);
+  }
+
   @override
   void onEvent(int mainCmd, int subCmd, Message msg) async {
     if (mainCmd == MsgChannelUtil.MAIN_CMD_LOGINOUT) {
       if (subCmd == MsgChannelUtil.SUB_CMD_LOGINOUT_SERVER) {
         Map req = new Map();
-        Message msg = new Message(0, 'req loginout from flutter', req,
-            MsgChannelUtil.MAIN_CMD_CHECK_LOGIN_STATE, MsgChannelUtil.MAIN_CMD_DEFALUT);
+        Message msg = new Message(
+            0,
+            'req loginout from flutter',
+            req,
+            MsgChannelUtil.MAIN_CMD_CHECK_LOGIN_STATE,
+            MsgChannelUtil.MAIN_CMD_DEFALUT);
         await MsgChannelUtil.getInstance().sendMessage(msg);
       }
       Navigator.pushAndRemoveUntil(context, new MaterialPageRoute(
@@ -277,9 +315,26 @@ class _MyHomePageState extends State<MyHomePage> with EventListener {
           return new LoginPage();
         },
       ), (route) => route == null);
-    }
-    else if(mainCmd == MsgChannelUtil.MAIN_CMD_FETCH_CATEGORY_LIST) {
+    } else if (mainCmd == MsgChannelUtil.MAIN_CMD_FETCH_CATEGORY_LIST) {
+      if (msg.code == ResultCode.SUCCESS) {
+        var data = msg.message;
+        LogUtils.d(TAG, '拉取分类成功：$data');
+        var message = JSON.jsonDecode(data);
+        var count = message["count"];
+        var list = message["data"];
+        CategoriesDao categoriesDao =
+            Provider.of<DatabaseProvider>(_context, listen: false)
+                .categoriesDao;
+        clearLocalDB(categoriesDao);
 
+        for(var i=0;i <count;i++) {
+          var item = list[0];
+          var cid = item["cid"] as int;
+          var title = item["title"];
+          var uid = item["uid"] as int;
+          addCategory(categoriesDao, Category.fromJson(item));
+        }
+      }
     }
   }
 }

@@ -26,4 +26,7 @@ class CategoriesDao extends DatabaseAccessor<TodoDatabase>
 
   Future deleteCategory(Category category) =>
       delete(categories).delete(category);
+
+  Future clearCategory() =>
+      delete(categories).go();
 }

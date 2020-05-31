@@ -572,9 +572,9 @@ Json::Value DBBase::selectCategoryList(int uid, string &Msg)
               if (root["is_empty"].asBool())
               {
                      root["is_empty"] = false;
-                     root["data"] = categorylist;
               }
        }
+       root["data"] = categorylist;
 
        //释放指针
        mysql_free_result(m_res);

@@ -149,8 +149,8 @@ class _NewTodoInputState extends State<NewTodoInput> with EventListener {
 
   @override
   void onEvent(int mainCmd, int subCmd, Message msg) {
-    LogUtils.d(TAG, msg.toJson().toString());
     if (mainCmd == MsgChannelUtil.MAIN_CMD_ADD_TODO) {
+      LogUtils.d(TAG, msg.toJson().toString());
       var bSucc = false;
       if (msg != null) {
         if (msg.code == ResultCode.SUCCESS) {

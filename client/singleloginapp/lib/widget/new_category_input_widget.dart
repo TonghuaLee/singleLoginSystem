@@ -84,7 +84,6 @@ class _NewCategoryInputState extends State<NewCategoryInput>
             showErrorTime: const Duration(milliseconds: 1000),
             buttonColorNormal: Colors.black,
             onTap: () async {
-              fetchCategoryList();
               if (_formKey.currentState.validate()) {
                 _insertNewCategory(controller.text, context);
               } else {
@@ -97,16 +96,6 @@ class _NewCategoryInputState extends State<NewCategoryInput>
     );
   }
 
-  void fetchCategoryList() async {
-    Map req = new Map();
-    Message msg = new Message(
-        0,
-        'req fetchCategoryList from flutter',
-        req,
-        MsgChannelUtil.MAIN_CMD_FETCH_CATEGORY_LIST,
-        MsgChannelUtil.MAIN_CMD_DEFALUT);
-    Message result = await MsgChannelUtil.getInstance().sendMessage(msg);
-  }
   void _insertNewCategory(String input, BuildContext context) async {
     print('submitted! $input');
     Map req = new Map();
@@ -134,8 +123,8 @@ class _NewCategoryInputState extends State<NewCategoryInput>
 
   @override
   void onEvent(int mainCmd, int subCmd, Message msg) {
-    LogUtils.d(TAG, msg.toJson().toString());
     if (mainCmd == MsgChannelUtil.MAIN_CMD_ADD_CATEGORY) {
+      LogUtils.d(TAG, msg.toJson().toString());
       var bSucc = false;
       if (msg != null) {
         if (msg.code == ResultCode.SUCCESS) {
