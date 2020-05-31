@@ -162,17 +162,7 @@ class _NewCategoryInputState extends State<NewCategoryInput>
         }
 
         if (!bSucc) {
-          showDialog(
-            context: _context,
-            builder: (_) => AlertDialog(
-              title: Text(
-                'Sorry,add category fail.',
-                style: TextStyle(
-                  color: Colors.red,
-                ),
-              ),
-            ),
-          );
+          loginErrorMessageController.showErrorMessage("fail");
         }
       }
     }

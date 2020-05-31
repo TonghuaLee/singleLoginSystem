@@ -694,7 +694,7 @@ Json::Value DBBase::insertTodo(string content, int cid, string &Msg)
        mysql_query(&mysql, "SELECT @out_tid");
 
        //判断插入是否成功
-       if (ret < 1)
+       if (ret)
        {
               Msg = "[db_base.insertTodo] Error exec insert";
               //释放写锁

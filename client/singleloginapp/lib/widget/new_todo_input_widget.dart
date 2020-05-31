@@ -58,8 +58,8 @@ class _NewTodoInputState extends State<NewTodoInput> with EventListener {
                     controller: controller,
                     focusNode: focusNode,
                     style: TextStyle(
-                      color: Colors.white,
-                      decorationColor: Colors.white,
+                      color: Colors.blue,
+                      decorationColor: Colors.blue,
                       fontSize: 18,
                     ),
                     decoration: InputDecoration(
