@@ -122,6 +122,11 @@ public:
     return Database::getDatabase()->queryCategory(title, uid);
   }
 
+  list<Category> getCategoryList(int uid)
+  {
+    return Database::getDatabase()->queryCategoryList(uid);
+  }
+
   int addTodo(string content, int cid, int uid)
   {
     return Database::getDatabase()->addTodo(content, cid, uid);
@@ -474,6 +479,58 @@ public:
     return result;
   };
 
+  CodeReply *handleFetchCategoryList(int uid, string token)
+  {
+    LOGD("[account_server.handleFetchCategoryList] user addCategory in:" + title);
+    // 1. 首先检查是否连接
+    LoginCore loginCore;
+    CodeReply *connectResult = loginCore.handleUserCheckConnect(token);
+    CodeReply *result = new CodeReply();
+    if (connectResult->code() != ResultCode::SUCCESS)
+    {
+      LOGD("[account_server.handleFetchCategoryList] user is not connected, addCategory in:" + title);
+      return connectResult;
+    }
+
+    LoginDatabase login_db;
+    LoginRedis login_redis;
+
+    // 添加分类到数据库，内部会校验
+    if (!login_db.addCategory(title, uid))
+    {
+      result->set_code(ResultCode::AddCategory_InsertDBFail);
+      result->set_msg(MsgTip::AddCategory_InsertDBFail);
+      LOGD("[account_server.handleFetchCategoryList] insert category into db fail");
+      return result;
+    }
+    LOGD("[account_server.handleFetchCategoryList] insert category into db success");
+
+    //获得用户信息
+    list<Category> categoryList = login_db.getCategoryList(uid);
+    LOGD("[account_server.handleFetchCategoryList] get category info success");
+    result->set_code(ResultCode::SUCCESS);
+    if (categoryList != null)
+    {
+      Json::Value root;
+      Json::Value list;
+      int size = categoryList.size();
+      root["count"] = size;
+      root["data"] = list;
+      list<Category>::itertor it = categoryList.begin();
+      for (; it != categoryList.end(); it++) {
+       Json::Value item;
+       item["uid"] = uid;
+       item["title"] = it->getTtile();
+       item["cid"] = it->getCid();
+       list.append(item);
+      }
+      Json::FastWriter fw;
+      result->set_data(fw.write(root));
+    }
+
+    return result;
+  };
+
   CodeReply *handleAddTodo(string content, int cid, string token)
   {
     LOGD("[account_server.handleAddTodo] user addTodo in:" + content);
@@ -517,7 +574,6 @@ public:
     //获得账号UID
     string str_uid = vToken[0];
     int uid = CommonUtils::getIntByString(str_uid);
-
 
     // 添加分类到数据库，内部会校验
     int tid = -1;
@@ -1076,13 +1132,12 @@ class AccountServiceImpl final : public Account::Service
 
     return Status::OK;
   }
-  Status requestAddCategory(ServerContext *context, const AddCategoryRequest *request,
+  Status requestAddCategory(ServerContext *context, const FetchCategoryRequest *request,
                             CodeReply *reply) override
   {
     LogMBean log_bean("requestAddCategory");
 
     string token = request->token();
-    string title = request->title();
 
     bool isParamValid = true;
     string error_msg;
@@ -1094,15 +1149,6 @@ class AccountServiceImpl final : public Account::Service
       reply->set_msg(error_msg);
       isParamValid = false;
       LOGW("token is empty");
-    };
-
-    //校验title
-    if (!ParamUtils::CheckStringValid(title, error_msg))
-    {
-      reply->set_code(ResultCode::ReqParamError);
-      reply->set_msg(error_msg);
-      isParamValid = false;
-      LOGW("title is empty");
     };
 
     LoginRedis login_redis;
@@ -1144,7 +1190,7 @@ class AccountServiceImpl final : public Account::Service
     if (isParamValid)
     {
       LoginCore loginCore;
-      CodeReply *result = loginCore.handleAddCategory(title, uid, token);
+      CodeReply *result = loginCore.handleCategory(title, uid, token);
       reply->set_code(result->code());
       reply->set_msg(result->msg());
       reply->set_data(result->data());
@@ -1170,7 +1216,7 @@ class AccountServiceImpl final : public Account::Service
   }
 
   Status requestAddTodo(ServerContext *context, const AddTodoRequest *request,
-                            CodeReply *reply) override
+                        CodeReply *reply) override
   {
     LogMBean log_bean("requestAddTodo");
 

@@ -152,6 +152,8 @@ public:
 
        Json::Value selectCategory(string title, int uid, string &Msg);
 
+       Json::Value selectCategoryList(int uid, string &Msg);
+
        Json::Value insertTodo(string content, int cid, int uid, string &Msg);
 
        Json::Value selectTodo(int tid, string &Msg);

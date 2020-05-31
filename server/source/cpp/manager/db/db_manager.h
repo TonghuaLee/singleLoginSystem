@@ -1,6 +1,6 @@
 
 #include <string>
-
+#include <list>
 #include "../conf/server_conf.h"
 #include "source/cpp/manager/db/db_base.h"
 #include "source/cpp/account/model/user_account.h"
@@ -73,6 +73,7 @@ namespace manager
 		bool addCategory(string title, int uid);
 
 		Category queryCategory(string title, int uid);
+		list<Category> queryCategoryList(int uid);
 
 		int addTodo(string content, int cid, int uid);
 

@@ -507,6 +507,90 @@ Json::Value DBBase::selectCategory(string title, int uid, string &Msg)
        return root;
 }
 
+Json::Value DBBase::selectCategoryList(int uid, string &Msg)
+{
+       LOGD("[db_base.selectCategoryList] handle category db query:");
+
+       //返参初始化
+       Json::Value root;
+       root["is_empty"] = true;
+
+       //参数判空
+       if (title == "")
+       {
+              Msg = "[db_base.selectCategoryList] title is empty";
+              return root;
+       }
+
+       //构建存储过程执行语句
+       std::stringstream ssTemp;
+       ssTemp << "call querycategorylist ('" << uid << "',@out_id,@out_title,@out_uid)";
+       string query = ssTemp.str();
+       LOGD("[db_base.selectCategoryList] db mysql_query : " + query);
+
+       //加读锁
+       rwlock->readLock();
+
+       //执行存储过程执行语句
+       int ret = mysql_real_query(&mysql, query.c_str(), (unsigned int)strlen(query.c_str()));
+       //mysql_query(&mysql, "SELECT @out_id,@out_title,@out_uid");
+
+       LOGD("[db_base.selectCategoryList] handle category db mysql_query finish");
+
+       //判断查询是否成功
+       if (ret)
+       {
+              Msg = "[db_base.selectCategoryList] error exec query";
+              //释放读锁
+              rwlock->readUnlock();
+              return root;
+       }
+
+       MYSQL_ROW m_row;
+       MYSQL_RES *m_res;
+
+       //获取查询结果
+       m_res = mysql_store_result(&mysql);
+       if (m_res == NULL)
+       {
+              Msg = "[db_base.querycategorylist] select m_res null";
+              //释放读锁
+              rwlock->readUnlock();
+              return root;
+       }
+       Json::Value categorylist;
+
+       while (m_row = mysql_fetch_row(m_res))
+       {
+              //小于0则表示查询无结果或失败
+              stringstream ss;
+              ss << m_row[0];
+              int i_id;
+              ss >> i_id;
+              if (i_id <= 0)
+              {
+                     LOGD("[db_base.querycategorylist] handle category db mysql_query empty , id = " + (string)m_row[0]);
+                     break;
+              }
+              Json::Value categoryItem;
+              categoryItem["ID"] = m_row[0];
+              categoryItem["TITLE"] = m_row[1];
+              categorylist.append(categoryItem);
+              if (root["is_empty"])
+              {
+                     root["is_empty"] = false;
+                     root["data"] = list;
+              }
+       }
+
+       //释放指针
+       mysql_free_result(m_res);
+
+       //释放读锁
+       rwlock->readUnlock();
+       return root;
+}
+
 Json::Value DBBase::insertCategory(string title, int uid, string &Msg)
 {
 

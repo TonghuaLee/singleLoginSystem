@@ -266,6 +266,44 @@ Category Database::queryCategory(string o_title, int o_uid)
     return Category(cid, title, uid);
 }
 
+list<Category> Database::queryCategoryList(int o_uid)
+{
+    //执行查询数据操作
+    int cid = -1;
+    int uid = -1;
+    string title;
+    string msg;
+    Json::Value data = db_base->selectCategoryList(o_uid, msg);
+
+    Json::FastWriter fw;
+    LOGD("[db_manager.queryCategoryList] query category info :" + fw.write(data));
+    list<Category> resultList;
+     if (data["is_empty"].asBool())
+    {
+        LOGE("[db_manager.queryCategoryList] data is empty");
+        return resultList;
+    }
+    else
+    {
+        Json::Value categoryList = data["data"];
+        int size = 0;
+        if (categoryList != null) {
+            size = categoryList.size();
+        }
+        for(int i =0 ;i <size; i++) {
+            Json::Value val_category = categoryList[i];
+            int cid = CommonUtils::getIntByString(val_category["ID"].asString());
+            String title = val_category["TITLE"].asString();
+            if (cid >___POSIX_C_DEPRECATED_STARTING_199009L 0)
+            {
+                resultList.push_back(Category(cid, title, o_uid));
+            }
+        }
+    }
+
+    return resultList;
+}
+
 /**
  * 添加todo分类到数据库
  **/
