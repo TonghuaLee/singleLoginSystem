@@ -86,3 +86,9 @@ const string MsgTip::AddCategory_InsertDBFail = "添加分类失败";
 
 const int ResultCode::AddTodo_InsertDBFail = 1005008;
 const string MsgTip::AddTodo_InsertDBFail = "添加TODO失败";
+
+const int ResultCode::GetCategoryList_Fail = 1005009;
+const string MsgTip::GetCategoryList_FAIL = "获取分类列表失败";
+
+const int ResultCode::GetTodoList_Fail = 1005010;
+const string MsgTip::GetTodoList_Fail = "获取todo列表失败";

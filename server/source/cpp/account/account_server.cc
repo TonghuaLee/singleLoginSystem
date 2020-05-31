@@ -482,14 +482,14 @@ public:
 
   CodeReply *handleFetchCategoryList(int uid, string token)
   {
-    LOGD("[account_server.handleFetchCategoryList] user addCategory in:" + title);
+    LOGD("[account_server.handleFetchCategoryList] user handleFetchCategoryList ");
     // 1. 首先检查是否连接
     LoginCore loginCore;
     CodeReply *connectResult = loginCore.handleUserCheckConnect(token);
     CodeReply *result = new CodeReply();
     if (connectResult->code() != ResultCode::SUCCESS)
     {
-      LOGD("[account_server.handleFetchCategoryList] user is not connected, addCategory in:" + title);
+      LOGD("[account_server.handleFetchCategoryList] user is not connected, handleFetchCategoryList in:");
       return connectResult;
     }
 
@@ -497,14 +497,14 @@ public:
     LoginRedis login_redis;
 
     // 添加分类到数据库，内部会校验
-    if (!login_db.addCategory(title, uid))
+    if (!login_db.getCategoryList(uid))
     {
-      result->set_code(ResultCode::AddCategory_InsertDBFail);
-      result->set_msg(MsgTip::AddCategory_InsertDBFail);
-      LOGD("[account_server.handleFetchCategoryList] insert category into db fail");
+      result->set_code(ResultCode::GetCategoryList_Fail);
+      result->set_msg(MsgTip::GetCategoryList_Fail);
+      LOGD("[account_server.handleFetchCategoryList] query categorylist from db fail");
       return result;
     }
-    LOGD("[account_server.handleFetchCategoryList] insert category into db success");
+    LOGD("[account_server.handleFetchCategoryList] query categorylist from db success");
 
     //获得用户信息
     std::vector<Category> categoryList = login_db.getCategoryList(uid);

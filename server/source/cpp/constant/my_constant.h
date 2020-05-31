@@ -44,6 +44,8 @@ namespace constants{
 
         const static int AddCategory_InsertDBFail;
         const static int AddTodo_InsertDBFail;
+        const static int GetCategoryList_Fail;
+        const static int GetTodoList_Fail;
     };
 
     /**
@@ -92,6 +94,8 @@ namespace constants{
         
         const static string AddCategory_InsertDBFail;               //1005007
         const static string AddTodo_InsertDBFail;                   //1005008
+        const static string GetCategoryList_FAIL;                   //1005009
+        const static string GetTodoList_Fail;
     };
 
 }
