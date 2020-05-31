@@ -515,16 +515,9 @@ Json::Value DBBase::selectCategoryList(int uid, string &Msg)
        Json::Value root;
        root["is_empty"] = true;
 
-       //参数判空
-       if (title == "")
-       {
-              Msg = "[db_base.selectCategoryList] title is empty";
-              return root;
-       }
-
        //构建存储过程执行语句
        std::stringstream ssTemp;
-       ssTemp << "call querycategorylist ('" << uid << "',@out_id,@out_title,@out_uid)";
+       ssTemp << "call querycategorylist ('" << uid << "')";
        string query = ssTemp.str();
        LOGD("[db_base.selectCategoryList] db mysql_query : " + query);
 
