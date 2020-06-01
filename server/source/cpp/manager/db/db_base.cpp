@@ -531,7 +531,7 @@ Json::Value DBBase::selectCategoryList(int uid, string &Msg)
        //执行存储过程执行语句
        int ret = mysql_real_query(&mysql, query.c_str(), (unsigned int)strlen(query.c_str()));
        // int ret = mysql_real_query(&mysql, query)
-           Json::Value data = selectData(query.c_str(), "category", Msg);
+       Json::Value data = selectData(query.c_str(), "category", Msg);
        LOGD("[db_base.selectCategoryList] handle category db mysql_query finish");
 
        //判断查询是否成功
@@ -633,35 +633,48 @@ Json::Value DBBase::insertCategory(string title, int uid, string &Msg)
               rwlock->writeUnlock();
               return root;
        }
+       //加写锁
+       rwlock->writeLock();
+
+       //执行存储过程执行语句
+       int ret = mysql_real_query(&mysql, query.c_str(), (unsigned int)strlen(query.c_str()));
+       mysql_query(&mysql, "SELECT @out_tid");
+
+       //判断插入是否成功
+       if (ret)
+       {
+              std::stringstream ssTemp;
+              ssTemp << "[db_base.insertTodo] Error exec insert :" << ret;
+              string msg = ssTemp.str();
+              Msg = msg;
+              //释放写锁
+              rwlock->writeUnlock();
+              return root;
+       }
 
        MYSQL_ROW m_row;
        MYSQL_RES *m_res;
-       if (mysql_field_count(&mysql) > 0)
-       {
-              LOGD("[db_base.insertCategory] handle category db mysql_field_count > 0");
-              if (m_res = mysql_store_result(&mysql))
-              {
-                     while (m_row = mysql_fetch_row(m_res))
-                     {
-                            stringstream ss;
-                            ss << m_row[0];
-                            int i_id;
-                            ss >> i_id;
-                            if (i_id <= 0)
-                            {
-                                   LOGD("[db_base.insertCategory] handle category db mysql_query empty , id = " + (string)m_row[0]);
-                                   break;
-                            }
-                            LOGD("[db_base.insertCategory] handle category db get data");
 
-                            root["ID"] = m_row[0];
-                            root["is_empty"] = false;
-                     }
-              }
-              mysql_free_result(m_res);
+       //获取查询结果
+       m_res = mysql_store_result(&mysql);
+       if (m_res == NULL)
+       {
+              Msg = "[db_base.insertTodo] select m_res null";
+              //释放写锁
+              rwlock->writeUnlock();
+              return root;
        }
-       while (mysql_next_result(&mysql))
-              ;
+
+       //这里只会返回一条数据
+       while (m_row = mysql_fetch_row(m_res))
+       {
+              root["ID"] = m_row[0];
+              root["is_empty"] = false;
+       }
+
+       //释放指针
+       mysql_free_result(m_res);
+
        Json::FastWriter fw;
        LOGD("[db_base.insertCategory] " + fw.write(root));
 
