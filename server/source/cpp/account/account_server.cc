@@ -48,6 +48,7 @@ using account::AddTodoRequest;
 using account::CodeReply;
 using account::ConnectRequest;
 using account::FetchCategoryRequest;
+using account::FetchTodoListRequest;
 using account::LoginRequest;
 using account::LogoutRequest;
 using account::RefreshRequest;
