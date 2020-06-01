@@ -880,11 +880,11 @@ Json::Value DBBase::selectTodoList(int uid, int cid, string &Msg)
                                    break;
                             }
 
-                            Json::Value categoryItem;
-                            categoryItem["ID"] = m_row[0];
-                            categoryItem["CONTENT"] = m_row[1];
-                            categoryItem["STATUS"] = m_row[2];
-                            categorylist.append(categoryItem);
+                            Json::Value todoItem;
+                            todoItem["ID"] = m_row[0];
+                            todoItem["CONTENT"] = m_row[1];
+                            todoItem["STATUS"] = m_row[2];
+                            todolist.append(todoItem);
                             if (root["is_empty"].asBool())
                             {
                                    root["is_empty"] = false;
