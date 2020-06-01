@@ -349,6 +349,7 @@ Todo Database::queryTodo(int o_tid)
     int tid = -1;
     int cid = -1;
     int status = 0;
+    int uid = 0;
     string content;
     string msg;
     Json::Value data = db_base->selectTodo(o_tid, msg);
@@ -359,22 +360,23 @@ Todo Database::queryTodo(int o_tid)
     if (data["is_empty"].asBool())
     {
         LOGE("[db_manager.queryTodo] data is empty");
-        return Todo(-1, "", -1, 0);
+        return Todo(-1, "", -1, -1, 0);
     }
     else
     {
         tid = CommonUtils::getIntByString(data["TID"].asString());
         cid = CommonUtils::getIntByString(data["CID"].asString());
+        uid = CommonUtils::getIntByString(data["UID"].asString());
         status = CommonUtils::getIntByString(data["STATUS"].asString());
         content = data["CONTENT"].asString();
         if (tid < 0)
         {
             LOGE("[db_manager.queryTodo] can not find tid");
-            return Todo(-1, "", -1, 0);
+            return Todo(-1, "", -1, -1, 0);
         }
     }
 
-    return Todo(tid, content, cid, status);
+    return Todo(tid, content, uid, cid, status);
 }
 
 /**
