@@ -138,6 +138,11 @@ public:
     return Database::getDatabase()->queryTodo(tid);
   }
 
+  vector<Todo> getTodoList(int uid,int cid)
+  {
+    return Database::getDatabase()->queryTodoList(uid, cid);
+  }
+
 private:
 };
 
@@ -513,6 +518,50 @@ public:
         item["uid"] = uid;
         item["title"] = categoryList[i].getTitle();
         item["cid"] = categoryList[i].getCid();
+        list.append(item);
+      }
+      root["data"] = list;
+      Json::FastWriter fw;
+      result->set_data(fw.write(root));
+    }
+
+    return result;
+  };
+
+  CodeReply *handleFetchTodoList(int uid, string token)
+  {
+    LOGD("[account_server.handleFetchTodoList] user handleFetchTodoList ");
+    // 1. 首先检查是否连接
+    LoginCore loginCore;
+    CodeReply *connectResult = loginCore.handleUserCheckConnect(token);
+    CodeReply *result = new CodeReply();
+    if (connectResult->code() != ResultCode::SUCCESS)
+    {
+      LOGD("[account_server.handleFetchTodoList] user is not connected, handleFetchTodoList in:");
+      return connectResult;
+    }
+
+    LoginDatabase login_db;
+    LoginRedis login_redis;
+
+    // 添加分类到数据库，内部会校验
+    std::vector<Todo> todoList = login_db.getTodoList(uid);
+    LOGD("[account_server.handleFetchTodoList] get todoList info success");
+    result->set_code(ResultCode::SUCCESS);
+
+    {
+      Json::Value root;
+      Json::Value list;
+      int size = todoList.size();
+      root["count"] = size;
+     
+      for (int i = 0; i < size; i++)
+      {
+        Json::Value item;
+        item["uid"] = uid;
+        item["content"] = todoList[i].getContent();
+        item["status"] = todoList[i].getStatus();
+        item["cid"] = cid;
         list.append(item);
       }
       root["data"] = list;
@@ -1273,7 +1322,7 @@ class AccountServiceImpl final : public Account::Service
     if (isParamValid)
     {
       LoginCore loginCore;
-      CodeReply *result = loginCore.handleFetchCategoryList(uid, token);
+      CodeReply *result = loginCore.handleFetchTodoList(uid, token);
       reply->set_code(result->code());
       reply->set_msg(result->msg());
       reply->set_data(result->data());

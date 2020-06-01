@@ -535,7 +535,7 @@ Json::Value DBBase::selectCategoryList(int uid, string &Msg)
        //执行存储过程执行语句
        int ret = mysql_real_query(&mysql, query.c_str(), (unsigned int)strlen(query.c_str()));
        // int ret = mysql_real_query(&mysql, query)
-       Json::Value data = selectData(query.c_str(), "category", Msg);
+       //Json::Value data = selectData(query.c_str(), "category", Msg);
        LOGD("[db_base.selectCategoryList] handle category db mysql_query finish");
 
        //判断查询是否成功
@@ -825,5 +825,81 @@ Json::Value DBBase::insertTodo(string content, int cid, int uid, string &Msg)
        //释放写锁
        rwlock->writeUnlock();
 
+       return root;
+}
+
+Json::Value DBBase::selectTodoList(int uid, int cid, string &Msg)
+{
+       LOGD("[db_base.selectTodoList] handle category db query:");
+
+       //返参初始化
+       Json::Value root;
+       root["is_empty"] = true;
+
+       //构建存储过程执行语句
+       std::stringstream ssTemp;
+       ssTemp << "call querytodolist ('" << uid << "','" << cid << "')";
+       string query = ssTemp.str();
+       LOGD("[db_base.selectTodoList] db mysql_query : " + query + "end");
+
+       //加读锁
+       rwlock->readLock();
+
+       //执行存储过程执行语句
+       int ret = mysql_real_query(&mysql, query.c_str(), (unsigned int)strlen(query.c_str()));
+       LOGD("[db_base.selectTodoList] handle category db mysql_query finish");
+
+       //判断查询是否成功
+       if (ret)
+       {
+              DBBase::errorIntoMySQL();
+              Msg = "[db_base.selectTodoList] error exec query";
+              //释放读锁
+              rwlock->readUnlock();
+              return root;
+       }
+
+       Json::Value todolist;
+       MYSQL_ROW m_row;
+       MYSQL_RES *m_res;
+       if (mysql_field_count(&mysql) > 0)
+       {
+              if (m_res = mysql_store_result(&mysql))
+              {
+                     while (m_row = mysql_fetch_row(m_res))
+                     {
+                            stringstream ss;
+                            ss << m_row[0];
+                            int i_id;
+                            ss >> i_id;
+                            if (i_id <= 0)
+                            {
+                                   LOGD("[db_base.selectTodoList] handle category db mysql_query empty , id = " + (string)m_row[0]);
+                                   break;
+                            }
+
+                            Json::Value categoryItem;
+                            categoryItem["ID"] = m_row[0];
+                            categoryItem["CONTENT"] = m_row[1];
+                            categoryItem["STATUS"] = m_row[2];
+                            categorylist.append(categoryItem);
+                            if (root["is_empty"].asBool())
+                            {
+                                   root["is_empty"] = false;
+                            }
+                     }
+              }
+              mysql_free_result(m_res);
+       }
+       while (mysql_next_result(&mysql))
+              ;
+       root["data"] = todolist;
+
+       LOGD("[db_base.selectTodoList] handle mysql_free_result finish");
+       //释放读锁
+       rwlock->readUnlock();
+       LOGD("[db_base.selectTodoList] handle readUnlock finish");
+       Json::FastWriter fw;
+       LOGD("[db_base.selectTodoList] root: " + fw.write(root));
        return root;
 }

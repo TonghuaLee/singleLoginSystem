@@ -66,18 +66,21 @@ namespace manager
 		*/
 		UserAccount queryUserAccountByAccount(string account);
 
-/***	todo 功能模块			****/
+		/***	todo 功能模块			****/
 		/**
 		 * 添加todo分类
 		 **/
 		bool addCategory(string title, int uid);
 
 		Category queryCategory(string title, int uid);
+
 		std::vector<Category> queryCategoryList(int uid);
 
 		int addTodo(string content, int cid, int uid);
 
 		Todo queryTodo(int tid);
+
+		std::vector<Todo> queryTodoList(int uid, int cid);
 
 		/*
 		主要功能：

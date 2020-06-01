@@ -158,6 +158,8 @@ public:
 
        Json::Value selectTodo(int tid, string &Msg);
 
+       Json::Value selectTodoList(int uid,int cid, string &Msg);
+
        /*
        主要功能：
        判断sql查询内容是否存在

@@ -4,7 +4,7 @@
 using namespace my_model;
 using namespace std;
 
-Todo::Todo(int tid, string content, int cid, int status) : tid(tid), content(content), cid(cid), status(status)
+Todo::Todo(int tid, string content, int uid, int cid, int status) : tid(tid), content(content), uid(uid), cid(cid), status(status)
 {
 }
 

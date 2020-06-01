@@ -31,7 +31,6 @@ Database *Database::getDatabase()
 
 Database::Database()
 {
-    
 }
 
 /**
@@ -77,7 +76,7 @@ void Database::connect(ServerConfig _conf)
 void Database::checkAndCreateTable(string tableName)
 {
     //构建查询语句
-    string str_sql_table = "SELECT table_name FROM information_schema.TABLES WHERE table_name ='"+tableName+"';";
+    string str_sql_table = "SELECT table_name FROM information_schema.TABLES WHERE table_name ='" + tableName + "';";
     vector<string> coloumnsV;
     coloumnsV.push_back("table_name");
     if (!db_base->isExist(str_sql_table, coloumnsV))
@@ -88,10 +87,13 @@ void Database::checkAndCreateTable(string tableName)
             PASSWORD    CHAR(128)                           NOT NULL,   \
             PWD_SALT    CHAR(32)                            NOT NULL    \
             );";
-        
-        if(db_base->createdbTable(str_sql)){
+
+        if (db_base->createdbTable(str_sql))
+        {
             LOGD("[db_manager.checkAndCreateTable] create tables success");
-        }else{
+        }
+        else
+        {
             LOGE("[db_manager.checkAndCreateTable] create tables fail");
         }
     }
@@ -101,7 +103,7 @@ void Database::checkAndCreateTable(string tableName)
 
 /**
  * 添加用户数据到数据库
- **/ 
+ **/
 bool Database::addUserAccount(string account, string password, string pwdSalt)
 {
     //参数判空
@@ -115,15 +117,16 @@ bool Database::addUserAccount(string account, string password, string pwdSalt)
     filterIllegalKeyword(account);
 
     //这里保险再判断一层，判断账号是否已经存在
-    if(Database::isUserExist(account)){
+    if (Database::isUserExist(account))
+    {
         LOGE("[db_manager.addUserAccount] account is exist");
         return false;
     }
 
     //执行插入数据操作
     string msg;
-    Json::Value data = db_base->insertUserAccount(account,password,pwdSalt,msg);
-    if(data["is_empty"].asBool() || CommonUtils::getIntByString(data["ID"].asString()) <= 0)
+    Json::Value data = db_base->insertUserAccount(account, password, pwdSalt, msg);
+    if (data["is_empty"].asBool() || CommonUtils::getIntByString(data["ID"].asString()) <= 0)
     {
         LOGE("[db_manager.addUserAccount] " + msg);
         return false;
@@ -133,7 +136,7 @@ bool Database::addUserAccount(string account, string password, string pwdSalt)
 
 /**
  * 判断用户是否存在
- **/ 
+ **/
 bool Database::isUserExist(string account)
 {
     //参数判空
@@ -153,7 +156,7 @@ bool Database::isUserExist(string account)
 
 /**
  * 根据用户账号查询用户数据
- **/ 
+ **/
 UserAccount Database::queryUserAccountByAccount(string o_account)
 {
     //参数判空
@@ -172,20 +175,24 @@ UserAccount Database::queryUserAccountByAccount(string o_account)
     string password;
     string pwdSalt;
     string msg;
-    Json::Value data = db_base->selectUserAccountByAccount(o_account,msg);
+    Json::Value data = db_base->selectUserAccountByAccount(o_account, msg);
 
     Json::FastWriter fw;
     LOGD("[db_manager.queryUserAccountByAccount] query account info :" + fw.write(data));
 
-    if(data["is_empty"].asBool()){
+    if (data["is_empty"].asBool())
+    {
         LOGE("[db_manager.queryUserAccountByAccount] data is empty");
         return UserAccount(-1, "", "", "");
-    }else{
+    }
+    else
+    {
         uid = CommonUtils::getIntByString(data["ID"].asString());
         account = data["ACCOUNT"].asString();
         password = data["PASSWORD"].asString();
         pwdSalt = data["PWD_SALT"].asString();
-        if(uid < 0){
+        if (uid < 0)
+        {
             LOGE("[db_manager.queryUserAccountByAccount] can not find user = " + o_account);
             return UserAccount(-1, "", "", "");
         }
@@ -230,7 +237,7 @@ Category Database::queryCategory(string o_title, int o_uid)
     if (o_title.empty())
     {
         LOGW("[db_manager.queryCategory] param is empty");
-        return Category(-1, "",  -1);
+        return Category(-1, "", -1);
     }
 
     //参数非法字符过滤
@@ -288,9 +295,10 @@ std::vector<Category> Database::queryCategoryList(int o_uid)
         Json::Value categoryList = data["data"];
         int size = 0;
         size = categoryList.size();
-        LOGD("[db_manager.queryCategoryList] data size:"+size );
+        LOGD("[db_manager.queryCategoryList] data size:" + size);
 
-        for(int i =0 ;i <size; i++) {
+        for (int i = 0; i < size; i++)
+        {
             Json::Value val_category = categoryList[i];
             int cid = CommonUtils::getIntByString(val_category["ID"].asString());
             string title = val_category["TITLE"].asString();
@@ -351,7 +359,7 @@ Todo Database::queryTodo(int o_tid)
     if (data["is_empty"].asBool())
     {
         LOGE("[db_manager.queryTodo] data is empty");
-        return Todo(-1, "", -1,0);
+        return Todo(-1, "", -1, 0);
     }
     else
     {
@@ -371,12 +379,54 @@ Todo Database::queryTodo(int o_tid)
 
 /**
  * 非法字符过滤
- **/ 
- void Database::filterIllegalKeyword(string & source_word){
-       // such as : select * from user_table where username='admin' and password='admin123'
+ **/
+void Database::filterIllegalKeyword(string &source_word)
+{
+    // such as : select * from user_table where username='admin' and password='admin123'
 
-       //select * from user_table where username='xxx' and password='xxx' or '1'='1'
-       utils::CommonUtils::replaceAll(source_word,"'","’");
-       //select * from user_table where username='1\' and password='or 1=1;#'; 
-       utils::CommonUtils::replaceAll(source_word,"\\","");
- }
+    //select * from user_table where username='xxx' and password='xxx' or '1'='1'
+    utils::CommonUtils::replaceAll(source_word, "'", "’");
+    //select * from user_table where username='1\' and password='or 1=1;#';
+    utils::CommonUtils::replaceAll(source_word, "\\", "");
+}
+
+std::vector<Todo> Database::queryTodoList(int o_uid, int o_cid)
+{
+    //执行查询数据操作
+    int cid = -1;
+    int uid = -1;
+    string title;
+    string msg;
+    Json::Value data = db_base->selectTodoList(o_uid, o_cid, msg);
+
+    Json::FastWriter fw;
+    LOGD("[db_manager.queryTodoList] query todo info :" + fw.write(data));
+    std::vector<Todo> resultList;
+    if (data["is_empty"].asBool())
+    {
+        LOGE("[db_manager.queryTodoList] data is empty");
+        return resultList;
+    }
+    else
+    {
+        Json::Value todoList = data["data"];
+        int size = 0;
+        size = todoList.size();
+        LOGD("[db_manager.queryTodoList] data size:" + size);
+
+        for (int i = 0; i < size; i++)
+        {
+            Json::Value val_todo = todoList[i];
+            int tid = CommonUtils::getIntByString(val_todo["ID"].asString());
+            string title = val_todo["CONTENT"].asString();
+            int status = CommonUtils::getIntByString(val_todo["STATUS"].asString());
+
+            if (tid > 0)
+            {
+                resultList.push_back(Todo(tid, title, o_uid, o_cid, status));
+            }
+        }
+    }
+
+    return resultList;
+}
