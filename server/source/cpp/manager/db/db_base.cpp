@@ -476,39 +476,31 @@ Json::Value DBBase::selectCategory(string title, int uid, string &Msg)
 
        MYSQL_ROW m_row;
        MYSQL_RES *m_res;
-
-       //获取查询结果
-       m_res = mysql_store_result(&mysql);
-       if (m_res == NULL)
+       if (mysql_field_count(&mysql) > 0)
        {
-              Msg = "[db_base.querycategory] select m_res null";
-              //释放读锁
-              rwlock->readUnlock();
-              mysql_free_result(m_res);
-              return root;
-       }
-
-       //这里只会返回一条数据
-       while (m_row = mysql_fetch_row(m_res))
-       {
-              //小于0则表示查询无结果或失败
-              stringstream ss;
-              ss << m_row[0];
-              int i_id;
-              ss >> i_id;
-              if (i_id <= 0)
+              if (m_res = mysql_store_result(&mysql))
               {
-                     LOGD("[db_base.querycategory] handle category db mysql_query empty , id = " + (string)m_row[0]);
-                     break;
+                     while (m_row = mysql_fetch_row(m_res))
+                     {
+                            stringstream ss;
+                            ss << m_row[0];
+                            int i_id;
+                            ss >> i_id;
+                            if (i_id <= 0)
+                            {
+                                   LOGD("[db_base.querycategory] handle category db mysql_query empty , id = " + (string)m_row[0]);
+                                   break;
+                            }
+                            root["ID"] = m_row[0];
+                            root["TITLE"] = m_row[1];
+                            root["UID"] = m_row[2];
+                            root["is_empty"] = false;
+                     }
               }
-              root["ID"] = m_row[0];
-              root["TITLE"] = m_row[1];
-              root["UID"] = m_row[2];
-              root["is_empty"] = false;
+              mysql_free_result(m_res);
        }
-
-       //释放指针
-       mysql_free_result(m_res);
+       while (mysql_next_result(&mysql))
+              ;
 
        //释放读锁
        rwlock->readUnlock();
