@@ -466,7 +466,7 @@ Json::Value DBBase::selectCategory(string title, int uid, string &Msg)
        //判断查询是否成功
        if (ret)
        {
-              Msg = "[db_base.querycategory] error exec query";
+              Msg = "[db_base.querycategory] error exec query" + mysql_error(&mysql);
               //释放读锁
               rwlock->readUnlock();
               return root;
@@ -538,7 +538,7 @@ Json::Value DBBase::selectCategoryList(int uid, string &Msg)
        //判断查询是否成功
        if (ret)
        {
-              Msg = "[db_base.selectCategoryList] error exec query";
+              Msg = "[db_base.selectCategoryList] error exec query" + mysql_error(&mysql);
               //释放读锁
               rwlock->readUnlock();
               return root;
@@ -620,7 +620,7 @@ Json::Value DBBase::insertCategory(string title, int uid, string &Msg)
        if (ret)
        {
               std::stringstream ssTemp;
-              ssTemp << "[db_base.insertCategory] Error exec insert :" << ret;
+              ssTemp << "[db_base.insertCategory] Error exec insert :" << ret << mysql_error(&mysql);
               string msg = ssTemp.str();
               Msg = msg;
               //释放写锁
