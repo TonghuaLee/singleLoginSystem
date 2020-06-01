@@ -18,6 +18,7 @@ class MsgChannelUtil {
   static const MAIN_CMD_ADD_CATEGORY = 104;
   static const MAIN_CMD_ADD_TODO = 105;
   static const MAIN_CMD_FETCH_CATEGORY_LIST = 106;
+  static const MAIN_CMD_FETCH_TODO_LIST = 107;
 
   static const SUB_CMD_LOGINOUT_SERVER = 2;
 

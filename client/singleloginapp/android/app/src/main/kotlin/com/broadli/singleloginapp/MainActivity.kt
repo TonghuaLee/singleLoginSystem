@@ -114,6 +114,10 @@ class MainActivity : FlutterActivity(), LoginUIController {
                     mLoginControler?.run {
                         actionGetCategoryList()
                     }
+                } else if (reqMsg.mainCmd == MsgType.MAIN_CMD_GET_TODO_LIST) {
+                    mLoginControler?.run {
+                        actionGetTodoList()
+                    }
                 } else {
                     Toast.makeText(mContext, "flutter 调用到了 android test3", Toast.LENGTH_SHORT).show()
                 }

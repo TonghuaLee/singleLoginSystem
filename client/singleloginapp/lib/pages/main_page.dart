@@ -46,7 +46,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> with EventListener {
   final TAG = "MyHomePageState";
   BuildContext _context;
-
+  DatabaseProvider mDatabaseProvider;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -94,14 +94,14 @@ class _MyHomePageState extends State<MyHomePage> with EventListener {
   void didChangeDependencies() {
     super.didChangeDependencies();
     _context = context;
+    mDatabaseProvider =
+    Provider.of<DatabaseProvider>(context, listen: false);
   }
 
   Drawer _buildDrawer(BuildContext context) {
-    CategoriesDao categoriesDao =
-        Provider.of<DatabaseProvider>(context, listen: false).categoriesDao;
     return Drawer(
       child: StreamBuilder(
-        stream: categoriesDao.watchAllCategories(),
+        stream: mDatabaseProvider.categoriesDao.watchAllCategories(),
         builder:
             (BuildContext context, AsyncSnapshot<List<Category>> snapshot) {
           List<Category> categories = snapshot.data ?? List();
@@ -118,8 +118,7 @@ class _MyHomePageState extends State<MyHomePage> with EventListener {
 
   Widget _buildDrawerItem(
       BuildContext context, List<Category> categories, int index) {
-    var databaseProvider =
-        Provider.of<DatabaseProvider>(context, listen: false);
+
     if (index == 0) {
       return DrawerHeader(
         decoration: BoxDecoration(
@@ -144,9 +143,9 @@ class _MyHomePageState extends State<MyHomePage> with EventListener {
       return ListTile(
         leading: Icon(Icons.inbox),
         title: Text('Inbox'),
-        selected: databaseProvider.selectedCategory == null,
+        selected: mDatabaseProvider.selectedCategory == null,
         onTap: () {
-          databaseProvider.setSelectedCategory(null);
+          mDatabaseProvider.setSelectedCategory(null);
           Navigator.pop(context);
         },
       );
@@ -182,13 +181,14 @@ class _MyHomePageState extends State<MyHomePage> with EventListener {
       return ListTile(
         leading: Icon(Icons.inbox),
         title: Text(title),
-        selected: databaseProvider.selectedCategory == category,
+        selected: mDatabaseProvider.selectedCategory == category,
         onTap: () {
-          databaseProvider.setSelectedCategory(category);
+          mDatabaseProvider.setSelectedCategory(category);
           Navigator.pop(context);
+          fetchTodoList(category.id);// 更新todolist
         },
         onLongPress: () {
-          _showDeleteCategoryDialog(context, databaseProvider, category);
+          _showDeleteCategoryDialog(context, mDatabaseProvider, category);
         },
       );
     }
@@ -204,6 +204,17 @@ class _MyHomePageState extends State<MyHomePage> with EventListener {
         'req fetchCategoryList from flutter',
         req,
         MsgChannelUtil.MAIN_CMD_FETCH_CATEGORY_LIST,
+        MsgChannelUtil.MAIN_CMD_DEFALUT);
+    Message result = await MsgChannelUtil.getInstance().sendMessage(msg);
+  }
+
+  void fetchTodoList(int categoryId) async {
+    Map req = new Map();
+    Message msg = new Message(
+        0,
+        'req fetchTodoList from flutter',
+        req,
+        MsgChannelUtil.MAIN_CMD_FETCH_TODO_LIST,
         MsgChannelUtil.MAIN_CMD_DEFALUT);
     Message result = await MsgChannelUtil.getInstance().sendMessage(msg);
   }
@@ -274,12 +285,23 @@ class _MyHomePageState extends State<MyHomePage> with EventListener {
     return TodoItemWidget(item, todosDao);
   }
 
-  void clearLocalDB(CategoriesDao categoriesDao) {
+  void clearLocalCategoryDB(CategoriesDao categoriesDao) {
     categoriesDao
         .clearCategory()
         .then(
           (_) {},
         )
+        .catchError((e) {
+      LogUtils.d(TAG, e);
+    }, test: (e) => e is MOOR.InvalidDataException);
+  }
+
+  void clearLocalTodoDB(TodosDao todosDao) {
+    todosDao
+        .clearTodos()
+        .then(
+          (_) {},
+    )
         .catchError((e) {
       LogUtils.d(TAG, e);
     }, test: (e) => e is MOOR.InvalidDataException);
@@ -292,6 +314,18 @@ class _MyHomePageState extends State<MyHomePage> with EventListener {
         .then(
           (_) {},
         )
+        .catchError((e) {
+      LogUtils.d(TAG, e);
+    }, test: (e) => e is MOOR.InvalidDataException);
+  }
+
+  void addTodo(TodosDao todoDao, Todo todo) {
+    todoDao
+        .insertTodo(TodosCompanion(
+        content: MOOR.Value(todo.title), category: MOOR.Value(todo.category), completed: MOOR.Value(todo.completed)))
+        .then(
+          (_) {},
+    )
         .catchError((e) {
       LogUtils.d(TAG, e);
     }, test: (e) => e is MOOR.InvalidDataException);
@@ -322,15 +356,30 @@ class _MyHomePageState extends State<MyHomePage> with EventListener {
         var message = JSON.jsonDecode(data);
         var count = message["count"];
         var list = message["data"];
-        CategoriesDao categoriesDao =
-            Provider.of<DatabaseProvider>(_context, listen: false)
-                .categoriesDao;
-        clearLocalDB(categoriesDao);
+        clearLocalCategoryDB(mDatabaseProvider.categoriesDao);
 
         for(var i=0;i <count;i++) {
           var item = list[i];
-          addCategory(categoriesDao, Category.fromJson(item));
+          addCategory(mDatabaseProvider.categoriesDao, Category.fromJson(item));
         }
+        // 更新默认分组
+        fetchTodoList(0);// 更新todolist
+      }
+    } else if (mainCmd == MsgChannelUtil.MAIN_CMD_FETCH_TODO_LIST) {
+      if (msg.code == ResultCode.SUCCESS) {
+        var data = msg.message;
+        LogUtils.d(TAG, '拉取todolist成功：$data');
+        var message = JSON.jsonDecode(data);
+        var count = message["count"];
+        var list = message["data"];
+        clearLocalTodoDB(mDatabaseProvider.todosDao);
+
+        for(var i=0;i <count;i++) {
+          var item = list[i];
+          addTodo(mDatabaseProvider.todosDao, Todo.fromJson(item));
+        }
+        // 更新默认分组
+        fetchTodoList(0);// 更新todolist
       }
     }
   }

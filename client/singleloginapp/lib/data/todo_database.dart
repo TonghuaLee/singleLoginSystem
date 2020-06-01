@@ -13,15 +13,15 @@ part 'todo_database.g.dart';
 class Todos extends Table {
   IntColumn get id => integer().autoIncrement()();
 
-  TextColumn get title => text().withLength(min: 1, max: 50)();
+  TextColumn get content => text().withLength(min: 1, max: 50)();
 
-  TextColumn get content => text().nullable().named('description')();
+  TextColumn get desc => text().nullable().named('description')();
 
-  IntColumn get category => integer()
+  IntColumn get cid => integer()
       .nullable()
       .customConstraint('NULL REFERENCES categories(id) ON DELETE CASCADE')();
 
-  BoolColumn get completed => boolean().withDefault(Constant(false))();
+  BoolColumn get status => boolean().withDefault(Constant(false))();
 }
 
 @UseMoor(tables: [Todos, Categories])

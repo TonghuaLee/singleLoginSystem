@@ -68,4 +68,7 @@ class TodosDao extends DatabaseAccessor<TodoDatabase> with _$TodosDaoMixin {
   Future updateTodo(Todo todo) => update(todos).replace(todo);
 
   Future deleteTodo(Todo todo) => delete(todos).delete(todo);
+
+  Future clearTodos() =>
+      delete(todos).go();
 }
