@@ -633,24 +633,6 @@ Json::Value DBBase::insertCategory(string title, int uid, string &Msg)
               rwlock->writeUnlock();
               return root;
        }
-       //加写锁
-       rwlock->writeLock();
-
-       //执行存储过程执行语句
-       int ret = mysql_real_query(&mysql, query.c_str(), (unsigned int)strlen(query.c_str()));
-       mysql_query(&mysql, "SELECT @out_tid");
-
-       //判断插入是否成功
-       if (ret)
-       {
-              std::stringstream ssTemp;
-              ssTemp << "[db_base.insertTodo] Error exec insert :" << ret;
-              string msg = ssTemp.str();
-              Msg = msg;
-              //释放写锁
-              rwlock->writeUnlock();
-              return root;
-       }
 
        MYSQL_ROW m_row;
        MYSQL_RES *m_res;
