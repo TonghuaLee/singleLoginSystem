@@ -522,67 +522,61 @@ Json::Value DBBase::selectCategoryList(int uid, string &Msg)
        root["is_empty"] = true;
 
        //构建存储过程执行语句
-       // std::stringstream ssTemp;
-       // ssTemp << "call querycategorylist ('" << uid << "')";
-       // string query = ssTemp.str();
-       string query = "select * from category where uid = 3";
-           LOGD("[db_base.selectCategoryList] db mysql_query : " + query + "end");
+       std::stringstream ssTemp;
+       ssTemp << "call querycategorylist ('" << uid << "')";
+       string query = ssTemp.str();
+       LOGD("[db_base.selectCategoryList] db mysql_query : " + query + "end");
 
        //加读锁
-       // rwlock->readLock();
+       rwlock->readLock();
 
        //执行存储过程执行语句
-       // int ret = mysql_real_query(&mysql, query.c_str(), (unsigned int)strlen(query.c_str()));
+       int ret = mysql_real_query(&mysql, query.c_str(), (unsigned int)strlen(query.c_str()));
        Json::Value data = selectData(query.c_str(), "category", Msg);
        LOGD("[db_base.selectCategoryList] handle category db mysql_query finish");
 
        //判断查询是否成功
-       // if (ret)
-       // {
-       //        Msg = "[db_base.selectCategoryList] error exec query";
-       //        //释放读锁
-       //        // rwlock->readUnlock();
-       //        return root;
-       // }
-
-       // // MYSQL_ROW m_row;
-       // // MYSQL_RES *m_res;
-
-       // // //获取查询结果
-       // // m_res = mysql_store_result(&mysql);
-       // // if (m_res == NULL)
-       // // {
-       // //        Msg = "[db_base.querycategorylist] select m_res null";
-       // //        //释放读锁
-       // //        rwlock->readUnlock();
-       // //        mysql_free_result(m_res);
-       // //        return root;
-       // // }
-       // Json::Value categorylist;
-
-       // while (m_row = mysql_fetch_row(m_res))
-       // {
-       //        Json::Value categoryItem;
-       //        categoryItem["ID"] = m_row[0];
-       //        categoryItem["TITLE"] = m_row[1];
-       //        categorylist.append(categoryItem);
-       //        if (root["is_empty"].asBool())
-       //        {
-       //               root["is_empty"] = false;
-       //        }
-       // }
-
-       if (!data["is_empty"].asBool()) {
-              root["is_empty"] = false;
-              root["data"] = data["data_array"];
+       if (ret)
+       {
+              Msg = "[db_base.selectCategoryList] error exec query";
+              //释放读锁
+              rwlock->readUnlock();
+              return root;
        }
-       //       root["data"] = categorylist;
+
+       MYSQL_ROW m_row;
+       MYSQL_RES *m_res;
+
+       //获取查询结果
+       m_res = mysql_store_result(&mysql);
+       if (m_res == NULL)
+       {
+              Msg = "[db_base.querycategorylist] select m_res null";
+              //释放读锁
+              rwlock->readUnlock();
+              mysql_free_result(m_res);
+              return root;
+       }
+       Json::Value categorylist;
+
+       while (m_row = mysql_fetch_row(m_res) && mysql_num_rows(m_res) > 0)
+       {
+              Json::Value categoryItem;
+              categoryItem["ID"] = m_row[0];
+              categoryItem["TITLE"] = m_row[1];
+              categorylist.append(categoryItem);
+              if (root["is_empty"].asBool())
+              {
+                     root["is_empty"] = false;
+              }
+       }
+       root["data"] = categorylist;
 
        //释放指针
-       // mysql_free_result(m_res);
+       mysql_free_result(m_res);
        LOGD("[db_base.selectCategoryList] handle mysql_free_result finish");
        //释放读锁
-       // rwlock->readUnlock();
+       rwlock->readUnlock();
        LOGD("[db_base.selectCategoryList] handle readUnlock finish");
        Json::FastWriter fw;
        LOGD("[db_base.selectCategoryList] root: " + fw.write(root));
