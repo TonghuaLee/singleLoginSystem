@@ -533,8 +533,8 @@ Json::Value DBBase::selectCategoryList(int uid, string &Msg)
        rwlock->readLock();
 
        //执行存储过程执行语句
-       // int ret = mysql_real_query(&mysql, query.c_str(), (unsigned int)strlen(query.c_str()));
-       int ret = mysql_multi_query(&mysql, query)
+       int ret = mysql_real_query(&mysql, query.c_str(), (unsigned int)strlen(query.c_str()));
+       // int ret = mysql_real_query(&mysql, query)
            Json::Value data = selectData(query.c_str(), "category", Msg);
        LOGD("[db_base.selectCategoryList] handle category db mysql_query finish");
 
