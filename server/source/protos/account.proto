@@ -17,6 +17,7 @@ service Account {
   rpc requestAddCategory  (AddCategoryRequest)    returns (CodeReply) {}
   rpc requestFetchCategory   (FetchCategoryRequest)     returns (CodeReply) {}
   rpc requestAddTodo      (AddTodoRequest)  returns (CodeReply) {}
+  rpc requestFetchTodoList   (FetchTodoListRequest)     returns (CodeReply) {}
   rpc requestUpdateTodo     (UpdateTodoRequest)   returns (CodeReply) {}
 }
 
@@ -51,6 +52,11 @@ message AddCategoryRequest {
 
 message FetchCategoryRequest {
   string token = 1;
+}
+
+message FetchTodoListRequest {
+  string token = 1;
+  int32 cid = 2;
 }
 
 message AddTodoRequest {

@@ -92,6 +92,13 @@ class Account final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::account::CodeReply>> PrepareAsyncrequestAddTodo(::grpc::ClientContext* context, const ::account::AddTodoRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::account::CodeReply>>(PrepareAsyncrequestAddTodoRaw(context, request, cq));
     }
+    virtual ::grpc::Status requestFetchTodoList(::grpc::ClientContext* context, const ::account::FetchTodoListRequest& request, ::account::CodeReply* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::account::CodeReply>> AsyncrequestFetchTodoList(::grpc::ClientContext* context, const ::account::FetchTodoListRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::account::CodeReply>>(AsyncrequestFetchTodoListRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::account::CodeReply>> PrepareAsyncrequestFetchTodoList(::grpc::ClientContext* context, const ::account::FetchTodoListRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::account::CodeReply>>(PrepareAsyncrequestFetchTodoListRaw(context, request, cq));
+    }
     virtual ::grpc::Status requestUpdateTodo(::grpc::ClientContext* context, const ::account::UpdateTodoRequest& request, ::account::CodeReply* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::account::CodeReply>> AsyncrequestUpdateTodo(::grpc::ClientContext* context, const ::account::UpdateTodoRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::account::CodeReply>>(AsyncrequestUpdateTodoRaw(context, request, cq));
@@ -198,6 +205,18 @@ class Account final {
       #else
       virtual void requestAddTodo(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::account::CodeReply* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
       #endif
+      virtual void requestFetchTodoList(::grpc::ClientContext* context, const ::account::FetchTodoListRequest* request, ::account::CodeReply* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void requestFetchTodoList(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::account::CodeReply* response, std::function<void(::grpc::Status)>) = 0;
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      virtual void requestFetchTodoList(::grpc::ClientContext* context, const ::account::FetchTodoListRequest* request, ::account::CodeReply* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      #else
+      virtual void requestFetchTodoList(::grpc::ClientContext* context, const ::account::FetchTodoListRequest* request, ::account::CodeReply* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      #endif
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      virtual void requestFetchTodoList(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::account::CodeReply* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      #else
+      virtual void requestFetchTodoList(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::account::CodeReply* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      #endif
       virtual void requestUpdateTodo(::grpc::ClientContext* context, const ::account::UpdateTodoRequest* request, ::account::CodeReply* response, std::function<void(::grpc::Status)>) = 0;
       virtual void requestUpdateTodo(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::account::CodeReply* response, std::function<void(::grpc::Status)>) = 0;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
@@ -235,6 +254,8 @@ class Account final {
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::account::CodeReply>* PrepareAsyncrequestFetchCategoryRaw(::grpc::ClientContext* context, const ::account::FetchCategoryRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::account::CodeReply>* AsyncrequestAddTodoRaw(::grpc::ClientContext* context, const ::account::AddTodoRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::account::CodeReply>* PrepareAsyncrequestAddTodoRaw(::grpc::ClientContext* context, const ::account::AddTodoRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::account::CodeReply>* AsyncrequestFetchTodoListRaw(::grpc::ClientContext* context, const ::account::FetchTodoListRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::account::CodeReply>* PrepareAsyncrequestFetchTodoListRaw(::grpc::ClientContext* context, const ::account::FetchTodoListRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::account::CodeReply>* AsyncrequestUpdateTodoRaw(::grpc::ClientContext* context, const ::account::UpdateTodoRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::account::CodeReply>* PrepareAsyncrequestUpdateTodoRaw(::grpc::ClientContext* context, const ::account::UpdateTodoRequest& request, ::grpc::CompletionQueue* cq) = 0;
   };
@@ -296,6 +317,13 @@ class Account final {
     }
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::account::CodeReply>> PrepareAsyncrequestAddTodo(::grpc::ClientContext* context, const ::account::AddTodoRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::account::CodeReply>>(PrepareAsyncrequestAddTodoRaw(context, request, cq));
+    }
+    ::grpc::Status requestFetchTodoList(::grpc::ClientContext* context, const ::account::FetchTodoListRequest& request, ::account::CodeReply* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::account::CodeReply>> AsyncrequestFetchTodoList(::grpc::ClientContext* context, const ::account::FetchTodoListRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::account::CodeReply>>(AsyncrequestFetchTodoListRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::account::CodeReply>> PrepareAsyncrequestFetchTodoList(::grpc::ClientContext* context, const ::account::FetchTodoListRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::account::CodeReply>>(PrepareAsyncrequestFetchTodoListRaw(context, request, cq));
     }
     ::grpc::Status requestUpdateTodo(::grpc::ClientContext* context, const ::account::UpdateTodoRequest& request, ::account::CodeReply* response) override;
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::account::CodeReply>> AsyncrequestUpdateTodo(::grpc::ClientContext* context, const ::account::UpdateTodoRequest& request, ::grpc::CompletionQueue* cq) {
@@ -403,6 +431,18 @@ class Account final {
       #else
       void requestAddTodo(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::account::CodeReply* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
       #endif
+      void requestFetchTodoList(::grpc::ClientContext* context, const ::account::FetchTodoListRequest* request, ::account::CodeReply* response, std::function<void(::grpc::Status)>) override;
+      void requestFetchTodoList(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::account::CodeReply* response, std::function<void(::grpc::Status)>) override;
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      void requestFetchTodoList(::grpc::ClientContext* context, const ::account::FetchTodoListRequest* request, ::account::CodeReply* response, ::grpc::ClientUnaryReactor* reactor) override;
+      #else
+      void requestFetchTodoList(::grpc::ClientContext* context, const ::account::FetchTodoListRequest* request, ::account::CodeReply* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      #endif
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      void requestFetchTodoList(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::account::CodeReply* response, ::grpc::ClientUnaryReactor* reactor) override;
+      #else
+      void requestFetchTodoList(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::account::CodeReply* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      #endif
       void requestUpdateTodo(::grpc::ClientContext* context, const ::account::UpdateTodoRequest* request, ::account::CodeReply* response, std::function<void(::grpc::Status)>) override;
       void requestUpdateTodo(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::account::CodeReply* response, std::function<void(::grpc::Status)>) override;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
@@ -442,6 +482,8 @@ class Account final {
     ::grpc::ClientAsyncResponseReader< ::account::CodeReply>* PrepareAsyncrequestFetchCategoryRaw(::grpc::ClientContext* context, const ::account::FetchCategoryRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::account::CodeReply>* AsyncrequestAddTodoRaw(::grpc::ClientContext* context, const ::account::AddTodoRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::account::CodeReply>* PrepareAsyncrequestAddTodoRaw(::grpc::ClientContext* context, const ::account::AddTodoRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::account::CodeReply>* AsyncrequestFetchTodoListRaw(::grpc::ClientContext* context, const ::account::FetchTodoListRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::account::CodeReply>* PrepareAsyncrequestFetchTodoListRaw(::grpc::ClientContext* context, const ::account::FetchTodoListRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::account::CodeReply>* AsyncrequestUpdateTodoRaw(::grpc::ClientContext* context, const ::account::UpdateTodoRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::account::CodeReply>* PrepareAsyncrequestUpdateTodoRaw(::grpc::ClientContext* context, const ::account::UpdateTodoRequest& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::internal::RpcMethod rpcmethod_requestUserLogin_;
@@ -452,6 +494,7 @@ class Account final {
     const ::grpc::internal::RpcMethod rpcmethod_requestAddCategory_;
     const ::grpc::internal::RpcMethod rpcmethod_requestFetchCategory_;
     const ::grpc::internal::RpcMethod rpcmethod_requestAddTodo_;
+    const ::grpc::internal::RpcMethod rpcmethod_requestFetchTodoList_;
     const ::grpc::internal::RpcMethod rpcmethod_requestUpdateTodo_;
   };
   static std::unique_ptr<Stub> NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
@@ -468,6 +511,7 @@ class Account final {
     virtual ::grpc::Status requestAddCategory(::grpc::ServerContext* context, const ::account::AddCategoryRequest* request, ::account::CodeReply* response);
     virtual ::grpc::Status requestFetchCategory(::grpc::ServerContext* context, const ::account::FetchCategoryRequest* request, ::account::CodeReply* response);
     virtual ::grpc::Status requestAddTodo(::grpc::ServerContext* context, const ::account::AddTodoRequest* request, ::account::CodeReply* response);
+    virtual ::grpc::Status requestFetchTodoList(::grpc::ServerContext* context, const ::account::FetchTodoListRequest* request, ::account::CodeReply* response);
     virtual ::grpc::Status requestUpdateTodo(::grpc::ServerContext* context, const ::account::UpdateTodoRequest* request, ::account::CodeReply* response);
   };
   template <class BaseClass>
@@ -631,12 +675,32 @@ class Account final {
     }
   };
   template <class BaseClass>
+  class WithAsyncMethod_requestFetchTodoList : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_requestFetchTodoList() {
+      ::grpc::Service::MarkMethodAsync(8);
+    }
+    ~WithAsyncMethod_requestFetchTodoList() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status requestFetchTodoList(::grpc::ServerContext* /*context*/, const ::account::FetchTodoListRequest* /*request*/, ::account::CodeReply* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestrequestFetchTodoList(::grpc::ServerContext* context, ::account::FetchTodoListRequest* request, ::grpc::ServerAsyncResponseWriter< ::account::CodeReply>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(8, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
   class WithAsyncMethod_requestUpdateTodo : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_requestUpdateTodo() {
-      ::grpc::Service::MarkMethodAsync(8);
+      ::grpc::Service::MarkMethodAsync(9);
     }
     ~WithAsyncMethod_requestUpdateTodo() override {
       BaseClassMustBeDerivedFromService(this);
@@ -647,10 +711,10 @@ class Account final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestrequestUpdateTodo(::grpc::ServerContext* context, ::account::UpdateTodoRequest* request, ::grpc::ServerAsyncResponseWriter< ::account::CodeReply>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(8, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(9, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_requestUserLogin<WithAsyncMethod_requestUserSign<WithAsyncMethod_checkConnect<WithAsyncMethod_requestLogout<WithAsyncMethod_refreshToken<WithAsyncMethod_requestAddCategory<WithAsyncMethod_requestFetchCategory<WithAsyncMethod_requestAddTodo<WithAsyncMethod_requestUpdateTodo<Service > > > > > > > > > AsyncService;
+  typedef WithAsyncMethod_requestUserLogin<WithAsyncMethod_requestUserSign<WithAsyncMethod_checkConnect<WithAsyncMethod_requestLogout<WithAsyncMethod_refreshToken<WithAsyncMethod_requestAddCategory<WithAsyncMethod_requestFetchCategory<WithAsyncMethod_requestAddTodo<WithAsyncMethod_requestFetchTodoList<WithAsyncMethod_requestUpdateTodo<Service > > > > > > > > > > AsyncService;
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_requestUserLogin : public BaseClass {
    private:
@@ -1028,6 +1092,53 @@ class Account final {
       { return nullptr; }
   };
   template <class BaseClass>
+  class ExperimentalWithCallbackMethod_requestFetchTodoList : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    ExperimentalWithCallbackMethod_requestFetchTodoList() {
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodCallback(8,
+          new ::grpc_impl::internal::CallbackUnaryHandler< ::account::FetchTodoListRequest, ::account::CodeReply>(
+            [this](
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const ::account::FetchTodoListRequest* request, ::account::CodeReply* response) { return this->requestFetchTodoList(context, request, response); }));}
+    void SetMessageAllocatorFor_requestFetchTodoList(
+        ::grpc::experimental::MessageAllocator< ::account::FetchTodoListRequest, ::account::CodeReply>* allocator) {
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(8);
+    #else
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(8);
+    #endif
+      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::account::FetchTodoListRequest, ::account::CodeReply>*>(handler)
+              ->SetMessageAllocator(allocator);
+    }
+    ~ExperimentalWithCallbackMethod_requestFetchTodoList() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status requestFetchTodoList(::grpc::ServerContext* /*context*/, const ::account::FetchTodoListRequest* /*request*/, ::account::CodeReply* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    virtual ::grpc::ServerUnaryReactor* requestFetchTodoList(
+      ::grpc::CallbackServerContext* /*context*/, const ::account::FetchTodoListRequest* /*request*/, ::account::CodeReply* /*response*/)
+    #else
+    virtual ::grpc::experimental::ServerUnaryReactor* requestFetchTodoList(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::account::FetchTodoListRequest* /*request*/, ::account::CodeReply* /*response*/)
+    #endif
+      { return nullptr; }
+  };
+  template <class BaseClass>
   class ExperimentalWithCallbackMethod_requestUpdateTodo : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
@@ -1038,7 +1149,7 @@ class Account final {
     #else
       ::grpc::Service::experimental().
     #endif
-        MarkMethodCallback(8,
+        MarkMethodCallback(9,
           new ::grpc_impl::internal::CallbackUnaryHandler< ::account::UpdateTodoRequest, ::account::CodeReply>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
@@ -1050,9 +1161,9 @@ class Account final {
     void SetMessageAllocatorFor_requestUpdateTodo(
         ::grpc::experimental::MessageAllocator< ::account::UpdateTodoRequest, ::account::CodeReply>* allocator) {
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(8);
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(9);
     #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(8);
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(9);
     #endif
       static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::account::UpdateTodoRequest, ::account::CodeReply>*>(handler)
               ->SetMessageAllocator(allocator);
@@ -1075,10 +1186,10 @@ class Account final {
       { return nullptr; }
   };
   #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-  typedef ExperimentalWithCallbackMethod_requestUserLogin<ExperimentalWithCallbackMethod_requestUserSign<ExperimentalWithCallbackMethod_checkConnect<ExperimentalWithCallbackMethod_requestLogout<ExperimentalWithCallbackMethod_refreshToken<ExperimentalWithCallbackMethod_requestAddCategory<ExperimentalWithCallbackMethod_requestFetchCategory<ExperimentalWithCallbackMethod_requestAddTodo<ExperimentalWithCallbackMethod_requestUpdateTodo<Service > > > > > > > > > CallbackService;
+  typedef ExperimentalWithCallbackMethod_requestUserLogin<ExperimentalWithCallbackMethod_requestUserSign<ExperimentalWithCallbackMethod_checkConnect<ExperimentalWithCallbackMethod_requestLogout<ExperimentalWithCallbackMethod_refreshToken<ExperimentalWithCallbackMethod_requestAddCategory<ExperimentalWithCallbackMethod_requestFetchCategory<ExperimentalWithCallbackMethod_requestAddTodo<ExperimentalWithCallbackMethod_requestFetchTodoList<ExperimentalWithCallbackMethod_requestUpdateTodo<Service > > > > > > > > > > CallbackService;
   #endif
 
-  typedef ExperimentalWithCallbackMethod_requestUserLogin<ExperimentalWithCallbackMethod_requestUserSign<ExperimentalWithCallbackMethod_checkConnect<ExperimentalWithCallbackMethod_requestLogout<ExperimentalWithCallbackMethod_refreshToken<ExperimentalWithCallbackMethod_requestAddCategory<ExperimentalWithCallbackMethod_requestFetchCategory<ExperimentalWithCallbackMethod_requestAddTodo<ExperimentalWithCallbackMethod_requestUpdateTodo<Service > > > > > > > > > ExperimentalCallbackService;
+  typedef ExperimentalWithCallbackMethod_requestUserLogin<ExperimentalWithCallbackMethod_requestUserSign<ExperimentalWithCallbackMethod_checkConnect<ExperimentalWithCallbackMethod_requestLogout<ExperimentalWithCallbackMethod_refreshToken<ExperimentalWithCallbackMethod_requestAddCategory<ExperimentalWithCallbackMethod_requestFetchCategory<ExperimentalWithCallbackMethod_requestAddTodo<ExperimentalWithCallbackMethod_requestFetchTodoList<ExperimentalWithCallbackMethod_requestUpdateTodo<Service > > > > > > > > > > ExperimentalCallbackService;
   template <class BaseClass>
   class WithGenericMethod_requestUserLogin : public BaseClass {
    private:
@@ -1216,12 +1327,29 @@ class Account final {
     }
   };
   template <class BaseClass>
+  class WithGenericMethod_requestFetchTodoList : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_requestFetchTodoList() {
+      ::grpc::Service::MarkMethodGeneric(8);
+    }
+    ~WithGenericMethod_requestFetchTodoList() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status requestFetchTodoList(::grpc::ServerContext* /*context*/, const ::account::FetchTodoListRequest* /*request*/, ::account::CodeReply* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
   class WithGenericMethod_requestUpdateTodo : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_requestUpdateTodo() {
-      ::grpc::Service::MarkMethodGeneric(8);
+      ::grpc::Service::MarkMethodGeneric(9);
     }
     ~WithGenericMethod_requestUpdateTodo() override {
       BaseClassMustBeDerivedFromService(this);
@@ -1393,12 +1521,32 @@ class Account final {
     }
   };
   template <class BaseClass>
+  class WithRawMethod_requestFetchTodoList : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_requestFetchTodoList() {
+      ::grpc::Service::MarkMethodRaw(8);
+    }
+    ~WithRawMethod_requestFetchTodoList() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status requestFetchTodoList(::grpc::ServerContext* /*context*/, const ::account::FetchTodoListRequest* /*request*/, ::account::CodeReply* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestrequestFetchTodoList(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(8, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
   class WithRawMethod_requestUpdateTodo : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_requestUpdateTodo() {
-      ::grpc::Service::MarkMethodRaw(8);
+      ::grpc::Service::MarkMethodRaw(9);
     }
     ~WithRawMethod_requestUpdateTodo() override {
       BaseClassMustBeDerivedFromService(this);
@@ -1409,7 +1557,7 @@ class Account final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestrequestUpdateTodo(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(8, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(9, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -1717,6 +1865,44 @@ class Account final {
       { return nullptr; }
   };
   template <class BaseClass>
+  class ExperimentalWithRawCallbackMethod_requestFetchTodoList : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    ExperimentalWithRawCallbackMethod_requestFetchTodoList() {
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodRawCallback(8,
+          new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->requestFetchTodoList(context, request, response); }));
+    }
+    ~ExperimentalWithRawCallbackMethod_requestFetchTodoList() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status requestFetchTodoList(::grpc::ServerContext* /*context*/, const ::account::FetchTodoListRequest* /*request*/, ::account::CodeReply* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    virtual ::grpc::ServerUnaryReactor* requestFetchTodoList(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
+    #else
+    virtual ::grpc::experimental::ServerUnaryReactor* requestFetchTodoList(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
+    #endif
+      { return nullptr; }
+  };
+  template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_requestUpdateTodo : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
@@ -1727,7 +1913,7 @@ class Account final {
     #else
       ::grpc::Service::experimental().
     #endif
-        MarkMethodRawCallback(8,
+        MarkMethodRawCallback(9,
           new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
@@ -1971,12 +2157,39 @@ class Account final {
     virtual ::grpc::Status StreamedrequestAddTodo(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::account::AddTodoRequest,::account::CodeReply>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
+  class WithStreamedUnaryMethod_requestFetchTodoList : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithStreamedUnaryMethod_requestFetchTodoList() {
+      ::grpc::Service::MarkMethodStreamed(8,
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::account::FetchTodoListRequest, ::account::CodeReply>(
+            [this](::grpc_impl::ServerContext* context,
+                   ::grpc_impl::ServerUnaryStreamer<
+                     ::account::FetchTodoListRequest, ::account::CodeReply>* streamer) {
+                       return this->StreamedrequestFetchTodoList(context,
+                         streamer);
+                  }));
+    }
+    ~WithStreamedUnaryMethod_requestFetchTodoList() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status requestFetchTodoList(::grpc::ServerContext* /*context*/, const ::account::FetchTodoListRequest* /*request*/, ::account::CodeReply* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedrequestFetchTodoList(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::account::FetchTodoListRequest,::account::CodeReply>* server_unary_streamer) = 0;
+  };
+  template <class BaseClass>
   class WithStreamedUnaryMethod_requestUpdateTodo : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_requestUpdateTodo() {
-      ::grpc::Service::MarkMethodStreamed(8,
+      ::grpc::Service::MarkMethodStreamed(9,
         new ::grpc::internal::StreamedUnaryHandler<
           ::account::UpdateTodoRequest, ::account::CodeReply>(
             [this](::grpc_impl::ServerContext* context,
@@ -1997,9 +2210,9 @@ class Account final {
     // replace default version of method with streamed unary
     virtual ::grpc::Status StreamedrequestUpdateTodo(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::account::UpdateTodoRequest,::account::CodeReply>* server_unary_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_requestUserLogin<WithStreamedUnaryMethod_requestUserSign<WithStreamedUnaryMethod_checkConnect<WithStreamedUnaryMethod_requestLogout<WithStreamedUnaryMethod_refreshToken<WithStreamedUnaryMethod_requestAddCategory<WithStreamedUnaryMethod_requestFetchCategory<WithStreamedUnaryMethod_requestAddTodo<WithStreamedUnaryMethod_requestUpdateTodo<Service > > > > > > > > > StreamedUnaryService;
+  typedef WithStreamedUnaryMethod_requestUserLogin<WithStreamedUnaryMethod_requestUserSign<WithStreamedUnaryMethod_checkConnect<WithStreamedUnaryMethod_requestLogout<WithStreamedUnaryMethod_refreshToken<WithStreamedUnaryMethod_requestAddCategory<WithStreamedUnaryMethod_requestFetchCategory<WithStreamedUnaryMethod_requestAddTodo<WithStreamedUnaryMethod_requestFetchTodoList<WithStreamedUnaryMethod_requestUpdateTodo<Service > > > > > > > > > > StreamedUnaryService;
   typedef Service SplitStreamedService;
-  typedef WithStreamedUnaryMethod_requestUserLogin<WithStreamedUnaryMethod_requestUserSign<WithStreamedUnaryMethod_checkConnect<WithStreamedUnaryMethod_requestLogout<WithStreamedUnaryMethod_refreshToken<WithStreamedUnaryMethod_requestAddCategory<WithStreamedUnaryMethod_requestFetchCategory<WithStreamedUnaryMethod_requestAddTodo<WithStreamedUnaryMethod_requestUpdateTodo<Service > > > > > > > > > StreamedService;
+  typedef WithStreamedUnaryMethod_requestUserLogin<WithStreamedUnaryMethod_requestUserSign<WithStreamedUnaryMethod_checkConnect<WithStreamedUnaryMethod_requestLogout<WithStreamedUnaryMethod_refreshToken<WithStreamedUnaryMethod_requestAddCategory<WithStreamedUnaryMethod_requestFetchCategory<WithStreamedUnaryMethod_requestAddTodo<WithStreamedUnaryMethod_requestFetchTodoList<WithStreamedUnaryMethod_requestUpdateTodo<Service > > > > > > > > > > StreamedService;
 };
 
 }  // namespace account

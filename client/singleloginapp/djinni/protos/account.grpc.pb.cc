@@ -30,6 +30,7 @@ static const char* Account_method_names[] = {
   "/account.Account/requestAddCategory",
   "/account.Account/requestFetchCategory",
   "/account.Account/requestAddTodo",
+  "/account.Account/requestFetchTodoList",
   "/account.Account/requestUpdateTodo",
 };
 
@@ -48,7 +49,8 @@ Account::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel)
   , rpcmethod_requestAddCategory_(Account_method_names[5], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_requestFetchCategory_(Account_method_names[6], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_requestAddTodo_(Account_method_names[7], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_requestUpdateTodo_(Account_method_names[8], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_requestFetchTodoList_(Account_method_names[8], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_requestUpdateTodo_(Account_method_names[9], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::Status Account::Stub::requestUserLogin(::grpc::ClientContext* context, const ::account::LoginRequest& request, ::account::CodeReply* response) {
@@ -275,6 +277,34 @@ void Account::Stub::experimental_async::requestAddTodo(::grpc::ClientContext* co
   return ::grpc_impl::internal::ClientAsyncResponseReaderFactory< ::account::CodeReply>::Create(channel_.get(), cq, rpcmethod_requestAddTodo_, context, request, false);
 }
 
+::grpc::Status Account::Stub::requestFetchTodoList(::grpc::ClientContext* context, const ::account::FetchTodoListRequest& request, ::account::CodeReply* response) {
+  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_requestFetchTodoList_, context, request, response);
+}
+
+void Account::Stub::experimental_async::requestFetchTodoList(::grpc::ClientContext* context, const ::account::FetchTodoListRequest* request, ::account::CodeReply* response, std::function<void(::grpc::Status)> f) {
+  ::grpc_impl::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_requestFetchTodoList_, context, request, response, std::move(f));
+}
+
+void Account::Stub::experimental_async::requestFetchTodoList(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::account::CodeReply* response, std::function<void(::grpc::Status)> f) {
+  ::grpc_impl::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_requestFetchTodoList_, context, request, response, std::move(f));
+}
+
+void Account::Stub::experimental_async::requestFetchTodoList(::grpc::ClientContext* context, const ::account::FetchTodoListRequest* request, ::account::CodeReply* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
+  ::grpc_impl::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_requestFetchTodoList_, context, request, response, reactor);
+}
+
+void Account::Stub::experimental_async::requestFetchTodoList(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::account::CodeReply* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
+  ::grpc_impl::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_requestFetchTodoList_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::account::CodeReply>* Account::Stub::AsyncrequestFetchTodoListRaw(::grpc::ClientContext* context, const ::account::FetchTodoListRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc_impl::internal::ClientAsyncResponseReaderFactory< ::account::CodeReply>::Create(channel_.get(), cq, rpcmethod_requestFetchTodoList_, context, request, true);
+}
+
+::grpc::ClientAsyncResponseReader< ::account::CodeReply>* Account::Stub::PrepareAsyncrequestFetchTodoListRaw(::grpc::ClientContext* context, const ::account::FetchTodoListRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc_impl::internal::ClientAsyncResponseReaderFactory< ::account::CodeReply>::Create(channel_.get(), cq, rpcmethod_requestFetchTodoList_, context, request, false);
+}
+
 ::grpc::Status Account::Stub::requestUpdateTodo(::grpc::ClientContext* context, const ::account::UpdateTodoRequest& request, ::account::CodeReply* response) {
   return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_requestUpdateTodo_, context, request, response);
 }
@@ -387,6 +417,16 @@ Account::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       Account_method_names[8],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< Account::Service, ::account::FetchTodoListRequest, ::account::CodeReply>(
+          [](Account::Service* service,
+             ::grpc_impl::ServerContext* ctx,
+             const ::account::FetchTodoListRequest* req,
+             ::account::CodeReply* resp) {
+               return service->requestFetchTodoList(ctx, req, resp);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      Account_method_names[9],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< Account::Service, ::account::UpdateTodoRequest, ::account::CodeReply>(
           [](Account::Service* service,
              ::grpc_impl::ServerContext* ctx,
@@ -449,6 +489,13 @@ Account::Service::~Service() {
 }
 
 ::grpc::Status Account::Service::requestAddTodo(::grpc::ServerContext* context, const ::account::AddTodoRequest* request, ::account::CodeReply* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status Account::Service::requestFetchTodoList(::grpc::ServerContext* context, const ::account::FetchTodoListRequest* request, ::account::CodeReply* response) {
   (void) context;
   (void) request;
   (void) response;
