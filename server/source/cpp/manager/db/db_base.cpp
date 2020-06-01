@@ -549,7 +549,7 @@ Json::Value DBBase::selectCategoryList(int uid, string &Msg)
 
        //获取查询结果
        m_res = mysql_store_result(&mysql);
-       if (m_res == NULL)
+       if (m_res == NULL || mysql_num_rows(m_res) == 0)
        {
               Msg = "[db_base.querycategorylist] select m_res null";
               //释放读锁
@@ -559,7 +559,7 @@ Json::Value DBBase::selectCategoryList(int uid, string &Msg)
        }
        Json::Value categorylist;
 
-       while (m_row = mysql_fetch_row(m_res) && mysql_num_rows(m_res) > 0)
+       while (m_row = mysql_fetch_row(m_res))
        {
               Json::Value categoryItem;
               categoryItem["ID"] = m_row[0];
