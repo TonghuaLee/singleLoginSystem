@@ -740,6 +740,7 @@ Json::Value DBBase::selectTodo(int tid, string &Msg)
               root["CONTENT"] = m_row[1];
               root["UID"] = m_row[2];
               root["CID"] = m_row[3];
+              root["STATUS"] = m_row[4];
               root["is_empty"] = false;
        }
 
