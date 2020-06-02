@@ -656,14 +656,14 @@ public:
 
   CodeReply *handleUpdateTodo(int tid, int status, string token)
   {
-    LOGD("[account_server.handleUpdateTodo] user addTodo in:" + content);
+    LOGD("[account_server.handleUpdateTodo] user handleUpdateTodo in" );
     // 1. 首先检查是否连接
     LoginCore loginCore;
     CodeReply *connectResult = loginCore.handleUserCheckConnect(token);
     CodeReply *result = new CodeReply();
     if (connectResult->code() != ResultCode::SUCCESS)
     {
-      LOGD("[account_server.handleUpdateTodo] user is not connected, addTodo in:" + content);
+      LOGD("[account_server.handleUpdateTodo] user is not connected, handleUpdateTodo i:" );
       return connectResult;
     }
 
