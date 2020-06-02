@@ -22,6 +22,7 @@ class NewTodoInput extends StatefulWidget {
 
 class _NewTodoInputState extends State<NewTodoInput> with EventListener {
   final String TAG = "_NewTodoInputState";
+  DatabaseProvider mDatabaseProvider;
   TextEditingController controller;
   final LoginErrorMessageController loginErrorMessageController =
   LoginErrorMessageController();
@@ -35,6 +36,7 @@ class _NewTodoInputState extends State<NewTodoInput> with EventListener {
     controller = TextEditingController();
     focusNode = new FocusNode();
     MsgChannelUtil.getInstance().addListener(this);
+    mDatabaseProvider = Provider.of<DatabaseProvider>(context, listen: false);
   }
 
   @override
@@ -112,11 +114,9 @@ class _NewTodoInputState extends State<NewTodoInput> with EventListener {
     Message result = await MsgChannelUtil.getInstance().sendMessage(msg);
   }
 
-  void _insertNewTodoItem(String input, int cid, BuildContext context) {
+  void _insertNewTodoItem(int tid, String input, int cid, int status) {
     print('submitted! $input');
-    var databaseProvider =
-    Provider.of<DatabaseProvider>(context, listen: false);
-    databaseProvider.insertNewTodoItemWithCid(input, cid).then((_) {
+    mDatabaseProvider.insertNewTodoItemWithCid(tid, input, cid, status).then((_) {
       _resetValuesAfterSubmit();
     }).catchError(
           (e) {
@@ -169,7 +169,7 @@ class _NewTodoInputState extends State<NewTodoInput> with EventListener {
           if (todo != null) {
             LogUtils.d(TAG, '添加todo成功');
             bSucc = true;
-            _insertNewTodoItem(todo.content, todo.cid, _context);
+            _insertNewTodoItem(tid,todo.content, todo.cid, 0);
           }
         }
 

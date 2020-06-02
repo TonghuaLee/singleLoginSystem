@@ -2,6 +2,7 @@ import 'dart:convert' as JSON;
 
 import 'package:flutter/material.dart';
 import 'package:moor/moor.dart' as MOOR;
+import 'package:moor/moor.dart';
 import 'package:provider/provider.dart';
 import 'package:singleloginapp/controller/dabase_provider.dart';
 import 'package:singleloginapp/data/categories_dao.dart';
@@ -49,9 +50,10 @@ class _MyHomePageState extends State<MyHomePage> with EventListener {
   DatabaseProvider mDatabaseProvider;
   Drawer mDrawer;
   Widget mTodolist;
+
   @override
   Widget build(BuildContext context) {
-    mDrawer =  _buildDrawer(context);
+    mDrawer = _buildDrawer(context);
     mTodolist = _buildList(context);
     return Scaffold(
       appBar: AppBar(
@@ -98,8 +100,7 @@ class _MyHomePageState extends State<MyHomePage> with EventListener {
   void didChangeDependencies() {
     super.didChangeDependencies();
     _context = context;
-    mDatabaseProvider =
-    Provider.of<DatabaseProvider>(context, listen: false);
+    mDatabaseProvider = Provider.of<DatabaseProvider>(context, listen: false);
   }
 
   Drawer _buildDrawer(BuildContext context) {
@@ -122,7 +123,6 @@ class _MyHomePageState extends State<MyHomePage> with EventListener {
 
   Widget _buildDrawerItem(
       BuildContext context, List<Category> categories, int index) {
-
     if (index == 0) {
       return DrawerHeader(
         decoration: BoxDecoration(
@@ -151,7 +151,7 @@ class _MyHomePageState extends State<MyHomePage> with EventListener {
         onTap: () {
           mDatabaseProvider.setSelectedCategory(null);
           Navigator.pop(context);
-          fetchTodoList(0);// 更新todolist
+          fetchTodoList(0); // 更新todolist
         },
       );
     } else if (index == categories.length + 2) {
@@ -189,7 +189,7 @@ class _MyHomePageState extends State<MyHomePage> with EventListener {
         onTap: () {
           mDatabaseProvider.setSelectedCategory(category);
           Navigator.pop(context);
-          fetchTodoList(category.cid);// 更新todolist
+          fetchTodoList(category.cid); // 更新todolist
         },
         onLongPress: () {
           _showDeleteCategoryDialog(context, mDatabaseProvider, category);
@@ -306,7 +306,7 @@ class _MyHomePageState extends State<MyHomePage> with EventListener {
         .clearTodos()
         .then(
           (_) {},
-    )
+        )
         .catchError((e) {
       LogUtils.d(TAG, e);
     }, test: (e) => e is MOOR.InvalidDataException);
@@ -324,16 +324,13 @@ class _MyHomePageState extends State<MyHomePage> with EventListener {
     }, test: (e) => e is MOOR.InvalidDataException);
   }
 
-  void addTodo(TodosDao todoDao, Todo todo) {
-    todoDao
-        .insertTodo(TodosCompanion(
-        content: MOOR.Value(todo.content), cid: MOOR.Value(todo.cid), status: MOOR.Value(todo.status)))
-        .then(
-          (_) {},
-    )
-        .catchError((e) {
-      LogUtils.d(TAG, e);
-    }, test: (e) => e is MOOR.InvalidDataException);
+  void addTodo(int tid, String content, int cid, int status) {
+    mDatabaseProvider.insertNewTodoItemWithCid(tid, content, cid,status).then((_) {}).catchError(
+      (e) {
+        LogUtils.d(TAG, e);
+      },
+      test: (e) => e is InvalidDataException,
+    );
   }
 
   @override
@@ -363,12 +360,12 @@ class _MyHomePageState extends State<MyHomePage> with EventListener {
         var list = message["data"];
         clearLocalCategoryDB(mDatabaseProvider.categoriesDao);
 
-        for(var i=0;i <count;i++) {
+        for (var i = 0; i < count; i++) {
           var item = list[i];
           addCategory(mDatabaseProvider.categoriesDao, Category.fromJson(item));
         }
         // 更新默认分组
-        fetchTodoList(0);// 更新todolist
+        fetchTodoList(0); // 更新todolist
       }
     } else if (mainCmd == MsgChannelUtil.MAIN_CMD_FETCH_TODO_LIST) {
       if (msg.code == ResultCode.SUCCESS) {
@@ -379,10 +376,14 @@ class _MyHomePageState extends State<MyHomePage> with EventListener {
         var list = message["data"];
         clearLocalTodoDB(mDatabaseProvider.todosDao);
 
-        for(var i=0;i <count;i++) {
+        for (var i = 0; i < count; i++) {
           var item = list[i];
-          item["status"] = item["status"] == 1 ? true :false;
-          addTodo(mDatabaseProvider.todosDao, Todo.fromJson(item));
+          var status = item["status"];
+          var cid = item["cid"];
+          var uid = item["uid"];
+          var content = item["content"];
+          var tid = item["TID"];
+          addTodo(tid, content, cid, status);
         }
       }
     }

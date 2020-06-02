@@ -144,7 +144,7 @@ public:
     return Database::getDatabase()->updateTodoStatus(tid, status);
   }
 
-  vector<Todo> getTodoList(int uid,int cid)
+  vector<Todo> getTodoList(int uid, int cid)
   {
     return Database::getDatabase()->queryTodoList(uid, cid);
   }
@@ -517,7 +517,7 @@ public:
       Json::Value list;
       int size = categoryList.size();
       root["count"] = size;
-     
+
       for (int i = 0; i < size; i++)
       {
         Json::Value item;
@@ -560,11 +560,12 @@ public:
       Json::Value list;
       int size = todoList.size();
       root["count"] = size;
-     
+
       for (int i = 0; i < size; i++)
       {
         Json::Value item;
         item["uid"] = uid;
+        item["tid"] = todoList[i].getTid();
         item["content"] = todoList[i].getContent();
         item["status"] = todoList[i].getStatus();
         item["cid"] = cid;
@@ -578,7 +579,7 @@ public:
     return result;
   };
 
-/**
+  /**
  * 添加todo
  * */
   CodeReply *handleAddTodo(string content, int cid, string token)
@@ -661,14 +662,14 @@ public:
 
   CodeReply *handleUpdateTodo(int tid, int status, string token)
   {
-    LOGD("[account_server.handleUpdateTodo] user handleUpdateTodo in" );
+    LOGD("[account_server.handleUpdateTodo] user handleUpdateTodo in");
     // 1. 首先检查是否连接
     LoginCore loginCore;
     CodeReply *connectResult = loginCore.handleUserCheckConnect(token);
     CodeReply *result = new CodeReply();
     if (connectResult->code() != ResultCode::SUCCESS)
     {
-      LOGD("[account_server.handleUpdateTodo] user is not connected, handleUpdateTodo i:" );
+      LOGD("[account_server.handleUpdateTodo] user is not connected, handleUpdateTodo i:");
       return connectResult;
     }
 

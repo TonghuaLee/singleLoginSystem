@@ -45,13 +45,12 @@ class DatabaseProvider extends ChangeNotifier {
     return todosDao.insertTodo(todo);
   }
 
-  Future insertNewTodoItemWithCid(String title, int cid) {
+  Future insertNewTodoItemWithCid(int tid, String title, int cid, int status) {
     final todo = TodosCompanion(
+        id: Value(tid),
         content: Value(title),
-        status: Value(false),
-        cid: cid > 0
-            ? Value(cid)
-            : Value.absent());
+        status: Value(status == 1 ? true : false),
+        cid: cid > 0 ? Value(cid) : Value.absent());
     return todosDao.insertTodo(todo);
   }
 
