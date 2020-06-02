@@ -310,7 +310,9 @@ class _MyHomePageState extends State<MyHomePage> with EventListener {
   void addCategory(CategoriesDao categoriesDao, Category category) {
     categoriesDao
         .insertCategory(CategoriesCompanion(
-            title: MOOR.Value(category.title), uid: MOOR.Value(category.uid)))
+            cid: MOOR.Value(category.cid),
+            title: MOOR.Value(category.title),
+            uid: MOOR.Value(category.uid)))
         .then(
           (_) {},
         )
