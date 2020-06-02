@@ -687,7 +687,7 @@ Json::Value DBBase::selectTodo(int tid, string &Msg)
 
        //构建存储过程执行语句
        std::stringstream ssTemp;
-       ssTemp << "call querytodo ('" << tid << "',@out_tid,@out_content,@out_cid,@out_status)";
+       ssTemp << "call querytodo ('" << tid << "',@out_tid,@out_content,@out_uid,@out_cid,@out_status)";
        string query = ssTemp.str();
        LOGD("[db_base.selectTodo] db mysql_query : " + query);
 
@@ -696,7 +696,7 @@ Json::Value DBBase::selectTodo(int tid, string &Msg)
 
        //执行存储过程执行语句
        int ret = mysql_real_query(&mysql, query.c_str(), (unsigned int)strlen(query.c_str()));
-       mysql_query(&mysql, "SELECT @out_tid,@out_content,@out_cid,@out_status");
+       mysql_query(&mysql, "SELECT @out_tid,@out_content,@out_uid,@out_cid,@out_status");
 
        LOGD("[db_base.querytodo] handle todos db mysql_query finish");
 
