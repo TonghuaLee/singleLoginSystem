@@ -445,11 +445,11 @@ Todo Database::updateTodoStatus(int o_tid, int o_status)
     Json::Value data = db_base->updateTodoStatus(o_tid, o_status, msg);
 
     Json::FastWriter fw;
-    LOGD("[db_manager.queryTodo] query todo info :" + fw.write(data));
+    LOGD("[db_manager.updateTodoStatus] query todo info :" + fw.write(data));
 
     if (data["is_empty"].asBool())
     {
-        LOGE("[db_manager.queryTodo] data is empty");
+        LOGE("[db_manager.updateTodoStatus] data is empty");
         return Todo(-1, "", -1, -1, 0);
     }
     else
@@ -460,7 +460,7 @@ Todo Database::updateTodoStatus(int o_tid, int o_status)
         content = data["CONTENT"].asString();
         if (cid < 0)
         {
-            LOGE("[db_manager.queryTodo] can not find tid");
+            LOGE("[db_manager.updateTodoStatus] can not find tid");
             return Todo(-1, "", -1, -1, 0);
         }
     }

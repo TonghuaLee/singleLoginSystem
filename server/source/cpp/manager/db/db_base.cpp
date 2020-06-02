@@ -925,7 +925,7 @@ Json::Value DBBase::updateTodoStatus(int tid, int status, string &Msg)
 
        //构建存储过程执行语句
        std::stringstream ssTemp;
-       ssTemp << "call updateTodoStatus ('" << tid << "','" << status << "',@out_status)";
+       ssTemp << "call updateTodoStatus ('" << tid << "','" << status << "',@out_status,@out_cid,@out_uid,@out_content)";
        string query = ssTemp.str();
 
        LOGD("[db_base.updateTodoStatus] " + query);
@@ -935,7 +935,7 @@ Json::Value DBBase::updateTodoStatus(int tid, int status, string &Msg)
 
        //执行存储过程执行语句
        int ret = mysql_real_query(&mysql, query.c_str(), (unsigned int)strlen(query.c_str()));
-       mysql_query(&mysql, "SELECT @out_status");
+       mysql_query(&mysql, "SELECT @out_status,@out_cid,@out_uid,@out_content");
 
        //判断插入是否成功
        if (ret)
