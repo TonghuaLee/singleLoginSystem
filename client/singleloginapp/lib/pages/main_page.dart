@@ -47,6 +47,7 @@ class _MyHomePageState extends State<MyHomePage> with EventListener {
   final TAG = "MyHomePageState";
   BuildContext _context;
   DatabaseProvider mDatabaseProvider;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -319,7 +320,10 @@ class _MyHomePageState extends State<MyHomePage> with EventListener {
   }
 
   void addTodo(int tid, String content, int cid, int status) {
-    mDatabaseProvider.insertNewTodoItemWithCid(tid, content, cid,status).then((_) {}).catchError(
+    mDatabaseProvider
+        .insertNewTodoItemWithCid(tid, content, cid, status)
+        .then((_) {})
+        .catchError(
       (e) {
         LogUtils.d(TAG, e);
       },
@@ -376,8 +380,19 @@ class _MyHomePageState extends State<MyHomePage> with EventListener {
           var cid = item["cid"];
           var uid = item["uid"];
           var content = item["content"];
-          var tid = item["TID"];
+          var tid = item["tid"];
           addTodo(tid, content, cid, status);
+        }
+      }
+    } else if (mainCmd == MsgChannelUtil.MAIN_CMD_UPDATE_TODO_STATUS) {
+      LogUtils.d(TAG, msg.toJson().toString());
+      if (msg != null) {
+        if (msg.code == ResultCode.SUCCESS) {
+          var data = msg.message;
+          var item = JSON.jsonDecode(data);
+          item["id"] = item["tid"];
+          item["status"] = item["status"] != 0 ? true : false;
+          mDatabaseProvider.todosDao.updateTodo(Todo.fromJson(item));
         }
       }
     }
