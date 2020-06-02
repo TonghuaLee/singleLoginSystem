@@ -16,12 +16,12 @@ class TodoItemWidget extends StatelessWidget {
         actionExtentRatio: 0.2,
         actionPane: SlidableDrawerActionPane(),
         child: CheckboxListTile(
-          title: Text(_todoItem.todo.title),
+          title: Text(_todoItem.todo.content),
           subtitle: Text(
               'category ${_todoItem.category != null ? _todoItem.category.title : 'Inbox'}'),
-          value: _todoItem.todo.completed,
+          value: _todoItem.todo.status,
           onChanged: (newValue) {
-            _todosDao.updateTodo(_todoItem.todo.copyWith(completed: newValue));
+            _todosDao.updateTodo(_todoItem.todo.copyWith(status: newValue));
           },
         ),
         secondaryActions: <Widget>[

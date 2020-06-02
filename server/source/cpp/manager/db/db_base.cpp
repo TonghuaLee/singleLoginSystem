@@ -705,6 +705,7 @@ Json::Value DBBase::selectTodo(int tid, string &Msg)
        {
               Msg = "[db_base.querytodo] error exec query";
               //释放读锁
+              DBBase::errorIntoMySQL();
               rwlock->readUnlock();
               return root;
        }
@@ -718,6 +719,7 @@ Json::Value DBBase::selectTodo(int tid, string &Msg)
        {
               Msg = "[db_base.querytodo] select m_res null";
               //释放读锁
+              DBBase::errorIntoMySQL();
               rwlock->readUnlock();
               mysql_free_result(m_res);
               return root;
@@ -794,6 +796,7 @@ Json::Value DBBase::insertTodo(string content, int cid, int uid, string &Msg)
               string msg = ssTemp.str();
               Msg = msg;
               //释放写锁
+              DBBase::errorIntoMySQL();
               rwlock->writeUnlock();
               return root;
        }

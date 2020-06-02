@@ -19,22 +19,22 @@ class TodosDao extends DatabaseAccessor<TodoDatabase> with _$TodosDaoMixin {
   Stream<List<TodoWithCategory>> watchTodosInCategory(Category category,
       {bool hideCompleted = false}) {
     final query = select(todos).join([
-      leftOuterJoin(categories, categories.id.equalsExp(todos.category)),
+      leftOuterJoin(categories, categories.cid.equalsExp(todos.cid)),
     ]);
 
     print('watch category: $category');
     if (category != null) {
       if (hideCompleted) {
         query.where(
-            categories.id.equals(category.id) & todos.completed.equals(false));
+            categories.cid.equals(category.cid) & todos.status.equals(false));
       } else {
-        query.where(categories.id.equals(category.id));
+        query.where(categories.cid.equals(category.cid));
       }
     } else {
       if (hideCompleted) {
-        query.where(isNull(categories.id) & todos.completed.equals(false));
+        query.where(isNull(categories.cid) & todos.status.equals(false));
       } else {
-        query.where(isNull(categories.id));
+        query.where(isNull(categories.cid));
       }
     }
 
@@ -50,7 +50,7 @@ class TodosDao extends DatabaseAccessor<TodoDatabase> with _$TodosDaoMixin {
 
   Stream<List<TodoWithCategory>> watchAllTodos() {
     final query = select(todos).join([
-      leftOuterJoin(categories, categories.id.equalsExp(todos.category)),
+      leftOuterJoin(categories, categories.cid.equalsExp(todos.cid)),
     ]);
 
     return query.watch().map((rows) {

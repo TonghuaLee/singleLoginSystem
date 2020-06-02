@@ -32,6 +32,7 @@ using account::LogoutRequest;
 using account::RefreshRequest;
 using account::SignRequest;
 using account::UpdateTodoRequest;
+using account::FetchTodoListRequest;
 
 using namespace auth;
 using namespace project_constants;
@@ -300,9 +301,9 @@ namespace network{
         CodeReply getTodoList(const int32_t cid, const std::string &token)
         {
             // Data we are sending to the server.
-            FetchCategoryRequest request;
+            FetchTodoListRequest request;
             request.set_token(token);
-
+            request.set_cid(cid);
             // Container for the data we expect from the server.
             CodeReply reply;
 
@@ -313,7 +314,7 @@ namespace network{
             try
             {
                 // The actual RPC.
-                Status status = stub_->requestFetchCategory(&context, request, &reply);
+                Status status = stub_->requestFetchTodoList(&context, request, &reply);
 
                 if (status.ok())
                 {

@@ -18,8 +18,7 @@ class Todos extends Table {
   TextColumn get desc => text().nullable().named('description')();
 
   IntColumn get cid => integer()
-      .nullable()
-      .customConstraint('NULL REFERENCES categories(id) ON DELETE CASCADE')();
+      .nullable()();
 
   BoolColumn get status => boolean().withDefault(Constant(false))();
 }
@@ -44,7 +43,7 @@ class TodoDatabase extends _$TodoDatabase {
           }
         },
         beforeOpen: (details) async {
-          await customStatement('PRAGMA foreign_keys = ON');
+          await customStatement('PRAGMA foreign_keys = OFF');
         },
       );
 }

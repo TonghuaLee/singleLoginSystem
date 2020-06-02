@@ -13,6 +13,7 @@ import com.broadli.singleloginapp.config.MsgType.Companion.CODE_SUCC
 import com.broadli.singleloginapp.config.MsgType.Companion.MAIN_CMD_ADD_CATEGORY
 import com.broadli.singleloginapp.config.MsgType.Companion.MAIN_CMD_ADD_TODO
 import com.broadli.singleloginapp.config.MsgType.Companion.MAIN_CMD_GET_CATEGORY_LIST
+import com.broadli.singleloginapp.config.MsgType.Companion.MAIN_CMD_GET_TODO_LIST
 import com.broadli.singleloginapp.config.MsgType.Companion.MAIN_CMD_LOGIN
 import com.broadli.singleloginapp.config.MsgType.Companion.MAIN_CMD_LOGINOUT
 import com.broadli.singleloginapp.config.MsgType.Companion.MAIN_CMD_REGISTER
@@ -62,8 +63,7 @@ class MainActivity : FlutterActivity(), LoginUIController {
         mMessageChannel = BasicMessageChannel<Any>(getFlutterView(), FLUTTER_NATIVE_MSG_CHANNEL, StandardMessageCodec.INSTANCE)
         // 接收消息监听
         mMessageChannel!!.setMessageHandler { message, reply ->
-            Log.d("Android", "Received message = $message")
-            println("onMessage: $message")
+            Log.d("Android", "Received message ")
             var reqMsg = Gson().fromJson(message.toString(), Msg::class.java)
             if (reqMsg != null) {
                 if (reqMsg.mainCmd == MsgType.MAIN_CMD_LOGIN) {
@@ -115,8 +115,10 @@ class MainActivity : FlutterActivity(), LoginUIController {
                         actionGetCategoryList()
                     }
                 } else if (reqMsg.mainCmd == MsgType.MAIN_CMD_GET_TODO_LIST) {
+                    var data = reqMsg.data
+                    val cid = data?.get("cid") as Double
                     mLoginControler?.run {
-                        actionGetTodoList()
+                        actionGetTodoList(cid.toInt())
                     }
                 } else {
                     Toast.makeText(mContext, "flutter 调用到了 android test3", Toast.LENGTH_SHORT).show()
@@ -156,7 +158,7 @@ class MainActivity : FlutterActivity(), LoginUIController {
     }
 
     private fun testNativeAdd() {
-        mLoginControler?.addTest()
+       // mLoginControler?.addTest()
     }
 
     override fun performLoginSuccess() {
@@ -272,11 +274,21 @@ class MainActivity : FlutterActivity(), LoginUIController {
     }
 
     override fun performGetTodoListSuccess(data: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        var replyMsg = Msg(MAIN_CMD_GET_TODO_LIST, SUB_CMD_DEFAULT, CODE_SUCC, data);
+        var gson = Gson()
+        var replyJsonStr = gson.toJson(replyMsg)
+        mMessageChannel?.send(replyJsonStr) { reply ->
+            Log.d("Android", "$reply")
+        }
     }
 
     override fun performGetTodoListFail(data: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        var replyMsg = Msg(MAIN_CMD_GET_TODO_LIST, SUB_CMD_DEFAULT, CODE_SUCC, data);
+        var gson = Gson()
+        var replyJsonStr = gson.toJson(replyMsg)
+        mMessageChannel?.send(replyJsonStr) { reply ->
+            Log.d("Android", "$reply")
+        }
     }
 
     override fun toastMsg(content: String?) {

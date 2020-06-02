@@ -9,16 +9,16 @@ part of 'todo_database.dart';
 // ignore_for_file: unnecessary_brace_in_string_interps, unnecessary_this
 class Todo extends DataClass implements Insertable<Todo> {
   final int id;
-  final String title;
   final String content;
-  final int category;
-  final bool completed;
+  final String desc;
+  final int cid;
+  final bool status;
   Todo(
       {@required this.id,
-      @required this.title,
-      this.content,
-      this.category,
-      @required this.completed});
+      @required this.content,
+      this.desc,
+      this.cid,
+      @required this.status});
   factory Todo.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -27,14 +27,13 @@ class Todo extends DataClass implements Insertable<Todo> {
     final boolType = db.typeSystem.forDartType<bool>();
     return Todo(
       id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
-      title:
-          stringType.mapFromDatabaseResponse(data['${effectivePrefix}title']),
-      content: stringType
+      content:
+          stringType.mapFromDatabaseResponse(data['${effectivePrefix}content']),
+      desc: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}description']),
-      category:
-          intType.mapFromDatabaseResponse(data['${effectivePrefix}category']),
-      completed:
-          boolType.mapFromDatabaseResponse(data['${effectivePrefix}completed']),
+      cid: intType.mapFromDatabaseResponse(data['${effectivePrefix}cid']),
+      status:
+          boolType.mapFromDatabaseResponse(data['${effectivePrefix}status']),
     );
   }
   factory Todo.fromJson(Map<String, dynamic> json,
@@ -42,10 +41,10 @@ class Todo extends DataClass implements Insertable<Todo> {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return Todo(
       id: serializer.fromJson<int>(json['id']),
-      title: serializer.fromJson<String>(json['title']),
       content: serializer.fromJson<String>(json['content']),
-      category: serializer.fromJson<int>(json['category']),
-      completed: serializer.fromJson<bool>(json['completed']),
+      desc: serializer.fromJson<String>(json['desc']),
+      cid: serializer.fromJson<int>(json['cid']),
+      status: serializer.fromJson<bool>(json['status']),
     );
   }
   @override
@@ -53,10 +52,10 @@ class Todo extends DataClass implements Insertable<Todo> {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
-      'title': serializer.toJson<String>(title),
       'content': serializer.toJson<String>(content),
-      'category': serializer.toJson<int>(category),
-      'completed': serializer.toJson<bool>(completed),
+      'desc': serializer.toJson<String>(desc),
+      'cid': serializer.toJson<int>(cid),
+      'status': serializer.toJson<bool>(status),
     };
   }
 
@@ -64,41 +63,32 @@ class Todo extends DataClass implements Insertable<Todo> {
   TodosCompanion createCompanion(bool nullToAbsent) {
     return TodosCompanion(
       id: id == null && nullToAbsent ? const Value.absent() : Value(id),
-      title:
-          title == null && nullToAbsent ? const Value.absent() : Value(title),
       content: content == null && nullToAbsent
           ? const Value.absent()
           : Value(content),
-      category: category == null && nullToAbsent
-          ? const Value.absent()
-          : Value(category),
-      completed: completed == null && nullToAbsent
-          ? const Value.absent()
-          : Value(completed),
+      desc: desc == null && nullToAbsent ? const Value.absent() : Value(desc),
+      cid: cid == null && nullToAbsent ? const Value.absent() : Value(cid),
+      status:
+          status == null && nullToAbsent ? const Value.absent() : Value(status),
     );
   }
 
-  Todo copyWith(
-          {int id,
-          String title,
-          String content,
-          int category,
-          bool completed}) =>
+  Todo copyWith({int id, String content, String desc, int cid, bool status}) =>
       Todo(
         id: id ?? this.id,
-        title: title ?? this.title,
         content: content ?? this.content,
-        category: category ?? this.category,
-        completed: completed ?? this.completed,
+        desc: desc ?? this.desc,
+        cid: cid ?? this.cid,
+        status: status ?? this.status,
       );
   @override
   String toString() {
     return (StringBuffer('Todo(')
           ..write('id: $id, ')
-          ..write('title: $title, ')
           ..write('content: $content, ')
-          ..write('category: $category, ')
-          ..write('completed: $completed')
+          ..write('desc: $desc, ')
+          ..write('cid: $cid, ')
+          ..write('status: $status')
           ..write(')'))
         .toString();
   }
@@ -106,53 +96,51 @@ class Todo extends DataClass implements Insertable<Todo> {
   @override
   int get hashCode => $mrjf($mrjc(
       id.hashCode,
-      $mrjc(
-          title.hashCode,
-          $mrjc(content.hashCode,
-              $mrjc(category.hashCode, completed.hashCode)))));
+      $mrjc(content.hashCode,
+          $mrjc(desc.hashCode, $mrjc(cid.hashCode, status.hashCode)))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
       (other is Todo &&
           other.id == this.id &&
-          other.title == this.title &&
           other.content == this.content &&
-          other.category == this.category &&
-          other.completed == this.completed);
+          other.desc == this.desc &&
+          other.cid == this.cid &&
+          other.status == this.status);
 }
 
 class TodosCompanion extends UpdateCompanion<Todo> {
   final Value<int> id;
-  final Value<String> title;
   final Value<String> content;
-  final Value<int> category;
-  final Value<bool> completed;
+  final Value<String> desc;
+  final Value<int> cid;
+  final Value<bool> status;
   const TodosCompanion({
     this.id = const Value.absent(),
-    this.title = const Value.absent(),
     this.content = const Value.absent(),
-    this.category = const Value.absent(),
-    this.completed = const Value.absent(),
+    this.desc = const Value.absent(),
+    this.cid = const Value.absent(),
+    this.status = const Value.absent(),
   });
   TodosCompanion.insert({
     this.id = const Value.absent(),
-    @required String title,
-    this.content = const Value.absent(),
-    this.category = const Value.absent(),
-    this.completed = const Value.absent(),
-  }) : title = Value(title);
+    @required String content,
+    this.desc = const Value.absent(),
+    this.cid = const Value.absent(),
+    this.status = const Value.absent(),
+  }) : content = Value(content);
   TodosCompanion copyWith(
       {Value<int> id,
-      Value<String> title,
       Value<String> content,
-      Value<int> category,
-      Value<bool> completed}) {
+      Value<String> desc,
+      Value<int> cid,
+      Value<bool> status}) {
     return TodosCompanion(
       id: id ?? this.id,
-      title: title ?? this.title,
       content: content ?? this.content,
-      category: category ?? this.category,
-      completed: completed ?? this.completed,
+      desc: desc ?? this.desc,
+      cid: cid ?? this.cid,
+      status: status ?? this.status,
     );
   }
 }
@@ -170,20 +158,20 @@ class $TodosTable extends Todos with TableInfo<$TodosTable, Todo> {
         hasAutoIncrement: true, declaredAsPrimaryKey: true);
   }
 
-  final VerificationMeta _titleMeta = const VerificationMeta('title');
-  GeneratedTextColumn _title;
-  @override
-  GeneratedTextColumn get title => _title ??= _constructTitle();
-  GeneratedTextColumn _constructTitle() {
-    return GeneratedTextColumn('title', $tableName, false,
-        minTextLength: 1, maxTextLength: 50);
-  }
-
   final VerificationMeta _contentMeta = const VerificationMeta('content');
   GeneratedTextColumn _content;
   @override
   GeneratedTextColumn get content => _content ??= _constructContent();
   GeneratedTextColumn _constructContent() {
+    return GeneratedTextColumn('content', $tableName, false,
+        minTextLength: 1, maxTextLength: 50);
+  }
+
+  final VerificationMeta _descMeta = const VerificationMeta('desc');
+  GeneratedTextColumn _desc;
+  @override
+  GeneratedTextColumn get desc => _desc ??= _constructDesc();
+  GeneratedTextColumn _constructDesc() {
     return GeneratedTextColumn(
       'description',
       $tableName,
@@ -191,27 +179,29 @@ class $TodosTable extends Todos with TableInfo<$TodosTable, Todo> {
     );
   }
 
-  final VerificationMeta _categoryMeta = const VerificationMeta('category');
-  GeneratedIntColumn _category;
+  final VerificationMeta _cidMeta = const VerificationMeta('cid');
+  GeneratedIntColumn _cid;
   @override
-  GeneratedIntColumn get category => _category ??= _constructCategory();
-  GeneratedIntColumn _constructCategory() {
-    return GeneratedIntColumn('category', $tableName, true,
-        $customConstraints: 'NULL REFERENCES categories(id) ON DELETE CASCADE');
+  GeneratedIntColumn get cid => _cid ??= _constructCid();
+  GeneratedIntColumn _constructCid() {
+    return GeneratedIntColumn(
+      'cid',
+      $tableName,
+      true,
+    );
   }
 
-  final VerificationMeta _completedMeta = const VerificationMeta('completed');
-  GeneratedBoolColumn _completed;
+  final VerificationMeta _statusMeta = const VerificationMeta('status');
+  GeneratedBoolColumn _status;
   @override
-  GeneratedBoolColumn get completed => _completed ??= _constructCompleted();
-  GeneratedBoolColumn _constructCompleted() {
-    return GeneratedBoolColumn('completed', $tableName, false,
+  GeneratedBoolColumn get status => _status ??= _constructStatus();
+  GeneratedBoolColumn _constructStatus() {
+    return GeneratedBoolColumn('status', $tableName, false,
         defaultValue: Constant(false));
   }
 
   @override
-  List<GeneratedColumn> get $columns =>
-      [id, title, content, category, completed];
+  List<GeneratedColumn> get $columns => [id, content, desc, cid, status];
   @override
   $TodosTable get asDslTable => this;
   @override
@@ -225,23 +215,22 @@ class $TodosTable extends Todos with TableInfo<$TodosTable, Todo> {
     if (d.id.present) {
       context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
     }
-    if (d.title.present) {
-      context.handle(
-          _titleMeta, title.isAcceptableValue(d.title.value, _titleMeta));
-    } else if (isInserting) {
-      context.missing(_titleMeta);
-    }
     if (d.content.present) {
       context.handle(_contentMeta,
           content.isAcceptableValue(d.content.value, _contentMeta));
+    } else if (isInserting) {
+      context.missing(_contentMeta);
     }
-    if (d.category.present) {
-      context.handle(_categoryMeta,
-          category.isAcceptableValue(d.category.value, _categoryMeta));
+    if (d.desc.present) {
+      context.handle(
+          _descMeta, desc.isAcceptableValue(d.desc.value, _descMeta));
     }
-    if (d.completed.present) {
-      context.handle(_completedMeta,
-          completed.isAcceptableValue(d.completed.value, _completedMeta));
+    if (d.cid.present) {
+      context.handle(_cidMeta, cid.isAcceptableValue(d.cid.value, _cidMeta));
+    }
+    if (d.status.present) {
+      context.handle(
+          _statusMeta, status.isAcceptableValue(d.status.value, _statusMeta));
     }
     return context;
   }
@@ -260,17 +249,17 @@ class $TodosTable extends Todos with TableInfo<$TodosTable, Todo> {
     if (d.id.present) {
       map['id'] = Variable<int, IntType>(d.id.value);
     }
-    if (d.title.present) {
-      map['title'] = Variable<String, StringType>(d.title.value);
-    }
     if (d.content.present) {
-      map['description'] = Variable<String, StringType>(d.content.value);
+      map['content'] = Variable<String, StringType>(d.content.value);
     }
-    if (d.category.present) {
-      map['category'] = Variable<int, IntType>(d.category.value);
+    if (d.desc.present) {
+      map['description'] = Variable<String, StringType>(d.desc.value);
     }
-    if (d.completed.present) {
-      map['completed'] = Variable<bool, BoolType>(d.completed.value);
+    if (d.cid.present) {
+      map['cid'] = Variable<int, IntType>(d.cid.value);
+    }
+    if (d.status.present) {
+      map['status'] = Variable<bool, BoolType>(d.status.value);
     }
     return map;
   }
@@ -282,17 +271,17 @@ class $TodosTable extends Todos with TableInfo<$TodosTable, Todo> {
 }
 
 class Category extends DataClass implements Insertable<Category> {
-  final int id;
+  final int cid;
   final String title;
   final int uid;
-  Category({@required this.id, @required this.title, @required this.uid});
+  Category({@required this.cid, @required this.title, @required this.uid});
   factory Category.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final intType = db.typeSystem.forDartType<int>();
     final stringType = db.typeSystem.forDartType<String>();
     return Category(
-      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      cid: intType.mapFromDatabaseResponse(data['${effectivePrefix}cid']),
       title:
           stringType.mapFromDatabaseResponse(data['${effectivePrefix}title']),
       uid: intType.mapFromDatabaseResponse(data['${effectivePrefix}uid']),
@@ -302,7 +291,7 @@ class Category extends DataClass implements Insertable<Category> {
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return Category(
-      id: serializer.fromJson<int>(json['id']),
+      cid: serializer.fromJson<int>(json['cid']),
       title: serializer.fromJson<String>(json['title']),
       uid: serializer.fromJson<int>(json['uid']),
     );
@@ -311,7 +300,7 @@ class Category extends DataClass implements Insertable<Category> {
   Map<String, dynamic> toJson({ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'id': serializer.toJson<int>(id),
+      'cid': serializer.toJson<int>(cid),
       'title': serializer.toJson<String>(title),
       'uid': serializer.toJson<int>(uid),
     };
@@ -320,22 +309,22 @@ class Category extends DataClass implements Insertable<Category> {
   @override
   CategoriesCompanion createCompanion(bool nullToAbsent) {
     return CategoriesCompanion(
-      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      cid: cid == null && nullToAbsent ? const Value.absent() : Value(cid),
       title:
           title == null && nullToAbsent ? const Value.absent() : Value(title),
       uid: uid == null && nullToAbsent ? const Value.absent() : Value(uid),
     );
   }
 
-  Category copyWith({int id, String title, int uid}) => Category(
-        id: id ?? this.id,
+  Category copyWith({int cid, String title, int uid}) => Category(
+        cid: cid ?? this.cid,
         title: title ?? this.title,
         uid: uid ?? this.uid,
       );
   @override
   String toString() {
     return (StringBuffer('Category(')
-          ..write('id: $id, ')
+          ..write('cid: $cid, ')
           ..write('title: $title, ')
           ..write('uid: $uid')
           ..write(')'))
@@ -344,35 +333,35 @@ class Category extends DataClass implements Insertable<Category> {
 
   @override
   int get hashCode =>
-      $mrjf($mrjc(id.hashCode, $mrjc(title.hashCode, uid.hashCode)));
+      $mrjf($mrjc(cid.hashCode, $mrjc(title.hashCode, uid.hashCode)));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
       (other is Category &&
-          other.id == this.id &&
+          other.cid == this.cid &&
           other.title == this.title &&
           other.uid == this.uid);
 }
 
 class CategoriesCompanion extends UpdateCompanion<Category> {
-  final Value<int> id;
+  final Value<int> cid;
   final Value<String> title;
   final Value<int> uid;
   const CategoriesCompanion({
-    this.id = const Value.absent(),
+    this.cid = const Value.absent(),
     this.title = const Value.absent(),
     this.uid = const Value.absent(),
   });
   CategoriesCompanion.insert({
-    this.id = const Value.absent(),
+    this.cid = const Value.absent(),
     @required String title,
     @required int uid,
   })  : title = Value(title),
         uid = Value(uid);
   CategoriesCompanion copyWith(
-      {Value<int> id, Value<String> title, Value<int> uid}) {
+      {Value<int> cid, Value<String> title, Value<int> uid}) {
     return CategoriesCompanion(
-      id: id ?? this.id,
+      cid: cid ?? this.cid,
       title: title ?? this.title,
       uid: uid ?? this.uid,
     );
@@ -384,12 +373,12 @@ class $CategoriesTable extends Categories
   final GeneratedDatabase _db;
   final String _alias;
   $CategoriesTable(this._db, [this._alias]);
-  final VerificationMeta _idMeta = const VerificationMeta('id');
-  GeneratedIntColumn _id;
+  final VerificationMeta _cidMeta = const VerificationMeta('cid');
+  GeneratedIntColumn _cid;
   @override
-  GeneratedIntColumn get id => _id ??= _constructId();
-  GeneratedIntColumn _constructId() {
-    return GeneratedIntColumn('id', $tableName, false,
+  GeneratedIntColumn get cid => _cid ??= _constructCid();
+  GeneratedIntColumn _constructCid() {
+    return GeneratedIntColumn('cid', $tableName, false,
         hasAutoIncrement: true, declaredAsPrimaryKey: true);
   }
 
@@ -415,7 +404,7 @@ class $CategoriesTable extends Categories
   }
 
   @override
-  List<GeneratedColumn> get $columns => [id, title, uid];
+  List<GeneratedColumn> get $columns => [cid, title, uid];
   @override
   $CategoriesTable get asDslTable => this;
   @override
@@ -426,8 +415,8 @@ class $CategoriesTable extends Categories
   VerificationContext validateIntegrity(CategoriesCompanion d,
       {bool isInserting = false}) {
     final context = VerificationContext();
-    if (d.id.present) {
-      context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
+    if (d.cid.present) {
+      context.handle(_cidMeta, cid.isAcceptableValue(d.cid.value, _cidMeta));
     }
     if (d.title.present) {
       context.handle(
@@ -444,7 +433,7 @@ class $CategoriesTable extends Categories
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {id};
+  Set<GeneratedColumn> get $primaryKey => {cid};
   @override
   Category map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
@@ -454,8 +443,8 @@ class $CategoriesTable extends Categories
   @override
   Map<String, Variable> entityToSql(CategoriesCompanion d) {
     final map = <String, Variable>{};
-    if (d.id.present) {
-      map['id'] = Variable<int, IntType>(d.id.value);
+    if (d.cid.present) {
+      map['cid'] = Variable<int, IntType>(d.cid.value);
     }
     if (d.title.present) {
       map['title'] = Variable<String, StringType>(d.title.value);

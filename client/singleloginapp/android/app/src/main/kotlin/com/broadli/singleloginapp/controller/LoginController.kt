@@ -7,6 +7,7 @@ import android.text.TextUtils
 import android.util.Log
 import com.broadli.clibs.ActionResult
 import com.broadli.clibs.LoginCore
+import com.broadli.clibs.LoginListener
 import com.broadli.singleloginapp.constant.ResultCode
 import java.lang.ref.WeakReference
 import java.util.concurrent.Executors
@@ -15,8 +16,8 @@ class LoginController constructor(activity: Activity?, controller: LoginUIContro
     val TAG = "LoginController"
     private val pageActivity: WeakReference<Activity?> = WeakReference<Activity?>(activity)
     private val mUiController: WeakReference<LoginUIController?> = WeakReference(controller)
-    private val mLoginCore: LoginCore
-    private val mLoginListener: LoginListener
+    private lateinit var mLoginCore: LoginCore
+    private lateinit var mLoginListener: LoginListener
     private val executorCache = Executors.newCachedThreadPool()
     private val executorSingle = Executors.newSingleThreadExecutor()
     private val mMainHandler = Handler(Looper.getMainLooper())
@@ -50,7 +51,7 @@ class LoginController constructor(activity: Activity?, controller: LoginUIContro
     }
 
     /**
-`     * 发起检查连接状态操作
+    `     * 发起检查连接状态操作
      */
     private fun checkConnect() {
         executorSingle.execute { mLoginCore.checkConnection() }
@@ -76,7 +77,7 @@ class LoginController constructor(activity: Activity?, controller: LoginUIContro
 
     override fun actionGetTodoList(cid: Int) {
         executorCache.execute { mLoginCore.getTodoList(cid) }
-   }
+    }
 
     /**
      * 处理登录完成后的UI方法调用
@@ -240,7 +241,7 @@ class LoginController constructor(activity: Activity?, controller: LoginUIContro
 
         override fun onGetCategoryList(result: ActionResult) {
             mMainHandler.post { handleGetCategoryResult(result) }
-       }
+        }
 
         override fun onLogoutFinish(result: ActionResult) {
             mMainHandler.post { handleLogout(result) }
@@ -262,8 +263,8 @@ class LoginController constructor(activity: Activity?, controller: LoginUIContro
             mMainHandler.post { handOnAddTodo(result) }
         }
 
-        override fun onGetTodoList(result: ActionResult?) {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        override fun onGetTodoList(result: ActionResult) {
+            mMainHandler.post { handleGetTodoResult(result) }
         }
     }
 

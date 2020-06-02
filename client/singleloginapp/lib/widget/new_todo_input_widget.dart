@@ -102,7 +102,7 @@ class _NewTodoInputState extends State<NewTodoInput> with EventListener {
     req['content'] = input;
     var cid = 0;
     if(databaseProvider.selectedCategory != null) {
-      cid = databaseProvider.selectedCategory?.id;
+      cid = databaseProvider.selectedCategory?.cid;
     }
     req['cid'] = cid; // databaseProvider.selectedCategory.id;
     Message msg = new Message(1, 'req add todo from flutter', req,
@@ -165,11 +165,11 @@ class _NewTodoInputState extends State<NewTodoInput> with EventListener {
           var cid = todoJson['cid'];
           var status = todoJson['status'];
           var todo = Todo(
-              id: tid, title: content, category: cid, completed: status == 0 ? false : true);
+              id: tid, content: content, cid: cid, status: status == 0 ? false : true);
           if (todo != null) {
             LogUtils.d(TAG, '添加todo成功');
             bSucc = true;
-            _insertNewTodoItem(todo.title, todo.category, _context);
+            _insertNewTodoItem(todo.content, todo.cid, _context);
           }
         }
 

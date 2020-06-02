@@ -185,7 +185,7 @@ class _MyHomePageState extends State<MyHomePage> with EventListener {
         onTap: () {
           mDatabaseProvider.setSelectedCategory(category);
           Navigator.pop(context);
-          fetchTodoList(category.id);// 更新todolist
+          fetchTodoList(category.cid);// 更新todolist
         },
         onLongPress: () {
           _showDeleteCategoryDialog(context, mDatabaseProvider, category);
@@ -210,6 +210,7 @@ class _MyHomePageState extends State<MyHomePage> with EventListener {
 
   void fetchTodoList(int categoryId) async {
     Map req = new Map();
+    req["cid"] = categoryId;
     Message msg = new Message(
         0,
         'req fetchTodoList from flutter',
@@ -322,7 +323,7 @@ class _MyHomePageState extends State<MyHomePage> with EventListener {
   void addTodo(TodosDao todoDao, Todo todo) {
     todoDao
         .insertTodo(TodosCompanion(
-        content: MOOR.Value(todo.title), category: MOOR.Value(todo.category), completed: MOOR.Value(todo.completed)))
+        content: MOOR.Value(todo.content), cid: MOOR.Value(todo.cid), status: MOOR.Value(todo.status)))
         .then(
           (_) {},
     )
@@ -376,10 +377,9 @@ class _MyHomePageState extends State<MyHomePage> with EventListener {
 
         for(var i=0;i <count;i++) {
           var item = list[i];
+          item["status"] = item["status"] == 1 ? true :false;
           addTodo(mDatabaseProvider.todosDao, Todo.fromJson(item));
         }
-        // 更新默认分组
-        fetchTodoList(0);// 更新todolist
       }
     }
   }
