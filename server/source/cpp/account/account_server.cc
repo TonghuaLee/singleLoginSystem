@@ -1536,12 +1536,12 @@ class AccountServiceImpl final : public Account::Service
     };
 
     //校验title
-    if (!ParamUtils::CheckStringValid(content, error_msg))
+    if (tid < 1)
     {
       reply->set_code(ResultCode::ReqParamError);
       reply->set_msg(error_msg);
       isParamValid = false;
-      LOGW("content is empty");
+      LOGW("tid is empty");
     };
 
     LoginRedis login_redis;
