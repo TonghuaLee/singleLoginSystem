@@ -17,6 +17,7 @@ import com.broadli.singleloginapp.config.MsgType.Companion.MAIN_CMD_GET_TODO_LIS
 import com.broadli.singleloginapp.config.MsgType.Companion.MAIN_CMD_LOGIN
 import com.broadli.singleloginapp.config.MsgType.Companion.MAIN_CMD_LOGINOUT
 import com.broadli.singleloginapp.config.MsgType.Companion.MAIN_CMD_REGISTER
+import com.broadli.singleloginapp.config.MsgType.Companion.MAIN_CMD_UPDATE_TODO_STATUS
 import com.broadli.singleloginapp.config.MsgType.Companion.SUB_CMD_DEFAULT
 import com.broadli.singleloginapp.config.MsgType.Companion.SUB_CMD_LOGINOUT_SELF
 import com.broadli.singleloginapp.config.MsgType.Companion.SUB_CMD_LOGINOUT_SERVER
@@ -66,62 +67,81 @@ class MainActivity : FlutterActivity(), LoginUIController {
             Log.d("Android", "Received message ")
             var reqMsg = Gson().fromJson(message.toString(), Msg::class.java)
             if (reqMsg != null) {
-                if (reqMsg.mainCmd == MsgType.MAIN_CMD_LOGIN) {
-                    Log.d(TAG, "login receive from flutter")
-                    var data = reqMsg.data
-                    val userInfo = UserInfo(data?.get("account") as String, data["password"] as String)
-                    mLoginControler?.run {
-                        actionLoginIn(userInfo.account, userInfo.password)
+                when (reqMsg.mainCmd) {
+                    MsgType.MAIN_CMD_LOGIN -> {
+                        Log.d(TAG, "login receive from flutter")
+                        var data = reqMsg.data
+                        val userInfo = UserInfo(data?.get("account") as String, data["password"] as String)
+                        mLoginControler?.run {
+                            actionLoginIn(userInfo.account, userInfo.password)
+                        }
+
+                        // test for
+                        var replyMsg = reqMsg
+                        replyMsg.code = 200
+                        replyMsg.message = "reply from Android"
+                        var gson = Gson()
+                        var replyJsonStr = gson.toJson(replyMsg)
+                        Log.d(TAG, "reply: " + replyJsonStr)
+                        reply.reply(replyJsonStr)
                     }
 
-                    // test for
-                    var replyMsg = reqMsg
-                    replyMsg.code = 200
-                    replyMsg.message = "reply from Android"
-                    var gson = Gson()
-                    var replyJsonStr = gson.toJson(replyMsg)
-                    Log.d(TAG, "reply: " + replyJsonStr)
-                    reply.reply(replyJsonStr)
-                } else if (reqMsg.mainCmd == MsgType.MAIN_CMD_REGISTER) {
-                    //  channelSendMessage()
-                    var data = reqMsg.data
-                    val userInfo = UserInfo(data?.get("account") as String, data["password"] as String)
-                    mLoginControler?.run {
-                        actionSignIn(userInfo.account, userInfo.password)
+                    MsgType.MAIN_CMD_REGISTER -> {
+                        var data = reqMsg.data
+                        val userInfo = UserInfo(data?.get("account") as String, data["password"] as String)
+                        mLoginControler?.run {
+                            actionSignIn(userInfo.account, userInfo.password)
+                        }
                     }
-                } else if (reqMsg.mainCmd == MsgType.MAIN_CMD_LOGINOUT) {
-                    mLoginControler?.run {
-                        actionLogout()
+
+                    MsgType.MAIN_CMD_LOGINOUT -> {
+                        mLoginControler?.run {
+                            actionLogout()
+                        }
                     }
-                } else if (reqMsg.mainCmd == MsgType.MAIN_CMD_CHECK_LOGIN_STATE) {
-                    mLoginControler?.run {
-                        actionCheckLoginStatus()
+
+                    MsgType.MAIN_CMD_CHECK_LOGIN_STATE -> {
+                        mLoginControler?.run {
+                            actionCheckLoginStatus()
+                        }
                     }
-                } else if (reqMsg.mainCmd == MsgType.MAIN_CMD_ADD_CATEGORY) {
-                    var data = reqMsg.data
-                    val title = data?.get("title") as String
-                    mLoginControler?.run {
-                        actionAddCategory(title)
+                    MsgType.MAIN_CMD_ADD_CATEGORY -> {
+                        var data = reqMsg.data
+                        val title = data?.get("title") as String
+                        mLoginControler?.run {
+                            actionAddCategory(title)
+                        }
                     }
-                } else if (reqMsg.mainCmd == MsgType.MAIN_CMD_ADD_TODO) {
-                    var data = reqMsg.data
-                    val content = data?.get("content") as String
-                    val cid = data?.get("cid") as Double
-                    mLoginControler?.run {
-                        actionAddTodo(content, cid.toInt())
+                    MsgType.MAIN_CMD_ADD_TODO -> {
+                        var data = reqMsg.data
+                        val content = data?.get("content") as String
+                        val cid = data?.get("cid") as Double
+                        mLoginControler?.run {
+                            actionAddTodo(content, cid.toInt())
+                        }
                     }
-                } else if (reqMsg.mainCmd == MsgType.MAIN_CMD_GET_CATEGORY_LIST) {
-                    mLoginControler?.run {
-                        actionGetCategoryList()
+                    MsgType.MAIN_CMD_GET_CATEGORY_LIST -> {
+                        mLoginControler?.run {
+                            actionGetCategoryList()
+                        }
                     }
-                } else if (reqMsg.mainCmd == MsgType.MAIN_CMD_GET_TODO_LIST) {
-                    var data = reqMsg.data
-                    val cid = data?.get("cid") as Double
-                    mLoginControler?.run {
-                        actionGetTodoList(cid.toInt())
+                    MsgType.MAIN_CMD_GET_TODO_LIST -> {
+                        var data = reqMsg.data
+                        val cid = data?.get("cid") as Double
+                        mLoginControler?.run {
+                            actionGetTodoList(cid.toInt())
+                        }
                     }
-                } else {
-                    Toast.makeText(mContext, "flutter 调用到了 android test3", Toast.LENGTH_SHORT).show()
+
+                    MsgType.MAIN_CMD_UPDATE_TODO_STATUS -> {
+                        Log.d("Android", "MAIN_CMD_UPDATE_TODO_STATUS")
+                        var data = reqMsg.data
+                        val tid = data?.get("tid") as Double
+                        val status = data?.get("status") as Double
+                        mLoginControler?.run {
+                            actionUpdateTodoStatus(tid.toInt(), status.toInt())
+                        }
+                    }
                 }
             }
         }
@@ -158,7 +178,7 @@ class MainActivity : FlutterActivity(), LoginUIController {
     }
 
     private fun testNativeAdd() {
-       // mLoginControler?.addTest()
+        // mLoginControler?.addTest()
     }
 
     override fun performLoginSuccess() {
@@ -283,7 +303,25 @@ class MainActivity : FlutterActivity(), LoginUIController {
     }
 
     override fun performGetTodoListFail(data: String) {
-        var replyMsg = Msg(MAIN_CMD_GET_TODO_LIST, SUB_CMD_DEFAULT, CODE_SUCC, data);
+        var replyMsg = Msg(MAIN_CMD_GET_TODO_LIST, SUB_CMD_DEFAULT, CODE_FAIL, data);
+        var gson = Gson()
+        var replyJsonStr = gson.toJson(replyMsg)
+        mMessageChannel?.send(replyJsonStr) { reply ->
+            Log.d("Android", "$reply")
+        }
+    }
+
+    override fun performUpdateTodoSuccess(data: String) {
+        var replyMsg = Msg(MAIN_CMD_UPDATE_TODO_STATUS, SUB_CMD_DEFAULT, CODE_SUCC, data);
+        var gson = Gson()
+        var replyJsonStr = gson.toJson(replyMsg)
+        mMessageChannel?.send(replyJsonStr) { reply ->
+            Log.d("Android", "$reply")
+        }
+    }
+
+    override fun performUpdateTodoFail(data: String) {
+        var replyMsg = Msg(MAIN_CMD_UPDATE_TODO_STATUS, SUB_CMD_DEFAULT, CODE_FAIL, data);
         var gson = Gson()
         var replyJsonStr = gson.toJson(replyMsg)
         mMessageChannel?.send(replyJsonStr) { reply ->

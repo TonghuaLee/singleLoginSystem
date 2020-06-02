@@ -533,5 +533,29 @@ namespace auth
 
     void LoginCoreImpl::update_todo(int32_t tid, int32_t status)
     {
+         std::string token = storage::SharePreferences::get(Constants::TOKEN);
+        if (token == "")
+        {
+            LOGD("[login_core_impl.update_todo] token is empty");
+            //清除本地用户状态
+            cleanUserInfo();
+
+            this->m_listener->on_disconnect(ActionResult(ClientCode::USER_ACCOUNT_FO_EMPTY, ToastTip::TOAST_ACCOUNT_INFO_EMPTY, ""));
+            return;
+        }
+
+        network::NetworkCore mNW;
+        ReqResult result = mNW.updateTodo(tid, status, token);
+
+        if (result.getCode() == ClientCode::SUCCESS)
+        {
+            LOGD("[login_core_impl.update_todo] success");
+            this->m_listener->on_update_todo(ActionResult(ClientCode::SUCCESS, "", result.getData()));
+        }
+        else
+        {
+            LOGD("[login_core_impl.update_todo] fail");
+            this->m_listener->on_update_todo(ActionResult(ClientCode::TODO_UPDATE_TODO_FAIL, ToastTip::TOAST_TODO_UPDATE_TODO_FAIL, ""));
+        }
     }
 } // namespace auth

@@ -47,8 +47,12 @@ class _MyHomePageState extends State<MyHomePage> with EventListener {
   final TAG = "MyHomePageState";
   BuildContext _context;
   DatabaseProvider mDatabaseProvider;
+  Drawer mDrawer;
+  Widget mTodolist;
   @override
   Widget build(BuildContext context) {
+    mDrawer =  _buildDrawer(context);
+    mTodolist = _buildList(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('Todo'),
@@ -71,11 +75,11 @@ class _MyHomePageState extends State<MyHomePage> with EventListener {
           ),
         ],
       ),
-      drawer: _buildDrawer(context),
+      drawer: mDrawer,
       body: Column(
         children: <Widget>[
           Expanded(
-            child: _buildList(context),
+            child: mTodolist,
           ),
           NewTodoInput(),
         ],

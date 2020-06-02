@@ -9,4 +9,5 @@ internal interface ILoginController {
     fun actionAddTodo(content: String, cid: Int)
     fun actionGetCategoryList()
     fun actionGetTodoList(cid: Int)
+    fun actionUpdateTodoStatus(cid: Int, status: Int)
 }

@@ -44,6 +44,7 @@ namespace project_constants{
         const static int TODO_ADD_TODO_FAIL;
         const static int TODO_GET_CATEGORY_LIST_FAIL;
         const static int TODO_GET_TODO_LIST_FAIL;
+        const static int TODO_UPDATE_TODO_FAIL;
         };
 
     /**
@@ -63,6 +64,7 @@ namespace project_constants{
         const static string TOAST_TODO_ADD_TODO_FAIL;
         const static string TOAST_TODO_GET_CATEGORY_LIST_FAIL;
         const static string TOAST_TODO_GET_TODO_LIST_FAIL;
+        const static string TOAST_TODO_UPDATE_TODO_FAIL;
     };
 
     /**

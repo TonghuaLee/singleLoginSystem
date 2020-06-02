@@ -79,6 +79,10 @@ class LoginController constructor(activity: Activity?, controller: LoginUIContro
         executorCache.execute { mLoginCore.getTodoList(cid) }
     }
 
+    override fun actionUpdateTodoStatus(cid: Int, status: Int){
+        executorCache.execute { mLoginCore.updateTodo(cid, status) }
+    }
+
     /**
      * 处理登录完成后的UI方法调用
      */
@@ -206,6 +210,17 @@ class LoginController constructor(activity: Activity?, controller: LoginUIContro
         }
     }
 
+    private fun handleUpdateTodoStatus(result: ActionResult) {
+        if (isPageRecycle) {
+            return
+        }
+        if (result.getCode() === ResultCode.SUCCESS.getValue()) {
+            mUiController.get()!!.performUpdateTodoSuccess(result.getData())
+        } else {
+            mUiController.get()!!.performUpdateTodoFail("")
+        }
+    }
+
     /**
      * 处理消息提示
      */
@@ -251,8 +266,8 @@ class LoginController constructor(activity: Activity?, controller: LoginUIContro
             mMainHandler.post { handleCheckUserStatus(result) }
         }
 
-        override fun onUpdateTodo(result: ActionResult?) {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        override fun onUpdateTodo(result: ActionResult) {
+            mMainHandler.post { handleUpdateTodoStatus(result) }
         }
 
         override fun onDisconnect(result: ActionResult) {

@@ -409,7 +409,7 @@ namespace network{
                     //todo 网络错误吗转换
                     reply.set_code(-1);
                     reply.set_msg(ToastTip::TOAST_ERROR_NETWORK_UNVALAIBLE);
-                    LOGD("[network.addTodo] " + status.error_message());
+                    LOGD("[network.updateTodo] " + status.error_message());
                     return reply;
                 }
             }
@@ -417,7 +417,7 @@ namespace network{
             {
                 reply.set_code(-2);
                 reply.set_msg(ToastTip::TOAST_ERROR_NETWORK_UNVALAIBLE);
-                LOGE("[network.addTodo] catch addTodo network error");
+                LOGE("[network.updateTodo] catch addTodo network error");
                 return reply;
             }
         }

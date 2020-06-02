@@ -29,16 +29,23 @@ class TodoDatabase extends _$TodoDatabase {
   TodoDatabase() : super(_openConnection());
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
         onUpgrade: (migrator, from, to) async {
           print('migration from $from to $to');
-          if (from == 1) {
+          if (from == 1 || from == 2) {
             print('do migration from 1');
             migrator.deleteTable(todos.actualTableName);
             migrator.createTable(todos);
+            migrator.createTable(categories);
+          } else if(from == 2) {
+            print('do migration from 2');
+
+            migrator.deleteTable(todos.actualTableName);
+            migrator.createTable(todos);
+            migrator.deleteTable(categories.actualTableName);
             migrator.createTable(categories);
           }
         },
