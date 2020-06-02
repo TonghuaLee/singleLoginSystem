@@ -147,6 +147,7 @@ class _MyHomePageState extends State<MyHomePage> with EventListener {
         onTap: () {
           mDatabaseProvider.setSelectedCategory(null);
           Navigator.pop(context);
+          fetchTodoList(0);// 更新todolist
         },
       );
     } else if (index == categories.length + 2) {
@@ -174,7 +175,6 @@ class _MyHomePageState extends State<MyHomePage> with EventListener {
     } else {
       Category category = categories[index - 2];
       var title = category.title;
-      LogUtils.d(TAG, "login confirm btn $title");
       if (title == null) {
         title = "分类";
       }
