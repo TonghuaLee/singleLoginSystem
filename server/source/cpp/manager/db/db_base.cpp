@@ -971,6 +971,7 @@ Json::Value DBBase::updateTodoStatus(int tid, int status, string &Msg)
               root["CID"] = m_row[1];
               root["UID"] = m_row[2];
               root["CONTENT"] = m_row[3];
+              root["is_empty"] = false;
        }
 
        //释放指针
