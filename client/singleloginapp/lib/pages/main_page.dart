@@ -2,7 +2,6 @@ import 'dart:convert' as JSON;
 
 import 'package:flutter/material.dart';
 import 'package:moor/moor.dart' as MOOR;
-import 'package:moor/moor.dart';
 import 'package:provider/provider.dart';
 import 'package:singleloginapp/controller/dabase_provider.dart';
 import 'package:singleloginapp/data/categories_dao.dart';
@@ -48,13 +47,8 @@ class _MyHomePageState extends State<MyHomePage> with EventListener {
   final TAG = "MyHomePageState";
   BuildContext _context;
   DatabaseProvider mDatabaseProvider;
-  Drawer mDrawer;
-  Widget mTodolist;
-
   @override
   Widget build(BuildContext context) {
-    mDrawer = _buildDrawer(context);
-    mTodolist = _buildList(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('Todo'),
@@ -77,11 +71,11 @@ class _MyHomePageState extends State<MyHomePage> with EventListener {
           ),
         ],
       ),
-      drawer: mDrawer,
+      drawer: _buildDrawer(context),
       body: Column(
         children: <Widget>[
           Expanded(
-            child: mTodolist,
+            child: _buildList(context),
           ),
           NewTodoInput(),
         ],
@@ -329,7 +323,7 @@ class _MyHomePageState extends State<MyHomePage> with EventListener {
       (e) {
         LogUtils.d(TAG, e);
       },
-      test: (e) => e is InvalidDataException,
+      test: (e) => e is MOOR.InvalidDataException,
     );
   }
 

@@ -28,7 +28,7 @@ void Todo::setTid(int tid)
 
 int Todo::getStatus()
 {
-	return tid;
+	return status;
 }
 void Todo::setStatus(int status)
 {

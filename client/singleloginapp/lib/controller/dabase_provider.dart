@@ -49,7 +49,7 @@ class DatabaseProvider extends ChangeNotifier {
     final todo = TodosCompanion(
         id: Value(tid),
         content: Value(title),
-        status: Value(status == 1 ? true : false),
+        status: Value(status == 0 ? false : true),
         cid: cid > 0 ? Value(cid) : Value.absent());
     return todosDao.insertTodo(todo);
   }

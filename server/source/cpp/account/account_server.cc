@@ -1347,7 +1347,7 @@ class AccountServiceImpl final : public Account::Service
   Status requestFetchCategory(ServerContext *context, const FetchCategoryRequest *request,
                               CodeReply *reply) override
   {
-    LogMBean log_bean("requestAddCategory");
+    LogMBean log_bean("requestFetchCategory");
 
     string token = request->token();
     bool isParamValid = true;
@@ -1372,7 +1372,7 @@ class AccountServiceImpl final : public Account::Service
       reply->set_msg(MsgTip::UserLogout_TokenNotValid);
       return Status::OK;
     }
-    LOGD("[account_server.requestAddCategory] user token decrypt success");
+    LOGD("[account_server.requestFetchCategory] user token decrypt success");
 
     //解析Token，获取用户信息
     vector<string> vToken;
@@ -1383,7 +1383,7 @@ class AccountServiceImpl final : public Account::Service
       reply->set_msg(MsgTip::UserLogout_TokenNotValid);
       return Status::OK;
     }
-    LOGD("[account_server.requestAddCategory] get token info success");
+    LOGD("[account_server.requestFetchCategory] get token info success");
 
     //获得账号UID
     int uid = CommonUtils::getIntByString(vToken[0]);
@@ -1395,7 +1395,7 @@ class AccountServiceImpl final : public Account::Service
       reply->set_msg(MsgTip::UserLogout_TokenNotExist);
       return Status::OK;
     }
-    LOGD("[account_server.requestAddCategory] user token is right");
+    LOGD("[account_server.requestFetchCategory] user token is right");
 
     //参数正确，执行请求
     if (isParamValid)
@@ -1616,7 +1616,7 @@ class AccountServiceImpl final : public Account::Service
   Status requestFetchTodoList(ServerContext *context, const FetchTodoListRequest *request,
                               CodeReply *reply) override
   {
-    LogMBean log_bean("requestAddCategory");
+    LogMBean log_bean("requestFetchTodoList");
 
     string token = request->token();
     int cid = request->cid();
