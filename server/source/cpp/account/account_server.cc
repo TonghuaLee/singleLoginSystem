@@ -139,6 +139,11 @@ public:
     return Database::getDatabase()->queryTodo(tid);
   }
 
+  Todo updateTodoStatus(int tid, int status)
+  {
+    return Database::getDatabase()->updateTodoStatus(tid, status);
+  }
+
   vector<Todo> getTodoList(int uid,int cid)
   {
     return Database::getDatabase()->queryTodoList(uid, cid);
@@ -703,7 +708,6 @@ public:
     Todo todoItem = login_db.updateTodoStatus(tid, status);
     LOGD("[account_server.handleUpdateTodo] insert todos into db success");
 
-    Todo todoItem = login_db.getTodo(tid);
     if (todoItem.getTid() <= 0)
     {
       result->set_code(ResultCode::UpdateTodoStatus_Fail);
