@@ -458,7 +458,7 @@ Todo Database::updateTodoStatus(int o_tid, int o_status)
         uid = CommonUtils::getIntByString(data["UID"].asString());
         status = CommonUtils::getIntByString(data["STATUS"].asString());
         content = data["CONTENT"].asString();
-        if (tid < 0)
+        if (cid < 0)
         {
             LOGE("[db_manager.queryTodo] can not find tid");
             return Todo(-1, "", -1, -1, 0);
