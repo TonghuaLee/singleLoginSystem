@@ -432,3 +432,38 @@ std::vector<Todo> Database::queryTodoList(int o_uid, int o_cid)
 
     return resultList;
 }
+
+Todo Database::updateTodoStatus(int o_tid, int o_status)
+{
+
+    //执行查询数据操作
+    int status = 0;
+    int uid = 0;
+    int cid = 0;
+    string content;
+    string msg;
+    Json::Value data = db_base->updateTodoStatus(o_tid, o_status, msg);
+
+    Json::FastWriter fw;
+    LOGD("[db_manager.queryTodo] query todo info :" + fw.write(data));
+
+    if (data["is_empty"].asBool())
+    {
+        LOGE("[db_manager.queryTodo] data is empty");
+        return Todo(-1, "", -1, -1, 0);
+    }
+    else
+    {
+        cid = CommonUtils::getIntByString(data["CID"].asString());
+        uid = CommonUtils::getIntByString(data["UID"].asString());
+        status = CommonUtils::getIntByString(data["STATUS"].asString());
+        content = data["CONTENT"].asString();
+        if (tid < 0)
+        {
+            LOGE("[db_manager.queryTodo] can not find tid");
+            return Todo(-1, "", -1, -1, 0);
+        }
+    }
+
+    return Todo(o_tid, content, uid, cid, status);
+}

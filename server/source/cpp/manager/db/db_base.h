@@ -143,7 +143,7 @@ public:
        end;
        */
        Json::Value insertUserAccount(string account, string password, string pwdSalt, string &Msg);
-       
+
        /**
         * 主要功能：
         * 插入todo分类
@@ -158,7 +158,9 @@ public:
 
        Json::Value selectTodo(int tid, string &Msg);
 
-       Json::Value selectTodoList(int uid,int cid, string &Msg);
+       Json::Value selectTodoList(int uid, int cid, string &Msg);
+
+       Json::Value updateTodoStatus(int tid, int status, string &Msg);
 
        /*
        主要功能：
@@ -171,7 +173,7 @@ public:
        出口参数：
        bool ：true表示存在；false表示不存在
        */
-        bool isExist(string SQL, vector<string> columnsV);
+       bool isExist(string SQL, vector<string> columnsV);
 
        /*
        主要功能：
@@ -199,9 +201,8 @@ public:
        bool createdbTable(const std::string &SQL);
 
 private:
-
        //读写锁
-       static ReadWriteLock* rwlock;
+       static ReadWriteLock *rwlock;
 
        /*
        主要功能：

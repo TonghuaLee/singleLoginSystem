@@ -908,3 +908,79 @@ Json::Value DBBase::selectTodoList(int uid, int cid, string &Msg)
        LOGD("[db_base.selectTodoList] root: " + fw.write(root));
        return root;
 }
+
+Json::Value DBBase::updateTodoStatus(int tid, int status, string &Msg)
+{
+
+       //返参初始化
+       Json::Value root;
+       root["is_empty"] = true;
+
+       //参数判空
+       if (tid < 1)
+       {
+              Msg = "[db_base.updateTodoStatus] uid is invaial";
+              return root;
+       }
+
+       //构建存储过程执行语句
+       std::stringstream ssTemp;
+       ssTemp << "call updateTodoStatus ('" << tid << "','" << status << "',@out_status)";
+       string query = ssTemp.str();
+
+       LOGD("[db_base.updateTodoStatus] " + query);
+
+       //加写锁
+       rwlock->writeLock();
+
+       //执行存储过程执行语句
+       int ret = mysql_real_query(&mysql, query.c_str(), (unsigned int)strlen(query.c_str()));
+       mysql_query(&mysql, "SELECT @out_status");
+
+       //判断插入是否成功
+       if (ret)
+       {
+              std::stringstream ssTemp;
+              ssTemp << "[db_base.updateTodoStatus] Error exec insert :" << ret;
+              string msg = ssTemp.str();
+              Msg = msg;
+              //释放写锁
+              DBBase::errorIntoMySQL();
+              rwlock->writeUnlock();
+              return root;
+       }
+
+       MYSQL_ROW m_row;
+       MYSQL_RES *m_res;
+
+       //获取查询结果
+       m_res = mysql_store_result(&mysql);
+       if (m_res == NULL)
+       {
+              Msg = "[db_base.updateTodoStatus] select m_res null";
+              //释放写锁
+              rwlock->writeUnlock();
+              return root;
+       }
+
+       //这里只会返回一条数据
+       while (m_row = mysql_fetch_row(m_res))
+       {
+              root["TID"] = tid;
+              root["STATUS"] = m_row[0];
+              root["CID"] = m_row[1];
+              root["UID"] = m_row[2];
+              root["CONTENT"] = m_row[3];
+       }
+
+       //释放指针
+       mysql_free_result(m_res);
+
+       Json::FastWriter fw;
+       LOGD("[db_base.updateTodoStatus] " + fw.write(root));
+
+       //释放写锁
+       rwlock->writeUnlock();
+
+       return root;
+}

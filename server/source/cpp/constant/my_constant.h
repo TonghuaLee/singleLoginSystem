@@ -46,6 +46,7 @@ namespace constants{
         const static int AddTodo_InsertDBFail;
         const static int GetCategoryList_Fail;
         const static int GetTodoList_Fail;
+        const static int UpdateTodoStatus_Fail;
     };
 
     /**
@@ -96,6 +97,7 @@ namespace constants{
         const static string AddTodo_InsertDBFail;                   //1005008
         const static string GetCategoryList_FAIL;                   //1005009
         const static string GetTodoList_Fail;
+        const static string UpdateTodoStatus_Fail;
     };
 
 }

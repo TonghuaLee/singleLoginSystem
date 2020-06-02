@@ -573,6 +573,9 @@ public:
     return result;
   };
 
+/**
+ * 添加todo
+ * */
   CodeReply *handleAddTodo(string content, int cid, string token)
   {
     LOGD("[account_server.handleAddTodo] user addTodo in:" + content);
@@ -638,6 +641,76 @@ public:
       return result;
     }
     LOGD("[account_server.handleAddTodo] get todo info success");
+
+    //返回Token
+    result->set_code(ResultCode::SUCCESS);
+    Json::Value root;
+    root["tid"] = todoItem.getTid();
+    root["content"] = todoItem.getContent();
+    root["cid"] = todoItem.getCid();
+    root["status"] = todoItem.getStatus();
+    Json::FastWriter fw;
+    result->set_data(fw.write(root));
+    return result;
+  };
+
+  CodeReply *handleUpdateTodo(int tid, int status, string token)
+  {
+    LOGD("[account_server.handleUpdateTodo] user addTodo in:" + content);
+    // 1. 首先检查是否连接
+    LoginCore loginCore;
+    CodeReply *connectResult = loginCore.handleUserCheckConnect(token);
+    CodeReply *result = new CodeReply();
+    if (connectResult->code() != ResultCode::SUCCESS)
+    {
+      LOGD("[account_server.handleUpdateTodo] user is not connected, addTodo in:" + content);
+      return connectResult;
+    }
+
+    LoginDatabase login_db;
+    LoginRedis login_redis;
+
+    //解密Token
+    string decodeToken = CommonUtils::DecryptToken(token);
+    if (decodeToken.empty())
+    {
+      result->set_code(ResultCode::CheckConnect_TokenNotValid);
+      result->set_msg(MsgTip::CheckConnect_TokenNotValid);
+      return result;
+    }
+    LOGD("[account_server.handleUpdateTodo] user token decrypt success");
+
+    std::vector<string> vToken;
+    CommonUtils::SplitString(decodeToken, vToken, ":");
+    if (vToken.size() != 5)
+    {
+      result->set_code(ResultCode::CheckConnect_TokenNotValid);
+      result->set_msg(MsgTip::CheckConnect_TokenNotValid);
+      return result;
+    }
+    LOGD("[account_server.handleUpdateTodo] get token info success");
+
+    //获取Token过期时间
+    string token_end_time = vToken[4];
+    int end_time = CommonUtils::getIntByString(token_end_time);
+
+    //获得账号UID
+    string str_uid = vToken[0];
+    int uid = CommonUtils::getIntByString(str_uid);
+
+    // 添加分类到数据库，内部会校验
+
+    Todo todoItem = login_db.updateTodoStatus(tid, status);
+    LOGD("[account_server.handleUpdateTodo] insert todos into db success");
+
+    Todo todoItem = login_db.getTodo(tid);
+    if (todoItem.getTid() <= 0)
+    {
+      result->set_code(ResultCode::UpdateTodoStatus_Fail);
+      result->set_msg(MsgTip::UpdateTodoStatus_Fail);
+      return result;
+    }
+    LOGD("[account_server.handleUpdateTodo] get todo info success");
 
     //返回Token
     result->set_code(ResultCode::SUCCESS);
@@ -1436,6 +1509,100 @@ class AccountServiceImpl final : public Account::Service
     log_bean.addParam("code", reply->code());
     log_bean.addParam("content", content);
     log_bean.addParam("uid", uid);
+    LOGM(log_bean);
+
+    return Status::OK;
+  }
+
+  Status requestUpdateTodo(ServerContext *context, const UpdateTodoRequest *request,
+                           CodeReply *reply) override
+  {
+    LogMBean log_bean("requestUpdateTodo");
+
+    string token = request->token();
+    int status = request->status();
+    int tid = request->tid();
+
+    bool isParamValid = true;
+    string error_msg;
+
+    //校验用户token
+    if (!ParamUtils::CheckStringValid(token, error_msg))
+    {
+      reply->set_code(ResultCode::ReqParamError);
+      reply->set_msg(error_msg);
+      isParamValid = false;
+      LOGW("token is empty");
+    };
+
+    //校验title
+    if (!ParamUtils::CheckStringValid(content, error_msg))
+    {
+      reply->set_code(ResultCode::ReqParamError);
+      reply->set_msg(error_msg);
+      isParamValid = false;
+      LOGW("content is empty");
+    };
+
+    LoginRedis login_redis;
+
+    //解密Token
+    string decodeToken = CommonUtils::DecryptToken(token);
+    if (decodeToken.empty())
+    {
+      reply->set_code(ResultCode::UserLogout_TokenNotValid);
+      reply->set_msg(MsgTip::UserLogout_TokenNotValid);
+      return Status::OK;
+    }
+    LOGD("[account_server.requestUpdateTodo] user token decrypt success");
+
+    //解析Token，获取用户信息
+    vector<string> vToken;
+    CommonUtils::SplitString(decodeToken, vToken, ":");
+    if (vToken.size() != 5)
+    {
+      reply->set_code(ResultCode::UserLogout_TokenNotValid);
+      reply->set_msg(MsgTip::UserLogout_TokenNotValid);
+      return Status::OK;
+    }
+    LOGD("[account_server.requestUpdateTodo] get token info success");
+
+    //获得账号UID
+    int uid = CommonUtils::getIntByString(vToken[0]);
+
+    //token是否正确
+    if (!login_redis.isTokenRight(uid, token))
+    {
+      reply->set_code(ResultCode::UserLogout_TokenNotExist);
+      reply->set_msg(MsgTip::UserLogout_TokenNotExist);
+      return Status::OK;
+    }
+    LOGD("[account_server.requestUpdateTodo] user token is right");
+
+    //参数正确，执行请求
+    if (isParamValid)
+    {
+      LoginCore loginCore;
+      CodeReply *result = loginCore.handleUpdateTodo(tid, status, token);
+      reply->set_code(result->code());
+      reply->set_msg(result->msg());
+      reply->set_data(result->data());
+      delete result;
+    }
+
+    //校验返回数据的合法性
+    string msg;
+    if (!ParamUtils::CheckBackDataValid(reply->data(), msg))
+    {
+      reply->set_code(ResultCode::RetrunDataInvalid);
+      reply->set_msg(msg);
+      reply->set_data("");
+    }
+
+    //打印接口日志
+    log_bean.addParam("code", reply->code());
+    log_bean.addParam("status", status);
+    log_bean.addParam("tid", tid);
     LOGM(log_bean);
 
     return Status::OK;

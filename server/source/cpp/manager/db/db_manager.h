@@ -80,6 +80,8 @@ namespace manager
 
 		Todo queryTodo(int tid);
 
+		Todo updateTodoStatus(int o_tid, int o_status);
+
 		std::vector<Todo> queryTodoList(int uid, int cid);
 
 		/*

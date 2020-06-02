@@ -92,3 +92,6 @@ const string MsgTip::GetCategoryList_FAIL = "获取分类列表失败";
 
 const int ResultCode::GetTodoList_Fail = 1005010;
 const string MsgTip::GetTodoList_Fail = "获取todo列表失败";
+
+const int ResultCode::UpdateTodoStatus_Fail = 1005011;
+const string MsgTip::UpdateTodoStatus_Fail = "更新todo状态失败";
