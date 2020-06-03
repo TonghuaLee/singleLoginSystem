@@ -1750,11 +1750,7 @@ int main(int argc, char **argv)
   // CommonUtils::setTokenTimeout(conf.getTokenTimeout());
   //设置RefreshToken过期时间
   CommonUtils::setRefreshTokenTimeout(conf.getRefreshTokenTimeout());
-
-  // debug
-  // Database::getDatabase()->queryUserAccountByAccount("13533332222");
-  // Database::getDatabase()->addUserAccount("13533332221test","123123");
-
+  
   RunServer(conf);
   return 0;
 }
