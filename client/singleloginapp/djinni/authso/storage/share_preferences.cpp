@@ -16,8 +16,8 @@ using namespace storage;
 
 HashMap* SharePreferences::shareMap = NULL;
 
-const char* SharePreferences::file_path = const_cast<char *>("/data/data/com.wechat.mylogin/hello.txt");
-const char* SharePreferences::dir_path = const_cast<char *>("/data/data/com.wechat.mylogin/");
+const char* SharePreferences::file_path = const_cast<char *>("/data/data/com.happy.todos/hello.txt");
+const char *SharePreferences::dir_path = const_cast<char *>("/data/data/com.happy.todos/");
 const char* SharePreferences::file_name = const_cast<char *>("hello.txt");
 
 /**
