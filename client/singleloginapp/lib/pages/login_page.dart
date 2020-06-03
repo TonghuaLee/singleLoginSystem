@@ -32,6 +32,12 @@ class _LoginPageState extends State<LoginPage> with EventListener {
     passController.text = '123456thLee';
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    MsgChannelUtil.getInstance().removeListener(this);
+  }
+
   final LoginErrorMessageController loginErrorMessageController =
       LoginErrorMessageController();
 

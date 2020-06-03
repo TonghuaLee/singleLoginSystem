@@ -17,6 +17,7 @@ import 'package:singleloginapp/widget/new_category_input_widget.dart';
 import 'package:singleloginapp/widget/new_todo_input_widget.dart';
 import 'package:singleloginapp/widget/todo_item_widget.dart';
 
+import '../main.dart';
 import 'login_page.dart';
 
 void main() => runApp(MyApp());
@@ -45,7 +46,6 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> with EventListener {
   final TAG = "MyHomePageState";
-  BuildContext _context;
   DatabaseProvider mDatabaseProvider;
 
   @override
@@ -92,9 +92,15 @@ class _MyHomePageState extends State<MyHomePage> with EventListener {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    MsgChannelUtil.getInstance().removeListener(this);
+    mDatabaseProvider.dispose();
+  }
+
+  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _context = context;
     mDatabaseProvider = Provider.of<DatabaseProvider>(context, listen: false);
   }
 
@@ -336,17 +342,7 @@ class _MyHomePageState extends State<MyHomePage> with EventListener {
   @override
   void onEvent(int mainCmd, int subCmd, Message msg) async {
     if (mainCmd == MsgChannelUtil.MAIN_CMD_LOGINOUT) {
-      if (subCmd == MsgChannelUtil.SUB_CMD_LOGINOUT_SERVER) {
-        Map req = new Map();
-        Message msg = new Message(
-            0,
-            'req loginout from flutter',
-            req,
-            MsgChannelUtil.MAIN_CMD_CHECK_LOGIN_STATE,
-            MsgChannelUtil.MAIN_CMD_DEFALUT);
-        await MsgChannelUtil.getInstance().sendMessage(msg);
-      }
-      Navigator.pushAndRemoveUntil(context, new MaterialPageRoute(
+      Navigator.pushAndRemoveUntil(navigatorKey.currentState.overlay.context, new MaterialPageRoute(
         builder: (BuildContext context) {
           return new LoginPage();
         },

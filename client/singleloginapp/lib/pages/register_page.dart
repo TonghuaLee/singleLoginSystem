@@ -32,6 +32,12 @@ class _RegisterPageState extends State<RegisterPage> with EventListener {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    MsgChannelUtil.getInstance().removeListener(this);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: Form(
