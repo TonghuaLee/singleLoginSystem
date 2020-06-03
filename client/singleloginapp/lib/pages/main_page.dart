@@ -17,6 +17,7 @@ import 'package:singleloginapp/widget/new_category_input_widget.dart';
 import 'package:singleloginapp/widget/new_todo_input_widget.dart';
 import 'package:singleloginapp/widget/todo_item_widget.dart';
 
+import '../main.dart';
 import 'login_page.dart';
 
 void main() => runApp(MyApp());
@@ -45,8 +46,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> with EventListener {
   final TAG = "MyHomePageState";
-  BuildContext _context;
   DatabaseProvider mDatabaseProvider;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -91,9 +92,15 @@ class _MyHomePageState extends State<MyHomePage> with EventListener {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    MsgChannelUtil.getInstance().removeListener(this);
+    mDatabaseProvider.dispose();
+  }
+
+  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _context = context;
     mDatabaseProvider = Provider.of<DatabaseProvider>(context, listen: false);
   }
 
@@ -309,7 +316,9 @@ class _MyHomePageState extends State<MyHomePage> with EventListener {
   void addCategory(CategoriesDao categoriesDao, Category category) {
     categoriesDao
         .insertCategory(CategoriesCompanion(
-            title: MOOR.Value(category.title), uid: MOOR.Value(category.uid)))
+            cid: MOOR.Value(category.cid),
+            title: MOOR.Value(category.title),
+            uid: MOOR.Value(category.uid)))
         .then(
           (_) {},
         )
@@ -319,7 +328,10 @@ class _MyHomePageState extends State<MyHomePage> with EventListener {
   }
 
   void addTodo(int tid, String content, int cid, int status) {
-    mDatabaseProvider.insertNewTodoItemWithCid(tid, content, cid,status).then((_) {}).catchError(
+    mDatabaseProvider
+        .insertNewTodoItemWithCid(tid, content, cid, status)
+        .then((_) {})
+        .catchError(
       (e) {
         LogUtils.d(TAG, e);
       },
@@ -330,17 +342,7 @@ class _MyHomePageState extends State<MyHomePage> with EventListener {
   @override
   void onEvent(int mainCmd, int subCmd, Message msg) async {
     if (mainCmd == MsgChannelUtil.MAIN_CMD_LOGINOUT) {
-      if (subCmd == MsgChannelUtil.SUB_CMD_LOGINOUT_SERVER) {
-        Map req = new Map();
-        Message msg = new Message(
-            0,
-            'req loginout from flutter',
-            req,
-            MsgChannelUtil.MAIN_CMD_CHECK_LOGIN_STATE,
-            MsgChannelUtil.MAIN_CMD_DEFALUT);
-        await MsgChannelUtil.getInstance().sendMessage(msg);
-      }
-      Navigator.pushAndRemoveUntil(context, new MaterialPageRoute(
+      Navigator.pushAndRemoveUntil(navigatorKey.currentState.overlay.context, new MaterialPageRoute(
         builder: (BuildContext context) {
           return new LoginPage();
         },
@@ -376,8 +378,19 @@ class _MyHomePageState extends State<MyHomePage> with EventListener {
           var cid = item["cid"];
           var uid = item["uid"];
           var content = item["content"];
-          var tid = item["TID"];
+          var tid = item["tid"];
           addTodo(tid, content, cid, status);
+        }
+      }
+    } else if (mainCmd == MsgChannelUtil.MAIN_CMD_UPDATE_TODO_STATUS) {
+      LogUtils.d(TAG, msg.toJson().toString());
+      if (msg != null) {
+        if (msg.code == ResultCode.SUCCESS) {
+          var data = msg.message;
+          var item = JSON.jsonDecode(data);
+          item["id"] = item["tid"];
+          item["status"] = item["status"] != 0 ? true : false;
+          mDatabaseProvider.todosDao.updateTodo(Todo.fromJson(item));
         }
       }
     }

@@ -9,6 +9,8 @@ import 'package:singleloginapp/pages/login_page.dart';
 import 'package:singleloginapp/utils/log_util.dart';
 import 'package:singleloginapp/widget/animatedloginbutton.dart';
 
+import '../main.dart';
+
 class RegisterPage extends StatefulWidget {
   @override
   _RegisterPageState createState() => _RegisterPageState();
@@ -27,6 +29,12 @@ class _RegisterPageState extends State<RegisterPage> with EventListener {
   void initState() {
     super.initState();
     MsgChannelUtil.getInstance().addListener(this);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    MsgChannelUtil.getInstance().removeListener(this);
   }
 
   @override
@@ -193,7 +201,7 @@ class _RegisterPageState extends State<RegisterPage> with EventListener {
     if (mainCmd == MsgChannelUtil.MAIN_CMD_REGISTER) {
       if (msg != null) {
         if (msg.code == ResultCode.SUCCESS) {
-          Navigator.pushAndRemoveUntil(context, new MaterialPageRoute(
+          Navigator.pushAndRemoveUntil(navigatorKey.currentState.overlay.context, new MaterialPageRoute(
             builder: (BuildContext context) {
               return new LoginPage();
             },

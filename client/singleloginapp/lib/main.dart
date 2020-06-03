@@ -11,6 +11,7 @@ import 'pages/login_page.dart';
 void main() {
   runApp(MyApp());
 }
+final GlobalKey<NavigatorState> navigatorKey=GlobalKey();
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -19,6 +20,7 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (_) => DatabaseProvider(),
       child: MaterialApp(
+        navigatorKey: navigatorKey,
         theme: ThemeData(
             primarySwatch: Colors.green,
             backgroundColor: Colors.white,

@@ -10,6 +10,8 @@ import 'package:singleloginapp/pages/register_page.dart';
 import 'package:singleloginapp/utils/log_util.dart';
 import 'package:singleloginapp/widget/animatedloginbutton.dart';
 
+import '../main.dart';
+
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -28,6 +30,12 @@ class _LoginPageState extends State<LoginPage> with EventListener {
     MsgChannelUtil.getInstance().addListener(this);
     phoneController.text = '16625205201';
     passController.text = '123456thLee';
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    MsgChannelUtil.getInstance().removeListener(this);
   }
 
   final LoginErrorMessageController loginErrorMessageController =
@@ -200,7 +208,7 @@ class _LoginPageState extends State<LoginPage> with EventListener {
     if (mainCmd == MsgChannelUtil.MAIN_CMD_LOGIN) {
       if (msg != null) {
         if (msg.code == ResultCode.SUCCESS) {
-          Navigator.pushAndRemoveUntil(context, new MaterialPageRoute(
+          Navigator.pushAndRemoveUntil(navigatorKey.currentState.overlay.context, new MaterialPageRoute(
             builder: (BuildContext context) {
               return new MyHomePage();
             },
