@@ -36,25 +36,29 @@ std::shared_ptr<grpc::Channel> utils::NetworkUtils::getNetworkChannel(){
     }
 
     const std::string MY_PEM = "-----BEGIN CERTIFICATE-----\n"
-                               "MIIC7DCCAdQCCQCxgpkVF5hELDANBgkqhkiG9w0BAQUFADA4MRUwEwYDVQQDDAx3\n"
-                               "ZWNoYXQtbG9naW4xHzAdBgkqhkiG9w0BCQEWEDM3NTU5MTU4MEBxcS5jb20wHhcN\n"
-                               "MTkwMjA1MTUxMTU1WhcNMjkwMjAyMTUxMTU1WjA4MRUwEwYDVQQDDAx3ZWNoYXQt\n"
-                               "bG9naW4xHzAdBgkqhkiG9w0BCQEWEDM3NTU5MTU4MEBxcS5jb20wggEiMA0GCSqG\n"
-                               "SIb3DQEBAQUAA4IBDwAwggEKAoIBAQDPGB6XpC+l+p8UdbuXwWBWTzxB3yh6Dsnd\n"
-                               "yi/9eBurocCy0w1vjZX6GlDCBohS9ZP+mTSz0TNyB6JB+rqqjDhAXqB45K4arcPs\n"
-                               "bKHmgJmXl8Iiar+AHPNlRWvwNCwq1NlEz6sMYmfZ9EJLOnS6sVmjC3oU3putj+4u\n"
-                               "UHDk1XXkowyIBJwRjuRfHc5vkOnEPZ08kPh06vpTa/SxomVITB1d+W52vrKrtf2j\n"
-                               "vOSadIHpsMREfvdH7L8zzxHtBr6sYK+iLfJhwD54+Pa8epJRNY3KZeG8EDIn0xYr\n"
-                               "TwA+hJXm68z27whJCeirN14bnDPXFon+eq1wTacpNzdzMhIZyefnAgMBAAEwDQYJ\n"
-                               "KoZIhvcNAQEFBQADggEBAMErKxZZakhkpFUkPVUxSv3pQV4Sz0rwmFXIOmO5VPlt\n"
-                               "iyT65IRk3FEGDrhMEYQCJf2sSfrJeGT7a8AkF71vBI+ESk4wackwMlAlHY4/Daij\n"
-                               "RM5kIF2uJz1Lq1ALIEeaMwQF72uTeLSEvjWqH0/vXRgPHquh0ZdUgfP0vOxh/Zt+\n"
-                               "9sgcwueRcNGsNKAW1yFphVaM3n3OQu7MYMp7TY1CngMZR7bSpFG2qxRCh/WIhZlB\n"
-                               "Q4b98lu1RVF2fBFLbnITu7B5JC0rhyBHL7+sBwh7NSVRNFkTaauD54xCJ5UOgWZ2\n"
-                               "ELjzue/xsOF2R/LmH1V85YGTU/vS2dr6Mon3bDMu/js=\n"
+                               "MIIDljCCAn4CCQDCwTZmK/3aCjANBgkqhkiG9w0BAQUFADCBjDELMAkGA1UEBhMC\n "
+                               "Q04xETAPBgNVBAgMCFNoZW5aaGVuMREwDwYDVQQHDAhTaGVuWmhlbjEOMAwGA1UE\n"
+                               "CgwFaGFwcHkxDjAMBgNVBAsMBWhhcHB5MRYwFAYDVQQDDA13d3cuaGFwcHkuY29t\n"
+                               "MR8wHQYJKoZIhvcNAQkBFhA5MjkyMzAxNTdAcXEuY29tMB4XDTIwMDYwMzA4NTcy\n"
+                               "MFoXDTMwMDYwMTA4NTcyMFowgYwxCzAJBgNVBAYTAkNOMREwDwYDVQQIDAhTaGVu\n"
+                               "WmhlbjERMA8GA1UEBwwIU2hlblpoZW4xDjAMBgNVBAoMBWhhcHB5MQ4wDAYDVQQL\n"
+                               "DAVoYXBweTEWMBQGA1UEAwwNd3d3LmhhcHB5LmNvbTEfMB0GCSqGSIb3DQEJARYQ\n"
+                               "OTI5MjMwMTU3QHFxLmNvbTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEB\n"
+                               "AMu4nHpLbR55N3SrTCP7vQOl/6lIXMFMCCEHZRKT+3Qg2h6d/7H4l0yqA9oh+ShQ\n"
+                               "53Uh4xdTyOPCu+YTeMKD3YPFXdXXTJ62fSc6/6EQMSiyzfX1/6aOkLPqbPEZtvus\n"
+                               "c1cPFWR3DE8zDts1h4FHGS1kFIfH+LjHifUo7fLiSlAC3zSQiFzsfaV5EMMv+AxO\n"
+                               "pyUFIYQbgabSNY0mc7xRdm+JvYlHzEJdJMDkokkvy3Z3E9W10L5qm3mpyYvOWbTw\n"
+                               "Mr2kO8x9h0wPx1+k1MRnHvF5AZsp27DVF1XxkkWFD2rO6d9HGVw8SYR97qVtGBmB\n"
+                               "nV9ejaTVLDVq3XxoWc96+AcCAwEAATANBgkqhkiG9w0BAQUFAAOCAQEAbmU0H9PV\n"
+                               "67/KlnoE9LnuY6m9j+QJlN5iU17QRJ8gr+OVQC9/dhSYhYggMG6I/X7jTCxw2I1E\n"
+                               "klXApoSaAP8Zv3qWfSwBOzUtlXPuugsB8ZwIt8lwVPq79u0dNRAlcMymVunjzgBq\n"
+                               "B9IBPLrhuMpzxExj0v3B8Tpta2IOa72yr1h/niyZGPssGRU5MLEnFNCc6Nw6OXG6\n"
+                               "u6aGi/jPePMR3Ji4poFeQgeVEeCQ/gkFgeUWO7/3lqG3iTwadXIb6rdQ3+CcnJv7\n"
+                               "S31ruNVZeNjuHBp3s95Xl4VP2sxLQKKlN0mPh0f1OfYYlxjflKEg/TeeYbEmGSJx\n"
+                               "JA39aArgKsNQMA=="
                                "-----END CERTIFICATE-----";
 
-    const std::string TOKEN = "wechat-login";
+    const std::string TOKEN = "happy-broad";
 
     const std::string host("118.126.89.19");
     const int port = 50051;
